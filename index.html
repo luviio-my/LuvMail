@@ -1958,55 +1958,97 @@
             }
         }
 
-        async function handleOTPAuth(e) {
-            e.preventDefault();
-            const btn = document.getElementById('otp-btn');
-            const codeField = document.getElementById('otp-code-field');
-            const codeInput = document.getElementById('otp-code');
-            const email = document.getElementById('otp-email').value.trim();
+async function handleOTPAuth(e) {
+    e.preventDefault();
+    const btn = document.getElementById('otp-btn');
+    const codeField = document.getElementById('otp-code-field');
+    const codeInput = document.getElementById('otp-code');
+    const email = document.getElementById('otp-email').value.trim();
 
-            if(!email) return showToast("Please enter email address", "error");
+    if(!email) return showToast("Please enter email address", "error");
 
-            // If code field is visible, verify OTP
-            if(codeField.style.display !== 'none' && codeInput.value.length === 6) {
-                try {
-                    const { data, error } = await _supabase.auth.verifyOtp({
-                        email,
-                        token: codeInput.value,
-                        type: 'email'
-                    });
-                    if(error) throw error;
-                    initApp(data.user);
-                    router.navigate('/dashboard');
-                } catch(err) {
-                    showToast(err.message || "Invalid code", 'error');
-                }
-                return;
-            }
-
-            // Otherwise send OTP/Magic Link
-            btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending...';
-            btn.disabled = true;
-
-            try {
-                const { error } = await _supabase.auth.signInWithOtp({ 
-                    email,
-                    options: {
-                        emailRedirectTo: window.location.origin
-                    }
-                });
-                if(error) throw error;
-                
-                codeField.style.display = 'block';
-                btn.innerHTML = 'Verify Code';
-                btn.disabled = false;
-                showToast("Check your email for the verification code!", "success");
-            } catch(err) {
-                showToast(err.message || "Failed to send OTP", 'error');
-                btn.innerHTML = 'Send OTP Code';
-                btn.disabled = false;
-            }
+    // If code field is visible, verify OTP
+    if(codeField.style.display !== 'none' && codeInput.value.length === 6) {
+        try {
+            const { data, error } = await _supabase.auth.verifyOtp({
+                email,
+                token: codeInput.value,
+                type: 'email'
+            });
+            if(error) throw error;
+            initApp(data.user);
+            router.navigate('/dashboard');
+        } catch(err) {
+            showToast(err.message || "Invalid code", 'error');
         }
+        return;
+    }
+
+    // Otherwise send OTP/Magic Link - WITH ACCOUNT CHECK
+    btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Checking...';
+    btn.disabled = true;
+
+    try {
+        // STEP 1: Check if account exists using admin/listUsers or custom query
+        // Option A: Using Supabase Auth Admin (requires service_role key - server side only)
+        // For client-side, we use a workaround:
+        
+        const { data: { users }, error: listError } = await _supabase.auth.admin.listUsers();
+        
+        let userExists = false;
+        
+        if (!listError && users) {
+            userExists = users.some(user => 
+                user.email.toLowerCase() === email.toLowerCase()
+            );
+        }
+        
+        // Option B: If you have a custom 'profiles' or 'users' table, query that instead:
+        /*
+        const { data: profile, error } = await _supabase
+            .from('profiles') // or 'users' table
+            .select('id')
+            .eq('email', email)
+            .maybeSingle();
+            
+        userExists = !!profile && !error;
+        */
+
+        // STEP 2: Block non-existent accounts
+        if (!userExists) {
+            showToast(
+                "Only authorized email addresses are allowed. If you're experiencing issues, please contact support@luviio.com.", 
+                "error"
+            );
+            btn.innerHTML = 'Send OTP Code';
+            btn.disabled = false;
+            return;
+        }
+
+        // STEP 3: Send OTP only to verified accounts
+        btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending...';
+
+        const { error } = await _supabase.auth.signInWithOtp({ 
+            email,
+            options: {
+                emailRedirectTo: window.location.origin
+            }
+        });
+        
+        if(error) throw error;
+        
+        codeField.style.display = 'block';
+        btn.innerHTML = 'Verify Code';
+        btn.disabled = false;
+        showToast("Verification code sent to authorized email!", "success");
+        
+    } catch(err) {
+        console.error("OTP Error:", err);
+        showToast(err.message || "Failed to send verification code", "error");
+        btn.innerHTML = 'Send OTP Code';
+        btn.disabled = false;
+    }
+}
 
         async function handleSignUp() {
              const email = document.getElementById('auth-email').value.trim();
