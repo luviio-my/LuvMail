@@ -310,6 +310,7 @@
         }
         .toast.success { border-left-color: #22c55e; }
         .toast.error { border-left-color: #ef4444; }
+        .toast.warning { border-left-color: #f59e0b; }
         .toast.removing {
             transform: translateX(120%) scale(0.9);
             opacity: 0;
@@ -488,6 +489,47 @@
             width: 300px;
             height: 300px;
         }
+
+        /* Admin Action Buttons */
+        .admin-action-btn {
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s var(--ease-out-expo);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border: 1px solid transparent;
+        }
+        .admin-action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .admin-action-btn.primary { background: #000; color: white; }
+        .admin-action-btn.primary:hover { background: #333; }
+        .admin-action-btn.danger { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+        .admin-action-btn.danger:hover { background: #fee2e2; }
+        .admin-action-btn.warning { background: #fffbeb; color: #d97706; border-color: #fde68a; }
+        .admin-action-btn.warning:hover { background: #fef3c7; }
+        .admin-action-btn.info { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+        .admin-action-btn.info:hover { background: #dbeafe; }
+
+        /* User Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.65rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .status-active { background: #dcfce7; color: #166534; }
+        .status-suspended { background: #fef2f2; color: #991b1b; }
+        .status-pending { background: #fefce8; color: #854d0e; }
     </style>
 </head>
 <body>
@@ -968,7 +1010,7 @@
                 </div>
             </section>
 
-            <!-- ADMIN PANEL (/admin) - SUPERADMIN ONLY -->
+            <!-- ADMIN PANEL (/admin) - SUPERADMIN ONLY WITH ENHANCED TOOLS -->
             <section id="view-admin" class="page-view">
                 <header class="mb-8 stagger-children">
                     <div class="flex items-center gap-3 mb-2">
@@ -979,6 +1021,28 @@
                     </div>
                     <p class="text-[var(--text-sub)]">Manage users and system settings. Restricted access.</p>
                 </header>
+
+                <!-- Quick Actions Bar -->
+                <div class="glass-card p-6 mb-6 transition-all duration-300">
+                    <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Quick Actions</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="openAdminActionModal('send-otp')" class="admin-action-btn info ripple">
+                            <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Send OTP Code
+                        </button>
+                        <button onclick="openAdminActionModal('reset-password')" class="admin-action-btn warning ripple">
+                            <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M15 7a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg> Reset Password
+                        </button>
+                        <button onclick="openAdminActionModal('change-name')" class="admin-action-btn primary ripple">
+                            <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Change Name
+                        </button>
+                        <button onclick="openAdminActionModal('suspend')" class="admin-action-btn danger ripple">
+                            <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg> Suspend Account
+                        </button>
+                        <button onclick="openAdminActionModal('delete')" class="admin-action-btn danger ripple" style="background: #dc2626; color: white; border-color: #b91c1c;">
+                            <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg> Delete Account
+                        </button>
+                    </div>
+                </div>
 
                 <div class="glass-card p-6 transition-all duration-300">
                     <div class="flex justify-between items-center mb-6">
@@ -992,13 +1056,15 @@
                                 <tr>
                                     <th>User ID</th>
                                     <th>Email</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
                                     <th>Created At</th>
                                     <th>Last Sign In</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="admin-users-body">
-                                <tr><td colspan="5" class="text-center py-8 text-gray-400 animate-pulse-soft">Loading users... (Requires Service Role Permissions)</td></tr>
+                                <tr><td colspan="7" class="text-center py-8 text-gray-400 animate-pulse-soft">Loading users... (Requires Service Role Permissions)</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1218,6 +1284,22 @@
         </div>
     </div>
 
+    <!-- ADMIN ACTION MODAL (NEW) -->
+    <div class="modal-overlay" id="admin-action-modal">
+        <div class="modal-box">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h2 class="font-display font-bold text-xl tracking-tight" id="admin-action-title">Admin Action</h2>
+                <button onclick="closeModal('admin-action-modal')" class="text-gray-400 hover:text-black transition-colors duration-200 hover:rotate-90 inline-block">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            
+            <div id="admin-action-content">
+                <!-- Dynamic content based on action type -->
+            </div>
+        </div>
+    </div>
+
 
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
@@ -1265,13 +1347,11 @@
         };
 
         function getRouteFromPath(pathname) {
-            // Remove leading slash and extract route
             const path = pathname.replace(/^\//, '').replace(/\/$/, '');
             return routeMap[path] || null;
         }
 
         function getPathFromView(viewId) {
-            // Reverse lookup
             for (const [path, view] of Object.entries(routeMap)) {
                 if (view === viewId) return '/' + path;
             }
@@ -1285,7 +1365,6 @@
             const oldPage = currentPage;
             currentPage = page;
 
-            // Update URL (History API)
             if (pushState && window.history && window.history.pushState) {
                 try {
                     const newPath = getPathFromView(`view-${page}`);
@@ -1295,7 +1374,6 @@
                 }
             }
 
-            // Animate out old view
             const oldView = document.getElementById(`view-${oldPage}`);
             if (oldView) {
                 oldView.classList.add('exiting');
@@ -1309,17 +1387,14 @@
         }
 
         function showNewView(page) {
-            // Hide all views
             document.querySelectorAll('.page-view').forEach(v => {
                 v.classList.remove('active', 'exiting');
             });
 
-            // Show new view
             const targetView = document.getElementById(`view-${page}`);
             if (targetView) {
                 targetView.classList.add('active');
                 
-                // Trigger stagger animation for children
                 const staggerContainer = targetView.querySelector('.stagger-children');
                 if (staggerContainer) {
                     staggerContainer.style.opacity = '0';
@@ -1329,13 +1404,11 @@
                 }
             }
             
-            // Update nav links
             document.querySelectorAll('.nav-link').forEach(l => {
                 l.classList.remove('active');
                 if (l.dataset.nav === page) l.classList.add('active');
             });
 
-            // Load page-specific data
             setTimeout(() => {
                 if (page === 'contacts') renderContactsTable();
                 if (page === 'settings') renderSettingsSenders();
@@ -1346,20 +1419,17 @@
             }, 100);
         }
 
-        // Handle browser back/forward
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.page) {
                 navigateTo(event.state.page, false);
             }
         });
 
-        // Initial route check
         window.addEventListener('DOMContentLoaded', () => {
             const initialPath = window.location.pathname;
             const initialView = getRouteFromPath(initialPath);
             
             if (initialView && initialView !== 'view-auth') {
-                // We'll let auth logic handle this later, but store intent
                 window.__intendedRoute = initialView.replace('view-', '');
             }
         });
@@ -1397,20 +1467,51 @@
         }
 
         async function sendOTPCode() {
-            const email = document.getElementById('auth-email').value.trim();
+            const email = document.getElementById('auth-email').value.trim().toLowerCase();
             if(!email) return showToast("Please enter email first", "error");
             
             const btn = document.getElementById('send-otp-btn');
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Sending...';
+            btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Verifying...';
 
             try {
-                const { error } = await _supabase.auth.signInWithOtp({ email });
+                // CRITICAL CHECK: Verify user exists in database before allowing OTP
+                // This prevents automatic user creation for unauthorized emails
+                const { data: existingUser, error: checkError } = await _supabase
+                    .from('profiles')
+                    .select('id, email')
+                    .eq('email', email)
+                    .maybeSingle(); // Use maybeSingle to avoid throwing error if not found
+                
+                // If user doesn't exist in profiles table, reject with specific message
+                if (!existingUser || checkError) {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Send OTP Code';
+                    
+                    // Show the specific error message requested
+                    const errorMsg = "Only authorized email addresses are allowed. If you're experiencing issues, please contact <a href='mailto:support@luviiio.com' class='underline font-semibold text-red-600 hover:text-red-800'>support@luviiio.com</a>.";
+                    showToast(errorMsg, "error", 8000); // Show longer for reading
+                    
+                    // Shake effect for emphasis
+                    btn.parentElement.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => btn.parentElement.style.animation = '', 500);
+                    return;
+                }
+
+                // User exists, proceed with OTP
+                btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Sending...';
+                
+                const { error } = await _supabase.auth.signInWithOtp({ 
+                    email,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/dashboard'
+                    }
+                });
                 
                 if(error) {
-                    // Check if error is because user doesn't exist or isn't confirmed
-                    if (error.message.includes('not found') || error.message.includes('signup_disabled') || error.message.includes('Invalid')) {
-                        showToast("This email is not registered. Please contact admin to create account.", "error");
+                    // Handle specific errors
+                    if (error.message.includes('not found') || error.message.includes('signup_disabled')) {
+                        showToast("Only authorized email addresses are allowed. Please contact support.", "error");
                     } else {
                         showToast(error.message, 'error');
                     }
@@ -1421,9 +1522,10 @@
 
                 document.getElementById('otp-send-step').style.display = 'none';
                 document.getElementById('otp-verify-step').style.display = 'block';
-                showToast("OTP sent! Check your email.", "success");
+                showToast("OTP sent! Check your inbox (and spam folder).", "success");
             } catch (err) {
-                showToast("Network error. Please try again.", "error");
+                console.error("OTP Error:", err);
+                showToast("Network error. Please check connection and try again.", "error");
                 btn.disabled = false;
                 btn.innerHTML = 'Send OTP Code';
             }
@@ -1448,7 +1550,6 @@
             if (session) {
                 initApp(session.user);
             } else {
-                // Show auth view with intended route if any
                 document.getElementById('view-auth').classList.add('active');
                 if (window.__intendedRoute) {
                     console.log('Intended route:', window.__intendedRoute);
@@ -1474,7 +1575,7 @@
             btn.disabled = true;
             btn.style.transform = 'scale(0.98)';
 
-            const email = document.getElementById('auth-email').value.trim();
+            const email = document.getElementById('auth-email').value.trim().toLowerCase();
             
             try {
                 let data;
@@ -1496,7 +1597,6 @@
                 
                 initApp(data.user);
             } catch (err) {
-                // Shake animation for error
                 btn.style.animation = 'shake 0.5s ease-in-out';
                 setTimeout(() => btn.style.animation = '', 500);
                 
@@ -1508,7 +1608,7 @@
         }
 
         async function handleSignUp() {
-             const email = document.getElementById('auth-email').value.trim();
+             const email = document.getElementById('auth-email').value.trim().toLowerCase();
              const password = document.getElementById('auth-pass').value;
              
              if(!email || !password) return showToast("Please enter email and password", "error");
@@ -1526,7 +1626,6 @@
             document.getElementById('auth-form').reset();
             switchAuthMode('password'); // Reset to password mode
             
-            // Navigate to login
             if (window.history && window.history.pushState) {
                 window.history.pushState({}, '', '/auth/login');
             }
@@ -1561,11 +1660,16 @@
             document.getElementById('dashboard-greeting').textContent = `Hi, ${displayName}!`;
             document.getElementById('dashboard-date').textContent = today;
             
-            // SuperAdmin Check
-            if(user.email === 'people@luviio.com') {
+            // SuperAdmin Check - Show enhanced admin tools for people@luviiio.com
+            if(user.email === 'people@luviiio.com') {
                 const adminNav = document.getElementById('nav-admin');
                 adminNav.classList.remove('hidden');
                 adminNav.style.animation = 'fadeUp 0.5s ease 0.5s both';
+                
+                // Store admin status globally for conditional rendering
+                window.isAdmin = true;
+            } else {
+                window.isAdmin = false;
             }
             
             // Init Quill
@@ -1624,7 +1728,7 @@
             if (!error && data) {
                 cacheSenders = data;
                 populateSenderDropdown();
-                syncSenderNameField(); // Auto-sync name field
+                syncSenderNameField();
             }
         }
 
@@ -1820,7 +1924,6 @@
             document.getElementById('edit-template-id').value = id;
             document.getElementById('new-t-name').value = data.name;
             
-            // Load into composer
             navigateTo('mail');
             document.getElementById('mail-subject').value = data.subject;
             quillEditor.root.innerHTML = data.html_content;
@@ -1913,7 +2016,6 @@
 
         async function resendCampaign() {
             const id = document.getElementById('viewing-camp-id').value;
-            // Load and put back into composer
             const { data } = await _supabase.from('campaigns').select('*').eq('id', id).single();
             if(!data) return;
             
@@ -1927,7 +2029,7 @@
         }
 
         // ==========================================
-        // SEND VIA EDGE FUNCTION
+        // SEND VIA EDGE FUNCTION (HTML SUPPORT)
         // ==========================================
 
         async function sendViaResend() {
@@ -1950,8 +2052,23 @@
             if(!senderObj) return showToast("Sender configuration error.", "error");
             const fromAddress = `${senderName || senderObj.alias_name} <${senderObj.email}>`;
 
+            // Get HTML content from editor
             const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
-            const htmlBody = isHtmlMode ? quillEditor.root.innerHTML : `<pre style="white-space: pre-wrap;">${document.getElementById('comp-body-text').value.replace(/</g, '&lt;')}</pre>`;
+            let htmlBody;
+            
+            if (isHtmlMode) {
+                htmlBody = quillEditor.root.innerHTML;
+            } else {
+                // Convert plain text to basic HTML for sending
+                const plainText = document.getElementById('comp-body-text').value;
+                htmlBody = `<pre style="white-space: pre-wrap; font-family: monospace;">${plainText.replace(/</g, '&lt;')}</pre>`;
+            }
+            
+            // Validate HTML content has actual content beyond empty tags
+            const strippedContent = stripHtml(htmlBody).trim();
+            if (strippedContent.length < 5) {
+                return showToast("Please add more content to your email body.", "warning");
+            }
             
             btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending via Resend...';
             btn.disabled = true;
@@ -1959,16 +2076,27 @@
 
             try {
                 const { data, error: fnError } = await _supabase.functions.invoke('send-email', {
-                    body: { from: fromAddress, to: recipients, subject: subject, html: htmlBody }
+                    body: { 
+                        from: fromAddress, 
+                        to: recipients, 
+                        subject: subject, 
+                        html: htmlBody,
+                        // Additional metadata for tracking
+                        metadata: {
+                            campaign_type: 'manual',
+                            sent_via: 'web_composer'
+                        }
+                    }
                 });
 
                 if (fnError) throw new Error(fnError.message);
                 
+                // Save to campaigns table with full HTML
                 await _supabase.from('campaigns').insert({
                     user_id: currentUser.id,
                     sender_id: senderObj.id,
                     subject: subject,
-                    html_content: htmlBody,
+                    html_content: htmlBody, // Full HTML stored
                     recipients: recipients,
                     status: 'sent',
                     external_id: data?.id,
@@ -1976,7 +2104,7 @@
                     sent_at: new Date().toISOString()
                 });
 
-                showToast(`✅ Email Sent! ID: ${data?.id}`, 'success');
+                showToast(`✅ Email Sent Successfully! ID: ${data?.id}`, 'success');
                 document.getElementById('mail-to').value = '';
                 navigateTo('dashboard');
                 await loadStats();
@@ -1995,7 +2123,7 @@
         }
 
         // ==========================================
-        // PREVIEW MODAL LOGIC
+        // PREVIEW MODAL LOGIC (Enhanced HTML Preview)
         // ==========================================
 
         function openPreviewModal() {
@@ -2007,7 +2135,17 @@
             document.getElementById('prev-subject').innerText = subject;
             document.getElementById('prev-from').innerText = `${senderName} <${senderObj ? senderObj.email : 'Unknown'}>`;
             
-            const htmlBody = quillEditor.root.innerHTML;
+            // Get HTML content based on mode
+            const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
+            let htmlBody;
+            
+            if (isHtmlMode) {
+                htmlBody = quillEditor.root.innerHTML;
+            } else {
+                const plainText = document.getElementById('comp-body-text').value;
+                htmlBody = `<pre style="white-space: pre-wrap; font-family: monospace;">${plainText}</pre>`;
+            }
+            
             document.getElementById('prev-body-rendered').innerHTML = htmlBody;
             document.getElementById('prev-body-source').textContent = formatHtmlCode(htmlBody);
             
@@ -2035,7 +2173,7 @@
         }
 
         function sendTestEmail() {
-            showToast("Test email sent to your inbox!", "success");
+            showToast("Test email sent to your inbox! Check spam folder too.", "success");
             closeModal('preview-modal');
         }
 
@@ -2075,7 +2213,8 @@
 
         async function saveAsDraft() {
              const subject = document.getElementById('mail-subject').value || 'Untitled Draft';
-             const htmlBody = quillEditor.root.innerHTML;
+             const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
+             const htmlBody = isHtmlMode ? quillEditor.root.innerHTML : `<pre>${document.getElementById('comp-body-text').value}</pre>`;
              
              const { error } = await _supabase.from('campaigns').insert({
                 user_id: currentUser.id,
@@ -2180,7 +2319,7 @@
         }
 
         // ==========================================
-        // CRUD OPERATIONS - SENDERS (Enhanced Sync)
+        // CRUD OPERATIONS - SENDERS
         // ==========================================
 
         function openSenderModal(sender) {
@@ -2215,19 +2354,14 @@
                 const { error: err } = await _supabase.from('senders').update(payload).eq('id', id);
                 error = err;
                 if(!error) {
-                    // Update local cache
                     const idx = cacheSenders.findIndex(s => s.id === id);
                     if(idx >= 0) cacheSenders[idx] = {...cacheSenders[idx], ...payload};
-                    
-                    // Auto-update composer if this sender is selected
                     syncSenderNameField();
                 }
             } else {
                 const { error: err } = await _supabase.from('senders').insert(payload);
                 error = err;
-                if(!error) {
-                    await loadSenders(); // Reload to get ID
-                }
+                if(!error) await loadSenders();
             }
 
             if(error) return showToast(error.message, 'error');
@@ -2244,10 +2378,8 @@
             const { error } = await _supabase.from('senders').delete().eq('id', id);
             if(error) return showToast(error.message, 'error');
             
-            // Remove from cache
             cacheSenders = cacheSenders.filter(s => s.id !== id);
             
-            // Clear from composer if selected
             const select = document.getElementById('mail-sender-email');
             if(select.value === id) {
                 select.value = '';
@@ -2260,7 +2392,6 @@
             showToast("Sender removed.", 'success');
         }
 
-        // NEW: Auto-sync sender name field when selection changes
         function syncSenderNameField() {
             const select = document.getElementById('mail-sender-email');
             const nameInput = document.getElementById('mail-sender-name');
@@ -2268,16 +2399,14 @@
             
             if(selectedId) {
                 const sender = cacheSenders.find(s => s.id === selectedId);
-                if(sender && !nameInput.value || nameInput.value === 'LuvMail Team') {
+                if(sender && (!nameInput.value || nameInput.value === 'LuvMail Team')) {
                     nameInput.value = sender.alias_name;
-                    // Animate the change
                     nameInput.style.transform = 'scale(1.02)';
                     setTimeout(() => nameInput.style.transform = '', 200);
                 }
             }
         }
 
-        // Add listener for sender dropdown change
         document.addEventListener('change', (e) => {
             if(e.target && e.target.id === 'mail-sender-email') {
                 syncSenderNameField();
@@ -2289,7 +2418,7 @@
             const selects = [document.getElementById('mail-sender-email')];
             selects.forEach(select => {
                 if(!select) return;
-                const currentValue = select.value; // Preserve selection
+                const currentValue = select.value;
                 
                 if (cacheSenders.length === 0) {
                     select.innerHTML = '<option value="">No senders configured</option>';
@@ -2301,7 +2430,6 @@
                         `<option value="${s.id}" ${s.id === currentValue ? 'selected' : ''}>${escapeHtml(s.alias_name)} &lt;${escapeHtml(s.email)}&gt;</option>`
                     ).join('');
                 
-                // If previously selected item still exists, keep it, otherwise clear
                 if(currentValue && !cacheSenders.find(s => s.id === currentValue)) {
                     select.value = '';
                     document.getElementById('mail-sender-name').value = '';
@@ -2343,52 +2471,408 @@
             const { error } = await _supabase.auth.updateUser({ data: { full_name: name } });
             if(error) return showToast(error.message, 'error');
             showToast("Profile updated!", 'success');
-                        document.getElementById('dashboard-greeting').textContent = `Hi, ${name}!`;
+            document.getElementById('dashboard-greeting').textContent = `Hi, ${name}!`;
         }
 
         // ==========================================
-        // ADMIN FUNCTIONS
+        // ADMIN FUNCTIONS - ENHANCED WITH TOOLS
         // ==========================================
+
+        let currentAdminAction = null;
+
+        function openAdminActionModal(actionType) {
+            currentAdminAction = actionType;
+            const contentDiv = document.getElementById('admin-action-content');
+            const titleEl = document.getElementById('admin-action-title');
+            
+            switch(actionType) {
+                case 'send-otp':
+                    titleEl.textContent = 'Send OTP Code to User';
+                    contentDiv.innerHTML = `
+                        <form onsubmit="adminSendOTP(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">Target User Email *</label>
+                                <input type="email" id="admin-target-email" class="input-glass" placeholder="user@example.com" required>
+                                <p class="text-xs text-gray-400 mt-1">This will trigger an OTP email to be sent to this user's inbox.</p>
+                            </div>
+                            <div class="flex gap-3 pt-2">
+                                <button type="button" onclick="closeModal('admin-action-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
+                                <button type="submit" class="btn-primary flex-1 ripple">Send OTP</button>
+                            </div>
+                        </form>
+                    `;
+                    break;
+                    
+                case 'reset-password':
+                    titleEl.textContent = 'Generate Reset Password Link';
+                    contentDiv.innerHTML = `
+                        <form onsubmit="adminResetPassword(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">User Email *</label>
+                                <input type="email" id="admin-target-email" class="input-glass" placeholder="user@example.com" required>
+                                <p class="text-xs text-gray-400 mt-1">Generates a password reset link that can be sent to the user.</p>
+                            </div>
+                            <div class="bg-yellow-50 border border-yellow-200 p-3 rounded-lg text-xs text-yellow-800">
+                                <strong>Note:</strong> This uses Supabase's built-in reset flow. The user must have a verified email.
+                            </div>
+                            <div class="flex gap-3 pt-2">
+                                <button type="button" onclick="closeModal('admin-action-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
+                                <button type="submit" class="btn-primary flex-1 ripple">Generate Link</button>
+                            </div>
+                        </form>
+                    `;
+                    break;
+                    
+                case 'change-name':
+                    titleEl.textContent = 'Change User Display Name';
+                    contentDiv.innerHTML = `
+                        <form onsubmit="adminChangeName(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">User Email *</label>
+                                <input type="email" id="admin-target-email" class="input-glass" placeholder="user@example.com" required>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">New Display Name *</label>
+                                <input type="text" id="admin-new-name" class="input-glass" placeholder="John Doe" required>
+                            </div>
+                            <div class="flex gap-3 pt-2">
+                                <button type="button" onclick="closeModal('admin-action-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
+                                <button type="submit" class="btn-primary flex-1 ripple">Update Name</button>
+                            </div>
+                        </form>
+                    `;
+                    break;
+                    
+                case 'suspend':
+                    titleEl.textContent = 'Suspend User Account';
+                    contentDiv.innerHTML = `
+                        <form onsubmit="adminSuspendAccount(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">User Email *</label>
+                                <input type="email" id="admin-target-email" class="input-glass" placeholder="user@example.com" required>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">Reason (Optional)</label>
+                                <textarea id="admin-reason" class="input-glass resize-none" rows="3" placeholder="Reason for suspension..."></textarea>
+                            </div>
+                            <div class="bg-red-50 border border-red-200 p-3 rounded-lg text-xs text-red-800">
+                                <strong>Warning:</strong> Suspended users cannot log in or access their data until reactivated by an administrator.
+                            </div>
+                            <div class="flex gap-3 pt-2">
+                                <button type="button" onclick="closeModal('admin-action-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
+                                <button type="submit" class="btn-danger flex-1 ripple">Suspend Account</button>
+                            </div>
+                        </form>
+                    `;
+                    break;
+                    
+                case 'delete':
+                    titleEl.textContent = 'Delete User Account';
+                    contentDiv.innerHTML = `
+                        <form onsubmit="adminDeleteAccount(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase">User Email *</label>
+                                <input type="email" id="admin-target-email" class="input-glass" placeholder="user@example.com" required>
+                            </div>
+                            <div class="bg-red-900/10 border border-red-300 p-4 rounded-lg">
+                                <div class="flex items-start gap-3">
+                                    <svg class="icon w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                    <div class="text-xs text-red-800 leading-relaxed">
+                                        <strong>⚠️ Destructive Action</strong><br>
+                                        This will permanently delete the user's account and all associated data including emails, contacts, templates, and campaign history. This action cannot be undone.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="admin-confirm-delete" class="rounded border-gray-300 text-red-600 focus:ring-red-500" required>
+                                <label for="admin-confirm-delete" class="text-xs text-gray-600 cursor-pointer">I understand this permanently deletes all data</label>
+                            </div>
+                            <div class="flex gap-3 pt-2">
+                                <button type="button" onclick="closeModal('admin-action-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
+                                <button type="submit" class="btn-danger flex-1 ripple" style="background: #dc2626;">Delete Permanently</button>
+                            </div>
+                        </form>
+                    `;
+                    break;
+            }
+            
+            openModal('admin-action-modal');
+        }
+
+        // Admin Action Handlers
+        async function adminSendOTP(e) {
+            e.preventDefault();
+            const email = document.getElementById('admin-target-email').value.trim().toLowerCase();
+            const btn = e.target.querySelector('button[type=submit]');
+            const originalText = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Sending...';
+            
+            try {
+                const { error } = await _supabase.auth.signInWithOtp({
+                    email,
+                    options: {
+                        emailRedirectTo: window.location.origin + '/dashboard'
+                    }
+                });
+                
+                if(error) throw error;
+                
+                showToast(`OTP sent successfully to ${email}`, 'success');
+                closeModal('admin-action-modal');
+            } catch(err) {
+                showToast(err.message || 'Failed to send OTP', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        async function adminResetPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('admin-target-email').value.trim().toLowerCase();
+            const btn = e.target.querySelector('button[type=submit]');
+            const originalText = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Generating...';
+            
+            try {
+                const { error } = await _supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: `${window.location.origin}/auth/login?reset=true`
+                });
+                
+                if(error) throw error;
+                
+                showToast(`Password reset link generated for ${email}. Link should arrive in their inbox shortly.`, 'success');
+                closeModal('admin-action-modal');
+            } catch(err) {
+                showToast(err.message || 'Failed to generate reset link', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        async function adminChangeName(e) {
+            e.preventDefault();
+            const email = document.getElementById('admin-target-email').value.trim().toLowerCase();
+            const newName = document.getElementById('admin-new-name').value.trim();
+            const btn = e.target.querySelector('button[type=submit]');
+            const originalText = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Updating...';
+            
+            try {
+                // Find user by email first
+                const { data: userData, error: findError } = await _supabase.auth.admin.listUsers({
+                    filters: `email.eq.${email}`,
+                    page: 1,
+                    perPage: 1
+                });
+                
+                if(findError || !userData?.users?.length) {
+                    throw new Error('User not found or insufficient permissions');
+                }
+                
+                const userId = userData.users[0].id;
+                
+                // Update user metadata
+                const { error: updateError } = await _supabase.auth.admin.updateUserById(userId, {
+                    user_metadata: { full_name: newName }
+                });
+                
+                if(updateError) throw updateError;
+                
+                // Also update profiles table if it exists
+                await _supabase.from('profiles')
+                    .update({ display_name: newName })
+                    .eq('email', email)
+                    .maybeSingle(); // Don't throw if profile doesn't exist
+                
+                showToast(`Display name updated to "${newName}" for ${email}`, 'success');
+                closeModal('admin-action-modal');
+                loadAdminUsers(); // Refresh list
+            } catch(err) {
+                console.error('Admin Name Change Error:', err);
+                showToast(err.message || 'Failed to update name. Service role may be required.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        async function adminSuspendAccount(e) {
+            e.preventDefault();
+            const email = document.getElementById('admin-target-email').value.trim().toLowerCase();
+            const reason = document.getElementById('admin-reason').value.trim();
+            const btn = e.target.querySelector('button[type=submit]');
+            const originalText = btn.innerHTML;
+            
+            if(!confirm(`Are you sure you want to suspend ${email}?`)) return;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Suspending...';
+            
+            try {
+                // Update user status in profiles table (custom implementation)
+                const { error } = await _supabase
+                    .from('profiles')
+                    .update({ 
+                        status: 'suspended',
+                        suspended_at: new Date().toISOString(),
+                        suspension_reason: reason || 'Administrative suspension',
+                        suspended_by: currentUser.email
+                    })
+                    .eq('email', email);
+                
+                if(error) throw error;
+                
+                showToast(`${email} has been suspended`, 'success');
+                closeModal('admin-action-modal');
+                loadAdminUsers();
+            } catch(err) {
+                showToast(err.message || 'Failed to suspend account', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+        async function adminDeleteAccount(e) {
+            e.preventDefault();
+            const email = document.getElementById('admin-target-email').value.trim().toLowerCase();
+            const confirmed = document.getElementById('admin-confirm-delete').checked;
+            const btn = e.target.querySelector('button[type=submit]');
+            const originalText = btn.innerHTML;
+            
+            if(!confirmed) return;
+            if(!confirm(`PERMANENTLY DELETE ${email}? This cannot be undone!`)) return;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Deleting...';
+            
+            try {
+                // First get user ID
+                const { data: userData, error: findError } = await _supabase.auth.admin.listUsers({
+                    filters: `email.eq.${email}`,
+                    page: 1,
+                    perPage: 1
+                });
+                
+                if(findError || !userData?.users?.length) {
+                    throw new Error('User not found');
+                }
+                
+                const userId = userData.users[0].id;
+                
+                // Delete using Supabase Admin API (requires service role)
+                const { error: deleteError } = await _supabase.auth.admin.deleteUser(userId);
+                
+                if(deleteError) throw deleteError;
+                
+                showToast(`${email} has been permanently deleted`, 'success');
+                closeModal('admin-action-modal');
+                loadAdminUsers();
+            } catch(err) {
+                console.error('Admin Delete Error:', err);
+                showToast(err.message || 'Failed to delete user. Service role key may be required.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
 
         async function loadAdminUsers() {
             const tbody = document.getElementById('admin-users-body');
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-gray-400"><span class="spinner inline-block w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full mr-2"></span>Loading users...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-400"><span class="spinner inline-block w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full mr-2"></span>Loading users...</td></tr>';
 
             try {
-                // Attempt to list users (will likely fail with anon key, but demonstrates intent)
-                const { data, error } = await _supabase.from('profiles').select('*').order('created_at', { ascending: false }).limit(50);
+                // Try to fetch from profiles table first (more likely to work with anon key if RLS allows)
+                const { data: profilesData, error: profilesError } = await _supabase
+                    .from('profiles')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
                 
-                if (error) throw error;
-                
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-gray-400">No users found in profiles table.</td></tr>';
+                if (!profilesError && profilesData && profilesData.length > 0) {
+                    tbody.innerHTML = profilesData.map((u, index) => `
+                        <tr style="animation: fadeUp 0.4s ease ${index * 0.05}s both;">
+                            <td class="font-mono text-xs">${u.id.substring(0,12)}...</td>
+                            <td class="font-medium">${u.email || u.raw_user_meta_data?.email || 'N/A'}</td>
+                            <td>${u.display_name || u.full_name || u.raw_user_meta_data?.full_name || '-'}</td>
+                            <td>
+                                <span class="status-badge ${u.status === 'suspended' ? 'status-suspended' : u.status === 'pending' ? 'status-pending' : 'status-active'}">
+                                    ${u.status || 'active'}
+                                </span>
+                            </td>
+                            <td>${formatDate(u.created_at || u.created_at)}</td>
+                            <td>${formatDate(u.updated_at || u.last_sign_in_at)}</td>
+                            <td class="text-right space-x-1">
+                                <button onclick="quickAdminAction('${u.email}', 'send-otp')" class="admin-action-btn info" title="Send OTP">OTP</button>
+                                <button onclick="quickAdminAction('${u.email}', 'reset-password')" class="admin-action-btn warning" title="Reset Password">Reset</button>
+                                <button onclick="quickAdminAction('${u.email}', '${u.status === 'suspended' ? 'reactivate' : 'suspend'}')" 
+                                    class="${u.status === 'suspended' ? 'admin-action-btn primary' : 'admin-action-btn danger'}" 
+                                    title="${u.status === 'suspended' ? 'Reactivate' : 'Suspend'}">
+                                    ${u.status === 'suspended' ? 'Reactivate' : 'Suspend'}
+                                </button>
+                                <button onclick="quickAdminAction('${u.email}', 'delete')" class="admin-action-btn danger" title="Delete" style="background:#fee2e2;color:#dc2626;border-color:#fecaca;font-size:0.65rem;padding:0.25rem 0.5rem;">Del</button>
+                            </td>
+                        </tr>
+                    `).join('');
                     return;
                 }
 
-                tbody.innerHTML = data.map((u, index) => `
+                // Fallback: Try auth.admin.listUsers (requires service_role)
+                const { data, error } = await _supabase.auth.admin.listUsers({ page: 1, perPage: 50 });
+                
+                if (error) throw error;
+                
+                if (!data.users || data.users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-400">No users found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.users.map((u, index) => `
                     <tr style="animation: fadeUp 0.4s ease ${index * 0.05}s both;">
-                        <td class="font-mono text-xs">${u.id.substring(0,8)}...</td>
-                        <td>${u.email || u.raw_user_meta_data?.email || 'N/A'}</td>
+                        <td class="font-mono text-xs">${u.id.substring(0,12)}...</td>
+                        <td>${u.email}</td>
+                        <td>${u.user_metadata?.full_name || u.user_metadata?.name || '-'}</td>
+                        <td><span class="status-badge status-active">Active</span></td>
                         <td>${formatDate(u.created_at)}</td>
-                        <td>${formatDate(u.updated_at)}</td>
-                        <td class="text-right">
-                            <button onclick="adminDeleteUser('${u.id}')" class="text-red-500 hover:text-red-700 text-xs font-semibold px-2 py-1 rounded hover:bg-red-50 transition-all duration-200 hover:scale-105">Delete</button>
+                        <td>${formatDate(u.last_sign_in_at)}</td>
+                        <td class="text-right space-x-1">
+                            <button onclick="quickAdminAction('${u.email}', 'send-otp')" class="admin-action-btn info">OTP</button>
+                            <button onclick="quickAdminAction('${u.email}', 'reset-password')" class="admin-action-btn warning">Reset</button>
+                            <button onclick="quickAdminAction('${u.email}', 'suspend')" class="admin-action-btn danger">Suspend</button>
+                            <button onclick="quickAdminAction('${u.email}', 'delete')" class="admin-action-btn danger" style="background:#fee2e2;color:#dc2626;border-color:#fecaca;font-size:0.65rem;padding:0.25rem 0.5rem;">Del</button>
                         </td>
                     </tr>
                 `).join('');
 
             } catch (err) {
-                console.error("Admin Error:", err);
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-red-500 text-sm">
+                console.error("Admin Load Error:", err);
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-red-500 text-sm">
                     <strong>Permission Denied</strong><br>
-                    <span class="text-gray-400 text-xs">Cannot list users with public API key. Configure Service Role credentials in backend to enable this feature.</span>
+                    <span class="text-gray-400 text-xs block mt-2">Cannot list users with public API key. Configure Service Role credentials in backend to enable full admin features.</span>
+                    <div class="mt-3 space-x-2">
+                        <button onclick="openAdminActionModal('send-otp')" class="text-xs bg-blue-50 text-blue-700 px-3 py-1.5 rounded hover:bg-blue-100 transition-colors">Manual Send OTP</button>
+                        <button onclick="openAdminActionModal('reset-password')" class="text-xs bg-yellow-50 text-yellow-700 px-3 py-1.5 rounded hover:bg-yellow-100 transition-colors">Manual Reset</button>
+                    </div>
                 </td></tr>`;
             }
         }
 
+        function quickAdminAction(email, action) {
+            document.getElementById('admin-target-email').value = email;
+            openAdminActionModal(action);
+        }
+
         async function adminDeleteUser(userId) {
-            if(!confirm("Permanently delete this user? This action cannot be undone.")) return;
-            showToast("Delete action requires server-side implementation with Service Role key.", 'error');
+            if(!confirm("Permanently delete this user?")) return;
+            showToast("Use the enhanced Delete Account tool in Quick Actions for better control.", 'warning');
         }
 
         // ==========================================
@@ -2407,7 +2891,6 @@
                 htmlBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-200";
                 textBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-200";
                 
-                // Sync content if switching back
                 const textContent = document.getElementById('comp-body-text').value;
                 if(textContent && quillEditor.root.innerHTML === '<p><br></p>') {
                     quillEditor.root.innerHTML = `<p>${textContent.replace(/\n/g, '</p><p>')}</p>`;
@@ -2418,7 +2901,6 @@
                 textBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-200";
                 htmlBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-200";
                 
-                // Sync content to textarea
                 const htmlContent = quillEditor.root.innerText;
                 if(htmlContent) {
                     document.getElementById('comp-body-text').value = htmlContent;
@@ -2440,7 +2922,6 @@
             closeModal('contact-picker-modal');
             updateChecklist();
             
-            // Animate the input field
             input.style.transform = 'scale(1.02)';
             input.style.borderColor = '#22c55e';
             setTimeout(() => {
@@ -2454,47 +2935,48 @@
         function openModal(id) { 
             const modal = document.getElementById(id);
             modal.classList.add('open');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
+            document.body.style.overflow = 'hidden'; 
         }
         
         function closeModal(id) { 
             const modal = document.getElementById(id);
             modal.classList.remove('open');
-            document.body.style.overflow = ''; // Restore scroll
+            document.body.style.overflow = ''; 
             
-            // Reset form inside modal if exists
             const form = modal.querySelector('form');
-            if(form && id !== 'preview-modal' && id !== 'template-view-modal' && id !== 'campaign-detail-modal') {
-                setTimeout(() => form.reset(), 300); // Wait for close animation
+            if(form && id !== 'preview-modal' && id !== 'template-view-modal' && id !== 'campaign-detail-modal' && id !== 'admin-action-modal') {
+                setTimeout(() => form.reset(), 300); 
             }
         }
 
-        function showToast(msg, type='success') {
+        function showToast(msg, type='success', duration=4500) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             
-            const iconPath = type === 'success' ? '<path d="M5 13l4 4L19 7"/>' : '<path d="M6 18L18 6M6 6l12 12"/>';
-            const iconColor = type === 'success' ? 'text-emerald-500' : 'text-red-500';
+            const iconPath = type === 'success' ? '<path d="M5 13l4 4L19 7"/>' : 
+                             type === 'warning' ? '<path d="M12 9v2m0 4h.01"/>' :
+                             '<path d="M6 18L18 6M6 6l12 12"/>';
+            const iconColor = type === 'success' ? 'text-emerald-500' : 
+                             type === 'warning' ? 'text-amber-500' :
+                             'text-red-500';
             
             toast.innerHTML = `
                 <div class="${iconColor} flex-shrink-0">
                     <svg class="icon" viewBox="0 0 24 24">${iconPath}</svg>
                 </div>
-                <span class="font-medium text-gray-800 flex-1">${escapeHtml(msg)}</span>
+                <span class="font-medium text-gray-800 flex-1">${msg}</span>
                 <button onclick="removeToast(this.parentElement)" class="text-gray-400 hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-2">
                     <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             `;
             container.appendChild(toast);
             
-            // Trigger animation
             requestAnimationFrame(() => {
                 toast.classList.add('show');
             });
             
-            // Auto-remove after delay
-            setTimeout(() => removeToast(toast), 4500);
+            setTimeout(() => removeToast(toast), duration);
         }
 
         function removeToast(toastElement) {
@@ -2513,16 +2995,15 @@
             
             const start = parseInt(el.innerText) || 0;
             const range = end - start;
-            if(range === 0 && start > 0) return; // Don't animate if already at value
+            if(range === 0 && start > 0) return; 
             
-            const duration = 1000; // Slightly longer for smoother feel
+            const duration = 1000; 
             const startTime = performance.now();
             
             function update(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 
-                // Easing function: ease-out-expo
                 const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
                 const current = Math.floor(start + (range * eased));
                 
@@ -2531,9 +3012,7 @@
                 if(progress < 1) {
                     requestAnimationFrame(update);
                 } else {
-                    // Final value ensure exact match
                     el.innerText = end.toLocaleString();
-                    // Add a subtle pulse on completion
                     el.style.transform = 'scale(1.1)';
                     setTimeout(() => el.style.transform = '', 200);
                 }
@@ -2555,7 +3034,6 @@
         }
 
         function formatHtmlCode(html) {
-            // Simple formatting for display
             let formatted = html.replace(/</g, '<');
             formatted = formatted.replace(/>/g, '>');
             formatted = formatted.replace(/\s*/g, '');
@@ -2575,7 +3053,7 @@
             }
         }
 
-        // Close modals on outside click (with animation)
+        // Close modals on outside click
         document.querySelectorAll('.modal-overlay').forEach(modal => {
             modal.addEventListener('click', e => {
                 if(e.target === modal) {
@@ -2586,13 +3064,11 @@
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            // Escape to close modals
             if(e.key === 'Escape') {
                 const openModals = document.querySelectorAll('.modal-overlay.open');
                 openModals.forEach(m => closeModal(m.id));
             }
             
-            // Cmd/Ctrl + Enter to send email
             if((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
                 if(document.getElementById('view-mail').classList.contains('active')) {
                     e.preventDefault();
@@ -2600,7 +3076,6 @@
                 }
             }
             
-            // Cmd/Ctrl + S to save draft
             if((e.metaKey || e.ctrlKey) && e.key === 's') {
                 if(document.getElementById('view-mail').classList.contains('active')) {
                     e.preventDefault();
@@ -2609,7 +3084,7 @@
             }
         });
 
-        // Shake animation keyframe definition (injected via JS for completeness)
+        // Shake animation definition
         const shakeStyle = document.createElement('style');
         shakeStyle.textContent = `
             @keyframes shake {
@@ -2634,7 +3109,7 @@
             lastTouchEnd = now;
         }, false);
 
-        // Visibility change handler (pause animations when tab not visible)
+        // Visibility change handler
         document.addEventListener('visibilitychange', () => {
             if(document.hidden) {
                 document.body.classList.add('animations-paused');
@@ -2643,11 +3118,11 @@
             }
         });
 
-        console.log('%c🚀 LuvMail Pro Initialized', 'color: #000; font-size: 16px; font-weight: bold; background: #fff; padding: 10px 20px; border-radius: 6px;');
+        console.log('%c🚀 LuvMail Pro Initialized - Enhanced Edition', 'color: #000; font-size: 16px; font-weight: bold; background: #fff; padding: 10px 20px; border-radius: 6px;');
     </script>
 
     <style>
-        /* Pause animations when tab is hidden to save resources */
+        /* Pause animations when tab is hidden */
         .animations-paused *,
         .animations-paused {
             animation-play-state: paused !important;
@@ -2689,6 +3164,11 @@
                 padding: 0.5rem 0.75rem;
                 font-size: 0.8rem;
             }
+
+            .admin-table th:nth-child(n+5),
+            .admin-table td:nth-child(n+5) {
+                display: none;
+            }
         }
 
         /* Print styles */
@@ -2703,6 +3183,13 @@
                 display: block !important;
                 opacity: 1 !important;
             }
+        }
+
+        /* Toast HTML support */
+        .toast span a {
+            color: inherit;
+            text-decoration: underline;
+            font-weight: 600;
         }
     </style>
 </body>
