@@ -1660,16 +1660,42 @@
             document.getElementById('dashboard-greeting').textContent = `Hi, ${displayName}!`;
             document.getElementById('dashboard-date').textContent = today;
             
-            // SuperAdmin Check - Show enhanced admin tools for people@luviiio.com
-            if(user.email === 'people@luviiio.com') {
-                const adminNav = document.getElementById('nav-admin');
-                adminNav.classList.remove('hidden');
-                adminNav.style.animation = 'fadeUp 0.5s ease 0.5s both';
+            // ENHANCED: Detect Admin from Database instead of hardcoded email
+            try {
+                const { data: profileData, error: profileError } = await _supabase
+                    .from('profiles')
+                    .select('role, is_admin, email')
+                    .eq('id', user.id)
+                    .single();
                 
-                // Store admin status globally for conditional rendering
-                window.isAdmin = true;
-            } else {
-                window.isAdmin = false;
+                // Check multiple possible admin indicators
+                const isAdminFromDB = profileData && (
+                    profileData.role === 'admin' || 
+                    profileData.role === 'superadmin' || 
+                    profileData.is_admin === true ||
+                    profileData.email === 'people@luviiio.com' // Fallback for legacy
+                );
+                
+                if (isAdminFromDB) {
+                    const adminNav = document.getElementById('nav-admin');
+                    adminNav.classList.remove('hidden');
+                    adminNav.style.animation = 'fadeUp 0.5s ease 0.5s both';
+                    window.isAdmin = true;
+                    console.log('✅ Admin access granted from database role');
+                } else {
+                    window.isAdmin = false;
+                    console.log('👤 Standard user access');
+                }
+            } catch (err) {
+                console.warn('Could not verify admin status from DB:', err);
+                // Fallback to email check if DB fails
+                if(user.email === 'people@luviiio.com') {
+                    const adminNav = document.getElementById('nav-admin');
+                    adminNav.classList.remove('hidden');
+                    window.isAdmin = true;
+                } else {
+                    window.isAdmin = false;
+                }
             }
             
             // Init Quill
@@ -1708,9 +1734,20 @@
             document.getElementById('set-email').value = user.email;
             document.getElementById('set-name').value = displayName;
             
-            // Navigate to intended route or dashboard
+            // Navigate to intended route or dashboard (FIXED: Always goes to /dashboard)
             const intendedRoute = window.__intendedRoute || 'dashboard';
-            navigateTo(intendedRoute, true);
+            
+            // Force URL update to /dashboard after login
+            if (window.history && window.history.pushState) {
+                try {
+                    const newPath = getPathFromView(`view-${intendedRoute}`);
+                    window.history.replaceState({ page: intendedRoute }, '', newPath || '/dashboard');
+                } catch (e) {
+                    console.log('History replace failed, using fallback');
+                }
+            }
+            
+            navigateTo(intendedRoute, false);
         }
 
         // ==========================================
