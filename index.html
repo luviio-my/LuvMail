@@ -24,12 +24,13 @@
             --text-main: #1d1d1f;
             --text-sub: #86868b;
             --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         * { 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale; 
+            box-sizing: border-box;
         }
         
         /* FONT UPDATE: Arial (Sans-Serif) */
@@ -38,7 +39,8 @@
             background-color: #f5f5f7;
             color: var(--text-main);
             overflow-x: hidden;
-            padding-bottom: 60px; /* Space for fixed footer */
+            padding-bottom: 60px;
+            position: relative;
         }
 
         .font-display { 
@@ -54,7 +56,7 @@
             -webkit-backdrop-filter: saturate(180%) blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 4px 24px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.02);
-            transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+            transform: translateZ(0); /* Hardware acceleration */
         }
 
         .glass-card {
@@ -63,33 +65,22 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.9);
             border-radius: 1.25rem;
-            transition: all 0.5s var(--ease-out-expo);
+            transition: all 0.4s var(--ease-out-expo);
             box-shadow: 0 4px 24px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,0.9);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: cardReveal 0.6s var(--ease-out-expo) forwards;
+            transform: perspective(1000px) rotateX(0) translateY(0);
+            will-change: transform;
         }
         
         .glass-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,1);
+            transform: perspective(1000px) rotateX(0.5deg) translateY(-6px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1);
             background: rgba(255, 255, 255, 0.95);
         }
 
-        @keyframes cardReveal { 
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            } 
+        .glass-card:active {
+            transform: scale(0.99);
+            transition-duration: 0.1s;
         }
-
-        /* Staggered animation delays for grid items */
-        .glass-card:nth-child(1) { animation-delay: 0ms; }
-        .glass-card:nth-child(2) { animation-delay: 80ms; }
-        .glass-card:nth-child(3) { animation-delay: 160ms; }
-        .glass-card:nth-child(4) { animation-delay: 240ms; }
-        .glass-card:nth-child(5) { animation-delay: 320ms; }
-        .glass-card:nth-child(6) { animation-delay: 400ms; }
 
         /* Background Animation */
         .bg-scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
@@ -104,41 +95,31 @@
         .blob-3 { width: 30vw; height: 30vw; top: 40%; left: 30%; background: radial-gradient(circle, rgba(34,197,94,0.08), transparent); animation-delay: -7s; }
         
         @keyframes floatBlob {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            33% { transform: translate(30px, -50px) scale(1.05) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) scale(0.95) rotate(240deg); }
-            100% { transform: translate(40px, -60px) scale(1.1) rotate(360deg); }
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, -60px) scale(1.1); }
         }
 
         /* Components */
         .nav-link { 
             padding: 0.6rem 1rem; border-radius: 0.75rem; font-weight: 500; font-size: 0.875rem; 
-            color: var(--text-sub); transition: all 0.3s var(--ease-in-out); cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+            color: var(--text-sub); transition: all 0.25s var(--ease-out-expo); cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
             position: relative; overflow: hidden;
         }
         .nav-link::before {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: #000;
-            transition: all 0.3s var(--ease-in-out);
-            transform: translateX(-50%);
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.03), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
         }
-        .nav-link:hover { 
-            background: rgba(0,0,0,0.04); 
-            color: var(--text-main); 
-            transform: translateY(-1px);
-        }
-        .nav-link:hover::before { width: 60%; }
+        .nav-link:hover { background: rgba(0,0,0,0.04); color: var(--text-main); transform: translateY(-1px); }
+        .nav-link:hover::before { opacity: 1; }
         .nav-link.active { 
             background: rgba(0,0,0,0.05); color: #000; font-weight: 600;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.05);
             transform: none;
         }
-        .nav-link.active::before { width: 80%; }
         .nav-link.admin-only { background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.05)); border: 1px solid rgba(239,68,68,0.2); }
         .nav-link.admin-only:hover { background: rgba(239,68,68,0.15); color: #dc2626; }
 
@@ -146,66 +127,64 @@
             background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
             color: #fff; padding: 0.75rem 1.5rem; border-radius: 0.875rem;
             font-weight: 600; font-size: 0.875rem; border: none; cursor: pointer; 
-            transition: all 0.3s var(--ease-out-expo);
+            transition: all 0.3s var(--ease-spring);
             display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
             box-shadow: 0 4px 14px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
             position: relative; overflow: hidden;
-        }
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        .btn-primary:hover:not(:disabled):active::after {
-            width: 300px;
-            height: 300px;
+            transform: translateY(0);
         }
         .btn-primary:hover:not(:disabled) { 
             transform: translateY(-2px) scale(1.02); 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
             filter: brightness(1.1);
         }
-        .btn-primary:active:not(:disabled) { transform: translateY(0) scale(0.98); transition-duration: 0.1s; }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-primary:active:not(:disabled) { 
+            transform: translateY(0) scale(0.98); 
+            transition-duration: 0.1s;
+        }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
         
         .btn-danger {
             background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
             color: #fff; padding: 0.5rem 1rem; border-radius: 0.75rem;
             font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer;
-            transition: all 0.3s var(--ease-out-expo);
+            transition: all 0.25s var(--ease-out-expo);
+            transform: translateY(0);
         }
-        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(239,68,68,0.3); }
+        .btn-danger:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 16px rgba(239,68,68,0.3); 
+            filter: brightness(1.05);
+        }
+        .btn-danger:active { transform: scale(0.96); }
 
         .btn-secondary {
             background: rgba(255,255,255,0.9); color: #000; padding: 0.75rem 1.5rem; border-radius: 0.875rem;
             font-weight: 600; font-size: 0.875rem; border: 1px solid rgba(0,0,0,0.08); cursor: pointer; 
-            transition: all 0.3s var(--ease-in-out); backdrop-filter: blur(4px);
+            transition: all 0.25s var(--ease-out-expo); backdrop-filter: blur(4px);
+            transform: translateY(0);
         }
         .btn-secondary:hover { 
             border-color: rgba(0,0,0,0.2); 
             background: #fff; 
-            transform: translateY(-1px);
+            transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
+        .btn-secondary:active { transform: scale(0.98); }
 
         .input-glass {
             width: 100%; padding: 0.85rem 1rem; background: rgba(255,255,255,0.7);
             border: 1.5px solid rgba(0,0,0,0.06); border-radius: 0.75rem; outline: none; 
-            transition: all 0.3s var(--ease-in-out); font-size: 0.95rem; color: #1d1d1f;
+            transition: all 0.3s var(--ease-out-expo); font-size: 0.95rem; color: #1d1d1f;
             font-family: Arial, Helvetica, sans-serif;
+            transform: translateY(0);
         }
-        .input-glass::placeholder { color: #c7c7cc; transition: color 0.3s; }
+        .input-glass:hover { border-color: rgba(0,0,0,0.1); background: rgba(255,255,255,0.85); }
+        .input-glass::placeholder { color: #c7c7cc; transition: color 0.2s; }
         .input-glass:focus { 
-            border-color: rgba(0,0,0,0.3); 
+            border-color: rgba(0,0,0,0.4); 
             background: #fff;
-            box-shadow: 0 0 0 4px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.02);
             transform: translateY(-1px);
         }
 
@@ -214,22 +193,24 @@
             display: none; 
             opacity: 0; 
             transform: translateY(20px) scale(0.98);
+            filter: blur(4px);
         }
         .page-view.active { 
             display: block; 
             animation: pageEnter 0.6s var(--ease-out-expo) forwards; 
         }
         .page-view.exiting {
-            animation: pageExit 0.3s var(--ease-in-out) forwards;
+            animation: pageExit 0.3s ease-in forwards;
+            pointer-events: none;
         }
         
         @keyframes pageEnter { 
-            from { 
+            0% { 
                 opacity: 0; 
-                transform: translateY(24px) scale(0.98); 
-                filter: blur(4px);
+                transform: translateY(30px) scale(0.96); 
+                filter: blur(8px);
             } 
-            to { 
+            100% { 
                 opacity: 1; 
                 transform: translateY(0) scale(1); 
                 filter: blur(0);
@@ -237,14 +218,25 @@
         }
         
         @keyframes pageExit {
-            from {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-10px) scale(0.98);
-            }
+            0% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+            100% { opacity: 0; transform: translateY(-20px) scale(0.96); filter: blur(4px); }
+        }
+
+        /* Staggered children animation */
+        .stagger-children > * {
+            opacity: 0;
+            animation: fadeUp 0.5s var(--ease-out-expo) forwards;
+        }
+        .stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+        .stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+        .stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+        .stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+        .stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+        .stagger-children > *:nth-child(n+6) { animation-delay: 0.3s; }
+
+        @keyframes fadeUp { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
 
         /* Quill Editor Customization */
@@ -253,10 +245,11 @@
             border-radius: 0.75rem 0.75rem 0 0; 
             background: rgba(255,255,255,0.6); 
             backdrop-filter: blur(10px);
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
         }
         .ql-toolbar.ql-snow:focus-within {
-            border-color: rgba(0,0,0,0.2) !important;
+            border-color: rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.9);
         }
         .ql-container.ql-snow { 
             border: 1.5px solid rgba(0,0,0,0.06) !important; 
@@ -265,32 +258,30 @@
             font-family: Arial, Helvetica, sans-serif; 
             min-height: 240px; 
             background: rgba(255,255,255,0.4);
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
         }
-        .ql-editor { min-height: 240px; padding: 1rem; font-size: 0.95rem; line-height: 1.6; transition: all 0.3s; }
-        .ql-editor:focus { outline: none; }
+        .ql-container.ql-snow:focus-within {
+            border-color: rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.8);
+        }
+        .ql-editor { min-height: 240px; padding: 1rem; font-size: 0.95rem; line-height: 1.6; }
         .ql-editor.ql-blank::before { color: #c7c7cc; font-style: normal; font-family: Arial, Helvetica, sans-serif;}
 
-        /* Modal - Enhanced Animations */
+        /* Modal - Enhanced */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.2); backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             z-index: 1000; display: none; align-items: center; justify-content: center; 
-            opacity: 0; transition: opacity 0.4s var(--ease-out-expo), visibility 0.4s; padding: 1rem;
-            visibility: hidden;
+            opacity: 0; transition: all 0.35s var(--ease-out-expo); padding: 1rem;
         }
-        .modal-overlay.open { 
-            display: flex; 
-            opacity: 1; 
-            visibility: visible;
-        }
+        .modal-overlay.open { display: flex; opacity: 1; }
         .modal-box { 
             background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(24px);
             border: 1px solid rgba(255,255,255,0.8);
             border-radius: 1.5rem; padding: 2rem; width: 100%; max-width: 480px; 
-            box-shadow: 0 24px 48px rgba(0,0,0,0.12); 
+            box-shadow: 0 24px 48px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.5) inset; 
             transform: scale(0.9) translateY(20px) rotateX(5deg);
-            transition: all 0.4s var(--ease-out-expo);
+            transition: all 0.4s var(--ease-spring);
             max-height: 90vh; overflow-y: auto;
             opacity: 0;
         }
@@ -308,32 +299,44 @@
             padding: 1rem 1.5rem; border-radius: 1rem; 
             box-shadow: 0 12px 36px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.8) inset;
             border-left: 4px solid #000; display: flex; align-items: center; gap: 0.75rem; 
-            transform: translateX(120%); transition: all 0.5s var(--ease-out-expo); 
+            transform: translateX(120%) scale(0.9); 
+            transition: all 0.5s var(--ease-spring); 
             min-width: 320px; max-width: 420px; font-size: 0.875rem;
             opacity: 0;
         }
         .toast.show { 
-            transform: translateX(0); 
+            transform: translateX(0) scale(1); 
             opacity: 1;
         }
         .toast.success { border-left-color: #22c55e; }
         .toast.error { border-left-color: #ef4444; }
+        .toast.removing {
+            transform: translateX(120%) scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease-in;
+        }
 
         /* Utilities */
-        .icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s; }
-        .btn-primary:hover .icon, .btn-secondary:hover .icon { transform: rotate(-5deg) scale(1.1); }
+        .icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         
-        /* Scrollbar - Smooth */
+        /* Scrollbar - Custom */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; transition: background 0.3s; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; transition: background 0.2s; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
 
         /* Loading Spinner - Enhanced */
         @keyframes spin { to {transform: rotate(360deg);} }
         .spinner { animation: spin 1s linear infinite; }
         
-        /* Resend Status Badge - Pulse Animation */
+        /* Pulse animation for loading states */
+        @keyframes softPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-soft { animation: softPulse 2s ease-in-out infinite; }
+        
+        /* Resend Status Badge */
         .resend-status {
             display: inline-flex;
             align-items: center;
@@ -345,30 +348,30 @@
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
             color: #166534;
             border: 1px solid #bbf7d0;
-            animation: statusPulse 2s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+        .resend-status:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.15);
         }
 
-        @keyframes statusPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
-        }
-
-        /* Toggle Switch - Smooth */
+        /* Toggle Switch - Enhanced */
         .toggle-switch {
             position: relative; display: inline-block; width: 44px; height: 24px;
         }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc; transition: .4s var(--ease-out-expo); border-radius: 34px;
+            background-color: #ccc; transition: .4s var(--ease-spring); border-radius: 34px;
         }
         .slider:before {
             position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s var(--ease-out-expo); border-radius: 50%;
+            background-color: white; transition: .4s var(--ease-spring); border-radius: 50%;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         input:checked + .slider { background-color: #000; }
-        input:checked + .slider:before { transform: translateX(20px); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        input:checked + .slider:before { transform: translateX(20px) scale(1.1); }
+        input:not(:checked) + .slider:before { transform: translateX(0) scale(1); }
 
         /* Fixed Footer */
         .app-footer {
@@ -385,17 +388,27 @@
             z-index: 40;
             background: linear-gradient(to top, rgba(245,245,247,0.95), transparent);
             pointer-events: none;
-            backdrop-filter: blur(8px);
         }
         .app-footer > * { pointer-events: auto; }
         .footer-links a {
             color: inherit;
             text-decoration: none;
-            transition: color 0.3s, transform 0.3s;
+            transition: color 0.2s;
             margin: 0 0.25rem;
-            display: inline-block;
+            position: relative;
         }
-        .footer-links a:hover { color: #000; transform: translateY(-1px); }
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #000;
+            transition: width 0.3s ease;
+        }
+        .footer-links a:hover { color: #000; }
+        .footer-links a:hover::after { width: 100%; }
 
         /* Code Block Styling */
         .code-preview {
@@ -410,38 +423,39 @@
             word-break: break-all;
             max-height: 400px;
             overflow-y: auto;
-            line-height: 1.5;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         /* OTP Input Group */
         .otp-input-group { display: none; }
         .otp-input-group.active { display: block; animation: fadeUp 0.4s var(--ease-out-expo); }
 
-        /* Admin Table Styles - Row Hover Effect */
-        .admin-table th { text-align: left; padding: 0.75rem; font-size: 0.75rem; text-transform: uppercase; color: #86868b; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        /* Admin Table Styles - Enhanced hover */
+        .admin-table th { text-align: left; padding: 0.75rem; font-size: 0.75rem; text-transform: uppercase; color: #86868b; border-bottom: 1px solid rgba(0,0,0,0.05); font-weight: 700; letter-spacing: 0.05em; }
         .admin-table td { padding: 0.75rem; font-size: 0.875rem; border-bottom: 1px solid rgba(0,0,0,0.03); transition: background 0.2s; }
+        .admin-table tr { transition: all 0.2s ease; }
         .admin-table tr:hover td { background: rgba(0,0,0,0.02); }
-        .admin-table tbody tr { transition: transform 0.2s; }
-        .admin-table tbody tr:hover { transform: scale(1.01); }
+        .admin-table tr:hover { transform: scale(1.01); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
 
-        /* Checklist Animation */
+        /* Checklist animation */
         .check-circle {
-            transition: all 0.4s var(--ease-out-expo);
+            transition: all 0.4s var(--ease-spring);
+        }
+        .check-circle.checked {
+            background: #22c55e;
+            border-color: #22c55e;
+            transform: scale(1.1);
         }
         .check-icon {
-            transition: all 0.3s var(--ease-out-expo);
+            transition: all 0.3s ease;
             transform-origin: center;
         }
-        .bg-emerald-500 .check-icon {
-            animation: checkPop 0.4s var(--ease-out-expo);
-        }
-        @keyframes checkPop {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        .check-circle.checked .check-icon {
+            transform: scale(1);
+            color: white;
         }
 
-        /* Skeleton Loading */
+        /* Skeleton loading */
         .skeleton {
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
@@ -453,15 +467,26 @@
             100% { background-position: -200% 0; }
         }
 
-        /* Contact Picker Selection Animation */
-        .picker-item-selected {
-            animation: selectPop 0.3s var(--ease-out-expo);
-            background: rgba(0,0,0,0.05) !important;
+        /* Ripple effect for buttons */
+        .ripple {
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes selectPop {
-            0% { transform: scale(0.95); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
+        .ripple::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .ripple:active::after {
+            width: 300px;
+            height: 300px;
         }
     </style>
 </head>
@@ -481,9 +506,9 @@
     <!-- ==================== AUTH VIEW ==================== -->
     <section id="view-auth" class="page-view">
         <div style="min-height: 100vh; display: grid; place-items: center; padding: 1rem;">
-            <div class="glass-card" style="padding: 3rem; width: 100%; max-width: 420px; text-align: center; animation-delay: 0ms;">
-                <div style="margin-bottom: 2.5rem;">
-                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); border-radius: 1.25rem; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transition: transform 0.5s var(--ease-out-expo);">
+            <div class="glass-card" style="padding: 3rem; width: 100%; max-width: 420px; text-align: center;">
+                <div style="margin-bottom: 2.5rem;" class="animate-fade-in">
+                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); border-radius: 1.25rem; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transition: transform 0.3s var(--ease-spring);" class="hover:scale-110 cursor-pointer">
                         <svg class="icon" style="color:white; width:28px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
                     <h1 class="font-display" style="font-size: 2rem; font-weight: 700; letter-spacing: -0.03em;">Welcome Back</h1>
@@ -491,19 +516,20 @@
                 </div>
 
                 <!-- Auth Mode Toggle -->
-                <div class="flex bg-gray-100 p-1 rounded-lg mb-6" style="max-width: 280px; margin-left: auto; margin-right: auto;">
-                    <button type="button" id="auth-mode-password" onclick="switchAuthMode('password')" class="flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all bg-white shadow-sm text-black">Password</button>
-                    <button type="button" id="auth-mode-otp" onclick="switchAuthMode('otp')" class="flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all text-gray-500">OTP Code</button>
+                <div class="flex bg-gray-100 p-1 rounded-lg mb-6" style="max-width: 280px; margin-left: auto; margin-right: auto; position: relative;">
+                    <div id="auth-toggle-slider" class="absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white shadow-md rounded-md transition-all duration-300 ease-out-expo left-1"></div>
+                    <button type="button" id="auth-mode-password" onclick="switchAuthMode('password')" class="relative z-10 flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-200 bg-transparent text-black">Password</button>
+                    <button type="button" id="auth-mode-otp" onclick="switchAuthMode('otp')" class="relative z-10 flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-200 text-gray-500">OTP Code</button>
                 </div>
 
                 <form id="auth-form" onsubmit="handleAuth(event)" style="display: flex; flex-direction: column; gap: 1.25rem; text-align: left;">
-                    <div>
+                    <div class="input-wrapper" style="animation: fadeUp 0.5s ease 0.1s both;">
                         <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color: var(--text-sub);">Email Address</label>
                         <input type="email" id="auth-email" class="input-glass" placeholder="you@company.com" required autocomplete="email">
                     </div>
                     
                     <!-- Password Field -->
-                    <div id="password-field-group">
+                    <div id="password-field-group" class="input-wrapper" style="animation: fadeUp 0.5s ease 0.2s both;">
                         <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color: var(--text-sub);">Password</label>
                         <input type="password" id="auth-pass" class="input-glass" placeholder="••••••••" autocomplete="current-password">
                     </div>
@@ -512,7 +538,7 @@
                     <div id="otp-field-group" class="otp-input-group">
                         <div id="otp-send-step">
                             <p class="text-xs text-gray-500 mb-3">We'll send a 6-digit code to your email.</p>
-                            <button type="button" onclick="sendOTPCode()" class="btn-primary w-full" id="send-otp-btn">Send OTP Code</button>
+                            <button type="button" onclick="sendOTPCode()" class="btn-primary w-full ripple" id="send-otp-btn">Send OTP Code</button>
                         </div>
                         <div id="otp-verify-step" style="display:none;">
                             <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color: var(--text-sub);">Enter 6-Digit Code</label>
@@ -523,13 +549,13 @@
 
                     <input type="hidden" id="auth-mode-value" value="password">
 
-                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.9rem;" id="auth-btn">
+                    <button type="submit" class="btn-primary ripple" style="width: 100%; margin-top: 0.5rem; padding: 0.9rem;" id="auth-btn">
                         Sign In
                     </button>
                 </form>
                 
                 <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05);">
-                     <button onclick="handleSignUp()" style="background:none; border:none; color:var(--text-sub); font-size:0.85rem; cursor:pointer; text-decoration:none; transition:all 0.3s;" onmouseover="this.style.color='#000';this.style.transform='translateY(-1px)'" onmouseout="this.style.color='var(--text-sub)';this.style.transform='none'">
+                     <button onclick="handleSignUp()" style="background:none; border:none; color:var(--text-sub); font-size:0.85rem; cursor:pointer; text-decoration:none; transition:all 0.2s;" onmouseover="this.style.color='#000';this.style.transform='translateY(-1px)'" onmouseout="this.style.color='var(--text-sub)';this.style.transform='none'">
                          Don't have an account? <span style="font-weight:600; color:#000;">Create one</span>
                      </button>
                 </div>
@@ -541,48 +567,48 @@
     <div id="app-container" style="display: none; padding-top: 5.5rem; padding-bottom: 3rem; min-height: 100vh;">
         
         <!-- Navigation -->
-        <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl glass-panel rounded-2xl px-6 py-3 flex items-center justify-between shadow-sm overflow-x-auto">
+        <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl glass-panel rounded-2xl px-6 py-3 flex items-center justify-between shadow-sm overflow-x-auto transition-transform duration-300" id="main-nav">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('dashboard')">
-                <div class="w-9 h-9 bg-black rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300" style="transition-timing-function: var(--ease-out-expo);">
+                <div class="w-9 h-9 bg-black rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                     <svg class="icon" style="color:white; width:18px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 </div>
                 <span class="font-display font-bold text-lg tracking-tight">LuvMail</span>
             </div>
 
             <div class="hidden md:flex items-center gap-1 bg-black/5 p-1 rounded-xl">
-                <a class="nav-link active" data-nav="dashboard" onclick="navigateTo('dashboard')">
+                <a class="nav-link active" data-nav="dashboard" data-path="/dashboard" onclick="navigateTo('dashboard')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> Dashboard
                 </a>
                 
                 <!-- CRM Section -->
                 <div class="flex items-center px-2 text-xs font-bold text-gray-400 uppercase tracking-wider select-none">CRM:</div>
-                <a class="nav-link" data-nav="marketing" onclick="navigateTo('marketing')">
+                <a class="nav-link" data-nav="marketing" data-path="/marketing" onclick="navigateTo('marketing')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> Marketing
                 </a>
 
-                <a class="nav-link" data-nav="mail" onclick="navigateTo('mail')">
+                <a class="nav-link" data-nav="mail" data-path="/mail" onclick="navigateTo('mail')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Mail
                 </a>
 
-                <a class="nav-link" data-nav="contacts" onclick="navigateTo('contacts')">
+                <a class="nav-link" data-nav="contacts" data-path="/contacts" onclick="navigateTo('contacts')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Contacts
                 </a>
-                <a class="nav-link" data-nav="templates" onclick="navigateTo('templates')">
+                <a class="nav-link" data-nav="templates" data-path="/templates" onclick="navigateTo('templates')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg> Templates
                 </a>
-                <a class="nav-link" data-nav="settings" onclick="navigateTo('settings')">
+                <a class="nav-link" data-nav="settings" data-path="/settings" onclick="navigateTo('settings')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg> Settings
                 </a>
                 
                 <!-- SuperAdmin Link (Hidden by default) -->
-                <a id="nav-admin" class="nav-link admin-only hidden" data-nav="admin" onclick="navigateTo('admin')">
+                <a id="nav-admin" class="nav-link admin-only hidden" data-nav="admin" data-path="/admin" onclick="navigateTo('admin')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Admin
                 </a>
             </div>
 
             <div class="flex items-center gap-3">
                 <div id="user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-800 to-black text-white flex items-center justify-center text-xs font-bold shadow-md transition-transform duration-300 hover:scale-110 cursor-pointer">U</div>
-                <button onclick="handleLogout()" class="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all duration-300 hover:rotate-12" title="Sign Out">
+                <button onclick="handleLogout()" class="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all duration-200 hover:rotate-90" title="Sign Out">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                 </button>
             </div>
@@ -592,7 +618,7 @@
 
             <!-- DASHBOARD (/dashboard) -->
             <section id="view-dashboard" class="page-view active">
-                <header class="mb-8">
+                <header class="mb-8 stagger-children">
                     <div class="flex justify-between items-start">
                         <div>
                             <h1 class="font-display text-3xl font-bold mb-2 tracking-tight" id="dashboard-greeting">Hi there!</h1>
@@ -608,8 +634,8 @@
                     </div>
                 </header>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-                    <div class="glass-card p-6 cursor-pointer" onclick="navigateTo('mail')" style="animation-delay: 0ms;">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 stagger-children">
+                    <div class="glass-card p-6 cursor-pointer" onclick="navigateTo('mail')">
                         <div class="flex justify-between items-start mb-4">
                             <div class="p-3 bg-blue-50 rounded-xl text-blue-600 transition-transform duration-300 hover:scale-110"><svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
                             <span class="text-xs text-[var(--text-sub)]">Click to send</span>
@@ -618,7 +644,7 @@
                         <div class="text-sm text-[var(--text-sub)] mt-1 font-medium">Emails Sent</div>
                     </div>
                     
-                    <div class="glass-card p-6 cursor-pointer" onclick="navigateTo('contacts')" style="animation-delay: 80ms;">
+                    <div class="glass-card p-6 cursor-pointer" onclick="navigateTo('contacts')">
                          <div class="flex justify-between items-start mb-4">
                             <div class="p-3 bg-purple-50 rounded-xl text-purple-600 transition-transform duration-300 hover:scale-110"><svg class="icon" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
                         </div>
@@ -626,7 +652,7 @@
                         <div class="text-sm text-[var(--text-sub)] mt-1 font-medium">Contacts</div>
                     </div>
 
-                    <div class="glass-card p-6 cursor-pointer" onclick="navigateTo('settings')" style="animation-delay: 160ms;">
+                    <div class="glass-card p-6 cursor-pointer" onclick="navigateTo('settings')">
                          <div class="flex justify-between items-start mb-4">
                             <div class="p-3 bg-orange-50 rounded-xl text-orange-600 transition-transform duration-300 hover:scale-110"><svg class="icon" viewBox="0 0 24 24"><path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>
                         </div>
@@ -635,37 +661,32 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-6" style="animation-delay: 240ms;">
+                <div class="glass-card p-6">
                     <div class="flex justify-between items-center mb-5">
                         <h3 class="font-display font-bold text-lg tracking-tight">Recent Campaigns</h3>
-                        <button onclick="navigateTo('marketing')" class="text-xs font-semibold text-black hover:text-gray-600 transition-all duration-300 hover:translate-x-1">View All →</button>
+                        <button onclick="navigateTo('marketing')" class="text-xs font-semibold text-black hover:text-gray-600 transition-colors hover:translate-x-1 inline-block">View All →</button>
                     </div>
                     <div id="dashboard-recent-list" class="space-y-3">
-                        <div class="flex items-center justify-center py-12 text-[var(--text-sub)] text-sm">
-                            <div class="flex flex-col items-center gap-3">
-                                <div class="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full spinner"></div>
-                                Loading activity...
-                            </div>
-                        </div>
+                        <div class="flex items-center justify-center py-12 text-[var(--text-sub)] text-sm animate-pulse-soft">Loading activity...</div>
                     </div>
                 </div>
             </section>
 
             <!-- MARKETING (/marketing) -->
             <section id="view-marketing" class="page-view">
-                <header class="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+                <header class="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4 stagger-children">
                     <div>
                         <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Marketing Hub</h1>
                         <p class="text-[var(--text-sub)]">Analyze performance and manage automation.</p>
                     </div>
-                    <button onclick="navigateTo('mail')" class="btn-primary group">
-                        <svg class="icon group-hover:rotate-90 transition-transform duration-500" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Create Campaign
+                    <button onclick="navigateTo('mail')" class="btn-primary ripple">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Create Campaign
                     </button>
                 </header>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 stagger-children">
                     <!-- Stats Cards -->
-                    <div class="glass-card p-6 col-span-1" style="animation-delay: 0ms;">
+                    <div class="glass-card p-6 col-span-1">
                         <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Performance</h3>
                         <div class="space-y-6">
                             <div>
@@ -683,7 +704,7 @@
                                     <span class="font-bold text-blue-600">12%</span>
                                 </div>
                                 <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-blue-500 h-2 rounded-full transition-all duration-1000 ease-out delay-100" style="width: 12%"></div>
+                                    <div class="bg-blue-500 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 12%"></div>
                                 </div>
                             </div>
                             <div>
@@ -692,17 +713,17 @@
                                     <span class="font-bold text-red-500">0.4%</span>
                                 </div>
                                 <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-red-500 h-2 rounded-full transition-all duration-1000 ease-out delay-200" style="width: 0.4%"></div>
+                                    <div class="bg-red-500 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 0.4%"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Recent Activity List -->
-                    <div class="glass-card p-6 col-span-2" style="animation-delay: 80ms;">
+                    <div class="glass-card p-6 col-span-2">
                         <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Campaign History</h3>
                         <div id="marketing-history-list" class="space-y-4">
-                             <div class="text-center py-8 text-gray-400 text-sm">No data yet.</div>
+                             <div class="text-center py-8 text-gray-400 text-sm animate-pulse-soft">No data yet.</div>
                         </div>
                     </div>
                 </div>
@@ -710,20 +731,20 @@
 
             <!-- MAIL PAGE (/mail) - Enhanced Composer/Campaign Builder -->
             <section id="view-mail" class="page-view">
-                <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+                <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4 stagger-children">
                     <div>
                         <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Email Campaign</h1>
                         <p class="text-[var(--text-sub)]">Design, configure, and send your email.</p>
                     </div>
                     <div class="flex gap-3">
-                        <button onclick="openModal('template-modal')" class="btn-secondary">Save as Template</button>
+                        <button onclick="openModal('template-modal')" class="btn-secondary ripple">Save as Template</button>
                     </div>
                 </header>
 
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     
                     <!-- Main Editor Area -->
-                    <div class="lg:col-span-3 glass-card p-8 space-y-8" style="animation-delay: 0ms;">
+                    <div class="lg:col-span-3 glass-card p-8 space-y-8">
                         
                         <!-- Status & Meta Row -->
                         <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-100">
@@ -747,7 +768,7 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Sender Email</label>
-                                <select id="mail-sender-email" class="input-glass appearance-none bg-no-repeat bg-right pr-10" style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2386886b%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-size: 1rem; background-position: right 0.75rem center;">
+                                <select id="mail-sender-email" class="input-glass appearance-none bg-no-repeat bg-right pr-10 cursor-pointer" style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2386886b%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-size: 1rem; background-position: right 0.75rem center;">
                                     <option value="">Select sender...</option>
                                 </select>
                             </div>
@@ -771,7 +792,7 @@
                             <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Recipients</label>
                             <div class="relative">
                                 <input type="text" id="mail-to" class="input-glass pr-12" placeholder="Enter emails separated by commas">
-                                <button onclick="openModal('contact-picker-modal')" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-black/5 rounded-lg transition-all duration-300 hover:scale-110 active:scale-95" title="Pick contacts">
+                                <button onclick="openModal('contact-picker-modal')" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-black/5 rounded-lg transition-all duration-200 hover:scale-110" title="Pick contacts">
                                     <svg class="icon text-gray-400" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 </button>
                             </div>
@@ -782,8 +803,8 @@
                             <div class="flex items-center justify-between mb-4">
                                 <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Content</label>
                                 <div class="flex gap-2">
-                                     <button onclick="setEditorMode('html')" id="mode-html-btn" class="text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-300 hover:bg-black/10">Rich Text</button>
-                                     <button onclick="setEditorMode('text')" id="mode-text-btn" class="text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-300 hover:bg-black/5">Plain Text</button>
+                                     <button onclick="setEditorMode('html')" id="mode-html-btn" class="text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-200">Rich Text</button>
+                                     <button onclick="setEditorMode('text')" id="mode-text-btn" class="text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-200">Plain Text</button>
                                 </div>
                             </div>
                             
@@ -802,11 +823,11 @@
 
                         <!-- Action Footer -->
                         <div class="flex flex-col sm:flex-row justify-end gap-4 pt-8 border-t border-gray-100 mt-8">
-                            <button onclick="saveAsDraft()" class="btn-secondary order-2 sm:order-1">Save Draft</button>
-                            <button onclick="openPreviewModal()" class="btn-secondary order-2 sm:order-1 border-dashed border-gray-300 hover:border-gray-400">
+                            <button onclick="saveAsDraft()" class="btn-secondary order-2 sm:order-1 ripple">Save Draft</button>
+                            <button onclick="openPreviewModal()" class="btn-secondary order-2 sm:order-1 border-dashed border-gray-300 ripple">
                                 <svg class="icon" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg> Preview & Test
                             </button>
-                            <button onclick="sendViaResend()" id="btn-send-final" class="btn-primary px-8 py-3.5 text-base order-1 sm:order-2">
+                            <button onclick="sendViaResend()" id="btn-send-final" class="btn-primary px-8 py-3.5 text-base order-1 sm:order-2 ripple">
                                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> 
                                  Send via Resend
                             </button>
@@ -815,39 +836,39 @@
 
                     <!-- Sidebar -->
                     <div class="space-y-6">
-                        <div class="glass-card p-5" style="animation-delay: 80ms;">
+                        <div class="glass-card p-5 transition-all duration-300">
                             <h4 class="font-bold text-sm mb-4 text-gray-800 uppercase tracking-wide">Quick Templates</h4>
                             <div id="sidebar-templates" class="space-y-2">
                                 <p class="text-xs text-gray-400 italic">No saved templates</p>
                             </div>
-                            <button onclick="openModal('template-modal')" class="w-full mt-4 text-xs font-bold text-gray-500 hover:text-black border border-dashed border-gray-300 hover:border-gray-400 p-2 rounded-lg transition-all duration-300 hover:bg-gray-50 active:scale-95">
+                            <button onclick="openModal('template-modal')" class="w-full mt-4 text-xs font-bold text-gray-500 hover:text-black border border-dashed border-gray-300 hover:border-gray-400 p-2 rounded-lg transition-all duration-200 hover:bg-gray-50">
                                 + Save Current as Template
                             </button>
                         </div>
                         
-                        <div class="glass-card p-5 bg-gradient-to-br from-gray-50 to-white border-gray-200" style="animation-delay: 160ms;">
+                        <div class="glass-card p-5 bg-gradient-to-br from-gray-50 to-white border-gray-200">
                             <h4 class="font-bold text-sm mb-3 text-gray-800">Checklist</h4>
-                            <ul class="space-y-3 text-xs text-gray-600">
-                                <li class="flex items-center gap-2 group">
-                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300 group-hover:border-gray-400" id="check-sender"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
-                                    <span class="transition-colors duration-300 group-hover:text-gray-900">Sender Identity</span>
+                            <ul class="space-y-3 text-xs text-gray-600" id="composer-checklist">
+                                <li class="flex items-center gap-2 group cursor-default">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300" id="check-sender"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                    <span class="transition-colors duration-200 group-hover:text-black">Sender Identity</span>
                                 </li>
-                                <li class="flex items-center gap-2 group">
-                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300 group-hover:border-gray-400" id="check-subject"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
-                                    <span class="transition-colors duration-300 group-hover:text-gray-900">Subject Line</span>
+                                <li class="flex items-center gap-2 group cursor-default">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300" id="check-subject"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                    <span class="transition-colors duration-200 group-hover:text-black">Subject Line</span>
                                 </li>
-                                <li class="flex items-center gap-2 group">
-                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300 group-hover:border-gray-400" id="check-content"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
-                                    <span class="transition-colors duration-300 group-hover:text-gray-900">Content Added</span>
+                                <li class="flex items-center gap-2 group cursor-default">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300" id="check-content"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                    <span class="transition-colors duration-200 group-hover:text-black">Content Added</span>
                                 </li>
-                                <li class="flex items-center gap-2 group">
-                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300 group-hover:border-gray-400" id="check-recipients"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
-                                    <span class="transition-colors duration-300 group-hover:text-gray-900">Recipients</span>
+                                <li class="flex items-center gap-2 group cursor-default">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300" id="check-recipients"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                    <span class="transition-colors duration-200 group-hover:text-black">Recipients</span>
                                 </li>
                             </ul>
                         </div>
                         
-                        <div class="glass-card p-5 bg-gradient-to-br from-emerald-50/50 to-teal-50/30 border-emerald-100/50" style="animation-delay: 240ms;">
+                        <div class="glass-card p-5 bg-gradient-to-br from-emerald-50/50 to-teal-50/30 border-emerald-100/50 transition-all duration-300 hover:shadow-lg">
                             <h4 class="font-bold text-sm mb-2 text-emerald-900">API Connection</h4>
                             <div class="flex items-center gap-2 text-xs text-emerald-700 font-medium bg-emerald-50/50 p-2 rounded-lg mb-2 transition-all duration-300 hover:bg-emerald-100/50">
                                 <span class="relative flex h-2 w-2">
@@ -867,33 +888,33 @@
 
             <!-- TEMPLATES PAGE (/templates) - NEW FULL MANAGER -->
             <section id="view-templates" class="page-view">
-                <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+                <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4 stagger-children">
                     <div>
                         <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Template Manager</h1>
                         <p class="text-[var(--text-sub)]">Create, edit, and manage your email templates.</p>
                     </div>
-                    <button onclick="openNewTemplateModal()" class="btn-primary group">
-                        <svg class="icon group-hover:rotate-90 transition-transform duration-500" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> New Template
+                    <button onclick="openNewTemplateModal()" class="btn-primary ripple">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> New Template
                     </button>
                 </header>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="templates-grid">
-                    <div class="col-span-full text-center py-12 text-gray-400">Loading templates...</div>
+                    <div class="col-span-full text-center py-12 text-gray-400 animate-pulse-soft">Loading templates...</div>
                 </div>
             </section>
 
             <!-- CONTACTS -->
             <section id="view-contacts" class="page-view">
-                 <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+                 <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4 stagger-children">
                     <div>
                         <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Contacts</h1>
                         <p class="text-[var(--text-sub)]">Manage your audience lists.</p>
                     </div>
-                    <button onclick="openContactModal(null)" class="btn-primary group">
-                        <svg class="icon group-hover:rotate-90 transition-transform duration-500" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Add Contact
+                    <button onclick="openContactModal(null)" class="btn-primary ripple">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Add Contact
                     </button>
                 </header>
-                <div class="glass-card overflow-hidden" style="animation-delay: 0ms;">
+                <div class="glass-card overflow-hidden transition-all duration-300">
                     <table class="w-full text-left">
                         <thead class="bg-black/[0.02] border-b border-black/5">
                             <tr>
@@ -911,13 +932,13 @@
 
             <!-- SETTINGS -->
             <section id="view-settings" class="page-view">
-                <header class="mb-8">
+                <header class="mb-8 stagger-children">
                     <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Settings</h1>
                     <p class="text-[var(--text-sub)]">Account configuration and sender domains.</p>
                 </header>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="glass-card p-6" style="animation-delay: 0ms;">
+                    <div class="glass-card p-6 transition-all duration-300">
                         <h3 class="font-semibold text-lg mb-6 pb-4 border-b border-black/5">Profile Information</h3>
                         <form onsubmit="updateProfile(event)" class="space-y-4">
                             <div>
@@ -928,19 +949,19 @@
                                 <label class="block text-xs font-semibold text-[var(--text-sub)] mb-1.5 uppercase">Account Email</label>
                                 <input type="email" id="set-email" class="input-glass bg-black/[0.02]" disabled>
                             </div>
-                            <button type="submit" class="btn-primary mt-2">Update Profile</button>
+                            <button type="submit" class="btn-primary mt-2 ripple">Update Profile</button>
                         </form>
                     </div>
 
-                    <div class="glass-card p-6" style="animation-delay: 80ms;">
+                    <div class="glass-card p-6 transition-all duration-300">
                         <div class="flex justify-between items-center mb-6 pb-4 border-b border-black/5">
                             <h3 class="font-semibold text-lg">Sender Identities</h3>
-                            <button onclick="openSenderModal(null)" class="text-xs font-semibold text-black bg-black/5 px-3 py-1.5 rounded-lg hover:bg-black/10 transition-all duration-300 hover:shadow-sm active:scale-95">+ Add New</button>
+                            <button onclick="openSenderModal(null)" class="text-xs font-semibold text-black bg-black/5 px-3 py-1.5 rounded-lg hover:bg-black/10 transition-all duration-200 hover:scale-105">+ Add New</button>
                         </div>
                         <ul id="settings-sender-list" class="space-y-3">
-                            <li class="text-sm text-[var(--text-sub)] italic py-4 text-center">No senders configured</li>
+                            <li class="text-sm text-[var(--text-sub)] italic py-4 text-center animate-pulse-soft">No senders configured</li>
                         </ul>
-                        <div class="mt-4 p-3 bg-blue-50/50 rounded-lg border border-blue-100/50 text-xs text-blue-800 leading-relaxed transition-all duration-300 hover:border-blue-200">
+                        <div class="mt-4 p-3 bg-blue-50/50 rounded-lg border border-blue-100/50 text-xs text-blue-800 leading-relaxed transition-all duration-300 hover:bg-blue-100/50">
                             <strong>Resend Integration:</strong> Senders must be verified domains in your Resend dashboard. Local aliases work instantly during testing.
                         </div>
                     </div>
@@ -949,9 +970,9 @@
 
             <!-- ADMIN PANEL (/admin) - SUPERADMIN ONLY -->
             <section id="view-admin" class="page-view">
-                <header class="mb-8">
+                <header class="mb-8 stagger-children">
                     <div class="flex items-center gap-3 mb-2">
-                        <div class="p-2 bg-red-100 rounded-lg text-red-600 animate-pulse">
+                        <div class="p-2 bg-red-100 rounded-lg text-red-600 transition-transform duration-300 hover:scale-110">
                             <svg class="icon" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                         </div>
                         <h1 class="font-display text-3xl font-bold tracking-tight">SuperAdmin Panel</h1>
@@ -959,10 +980,10 @@
                     <p class="text-[var(--text-sub)]">Manage users and system settings. Restricted access.</p>
                 </header>
 
-                <div class="glass-card p-6" style="animation-delay: 0ms;">
+                <div class="glass-card p-6 transition-all duration-300">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="font-semibold text-lg">Registered Users</h3>
-                        <button onclick="loadAdminUsers()" class="btn-secondary text-sm transition-all duration-300 hover:shadow-md active:scale-95">Refresh List</button>
+                        <button onclick="loadAdminUsers()" class="btn-secondary text-sm ripple">Refresh List</button>
                     </div>
                     
                     <div id="admin-users-container" class="overflow-x-auto">
@@ -977,12 +998,12 @@
                                 </tr>
                             </thead>
                             <tbody id="admin-users-body">
-                                <tr><td colspan="5" class="text-center py-8 text-gray-400">Loading users... (Requires Service Role Permissions)</td></tr>
+                                <tr><td colspan="5" class="text-center py-8 text-gray-400 animate-pulse-soft">Loading users... (Requires Service Role Permissions)</td></tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 transition-all duration-300 hover:bg-yellow-100/50">
+                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 transition-all duration-300">
                         <strong>Note:</strong> Listing all users requires the <code class="bg-yellow-100 px-1 rounded">service_role</code> key. With the anonymous key, you can only manage your own profile. This panel is configured for demonstration purposes.
                     </div>
                 </div>
@@ -1020,8 +1041,8 @@
                     <input type="email" id="new-c-email" class="input-glass" placeholder="john@example.com" required>
                 </div>
                 <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="closeModal('contact-modal')" class="btn-secondary flex-1">Cancel</button>
-                    <button type="submit" class="btn-primary flex-1">Save Contact</button>
+                    <button type="button" onclick="closeModal('contact-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1 ripple">Save Contact</button>
                 </div>
             </form>
         </div>
@@ -1043,12 +1064,12 @@
                     <p class="text-xs text-[var(--text-sub)] mt-2 ml-1">Use <code class="bg-gray-100 px-1 rounded">onboarding@resend.dev</code> for testing.</p>
                 </div>
                 <div class="flex items-center gap-2 pt-1">
-                    <input type="checkbox" id="new-s-default" class="rounded border-gray-300 text-black focus:ring-black transition-colors duration-300">
-                    <label for="new-s-default" class="text-sm text-[var(--text-sub)] cursor-pointer hover:text-gray-900 transition-colors duration-300">Set as default sender</label>
+                    <input type="checkbox" id="new-s-default" class="rounded border-gray-300 text-black focus:ring-black transition-colors">
+                    <label for="new-s-default" class="text-sm text-[var(--text-sub)] cursor-pointer select-none">Set as default sender</label>
                 </div>
                 <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="closeModal('sender-modal')" class="btn-secondary flex-1">Cancel</button>
-                    <button type="submit" class="btn-primary flex-1">Add Sender</button>
+                    <button type="button" onclick="closeModal('sender-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1 ripple">Add Sender</button>
                 </div>
             </form>
         </div>
@@ -1063,8 +1084,8 @@
                 <input type="text" id="new-t-name" class="input-glass" placeholder="e.g., Welcome Series #1" required>
                 <p class="text-xs text-[var(--text-sub)]">Saves current subject and body content.</p>
                 <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="closeModal('template-modal')" class="btn-secondary flex-1">Cancel</button>
-                    <button type="submit" class="btn-primary flex-1">Save Template</button>
+                    <button type="button" onclick="closeModal('template-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1 ripple">Save Template</button>
                 </div>
             </form>
         </div>
@@ -1075,7 +1096,7 @@
         <div class="modal-box large">
             <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
                 <h2 class="font-display font-bold text-xl tracking-tight" id="template-view-title">Template Preview</h2>
-                <button onclick="closeModal('template-view-modal')" class="text-gray-400 hover:text-black transition-all duration-300 hover:rotate-90 hover:scale-110">
+                <button onclick="closeModal('template-view-modal')" class="text-gray-400 hover:text-black transition-colors duration-200 hover:rotate-90 inline-block">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
@@ -1083,14 +1104,14 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <h4 class="text-xs font-bold text-gray-400 uppercase mb-2">Rendered Preview</h4>
-                    <div class="bg-white border border-gray-200 rounded-lg p-4 min-h-[300px] transition-all duration-300 hover:shadow-md" id="template-preview-content">
+                    <div class="bg-white border border-gray-200 rounded-lg p-4 min-h-[300px] transition-all duration-300" id="template-preview-content">
                         <!-- Preview renders here -->
                     </div>
                 </div>
                 <div>
                     <div class="flex justify-between items-center mb-2">
                         <h4 class="text-xs font-bold text-gray-400 uppercase">HTML Source Code</h4>
-                        <button onclick="copyTemplateCode()" class="text-xs bg-black text-white px-2 py-1 rounded hover:bg-gray-800 transition-all duration-300 active:scale-95">Copy Code</button>
+                        <button onclick="copyTemplateCode()" class="text-xs bg-black text-white px-2 py-1 rounded hover:bg-gray-800 transition-all duration-200 hover:scale-105">Copy Code</button>
                     </div>
                     <div class="code-preview" id="template-code-content">
                         <!-- Code here -->
@@ -1099,8 +1120,8 @@
             </div>
 
             <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-100">
-                <button onclick="deleteCurrentTemplate()" class="btn-danger transition-all duration-300 hover:shadow-lg active:scale-95" id="template-delete-btn">Delete Template</button>
-                <button onclick="useThisTemplate()" class="btn-primary transition-all duration-300 hover:shadow-lg active:scale-95">Use in Composer</button>
+                <button onclick="deleteCurrentTemplate()" class="btn-danger ripple" id="template-delete-btn">Delete Template</button>
+                <button onclick="useThisTemplate()" class="btn-primary ripple">Use in Composer</button>
             </div>
             
             <input type="hidden" id="viewing-template-id" value="">
@@ -1114,7 +1135,7 @@
             <div id="picker-list" class="space-y-1 mb-4 overflow-y-auto flex-1 pr-2">
             </div>
             <div class="flex justify-end pt-4 border-t border-black/5">
-                <button onclick="closeModal('contact-picker-modal')" class="btn-primary transition-all duration-300 hover:shadow-lg active:scale-95">Done</button>
+                <button onclick="closeModal('contact-picker-modal')" class="btn-primary ripple">Done</button>
             </div>
         </div>
     </div>
@@ -1122,14 +1143,14 @@
     <!-- Preview Modal (Send Test) -->
     <div class="modal-overlay" id="preview-modal">
         <div class="modal-box full max-h-[90vh] overflow-y-auto flex flex-col">
-             <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4 sticky top-0 bg-white/90 backdrop-blur z-10">
+             <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4 sticky top-0 bg-white/90 backdrop-blur z-10 transition-all duration-300">
                 <h2 class="font-display font-bold text-xl tracking-tight">Preview & Test</h2>
-                <button onclick="closeModal('preview-modal')" class="text-gray-400 hover:text-black transition-all duration-300 hover:rotate-90 hover:scale-110">
+                <button onclick="closeModal('preview-modal')" class="text-gray-400 hover:text-black transition-all duration-200 hover:rotate-90 inline-block">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
              </div>
              
-             <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm mb-6 transition-all duration-300 hover:shadow-md">
+             <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm mb-6 transition-all duration-300">
                  <div class="border-b border-gray-100 pb-4 mb-4">
                      <div class="text-xs text-gray-400 uppercase font-bold mb-1">From:</div>
                      <div class="font-semibold text-sm" id="prev-from">-</div>
@@ -1141,11 +1162,11 @@
                  
                  <!-- Tabs for Preview vs Code -->
                  <div class="flex gap-2 mb-4">
-                     <button onclick="switchPreviewTab('rendered')" id="tab-rendered" class="text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300 hover:bg-gray-800">Rendered</button>
-                     <button onclick="switchPreviewTab('source')" id="tab-source" class="text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300">Source Code</button>
+                     <button onclick="switchPreviewTab('rendered')" id="tab-rendered" class="text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-200">Rendered</button>
+                     <button onclick="switchPreviewTab('source')" id="tab-source" class="text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-200">Source Code</button>
                  </div>
 
-                 <div id="prev-body-rendered" class="prose prose-sm max-w-none text-sm text-gray-700 leading-relaxed">
+                 <div id="prev-body-rendered" class="prose prose-sm max-w-none text-sm text-gray-700 leading-relaxed transition-opacity duration-300">
                      Content preview...
                  </div>
                  <div id="prev-body-source" class="code-preview hidden" style="max-height: 500px;">
@@ -1154,8 +1175,8 @@
              </div>
 
              <div class="mt-auto flex justify-end gap-3 pt-4 border-t border-gray-100 sticky bottom-0 bg-white/90 backdrop-blur pb-2">
-                 <button onclick="sendTestEmail()" class="btn-secondary transition-all duration-300 hover:shadow-md active:scale-95">Send Test Email</button>
-                 <button onclick="closeModal('preview-modal')" class="btn-primary transition-all duration-300 hover:shadow-lg active:scale-95">Close Preview</button>
+                 <button onclick="sendTestEmail()" class="btn-secondary ripple">Send Test Email</button>
+                 <button onclick="closeModal('preview-modal')" class="btn-primary ripple">Close Preview</button>
              </div>
         </div>
     </div>
@@ -1165,7 +1186,7 @@
         <div class="modal-box large">
             <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
                 <h2 class="font-display font-bold text-xl tracking-tight">Campaign Details</h2>
-                <button onclick="closeModal('campaign-detail-modal')" class="text-gray-400 hover:text-black transition-all duration-300 hover:rotate-90 hover:scale-110">
+                <button onclick="closeModal('campaign-detail-modal')" class="text-gray-400 hover:text-black transition-all duration-200 hover:rotate-90 inline-block">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
@@ -1179,19 +1200,19 @@
                 </div>
                 
                 <div class="flex gap-2 mt-2">
-                    <button onclick="switchCampDetailTab('preview')" id="camp-tab-prev" class="text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300 hover:bg-gray-800">Preview</button>
-                    <button onclick="switchCampDetailTab('html')" id="camp-tab-html" class="text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300">View HTML</button>
+                    <button onclick="switchCampDetailTab('preview')" id="camp-tab-prev" class="text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-200">Preview</button>
+                    <button onclick="switchCampDetailTab('html')" id="camp-tab-html" class="text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-200">View HTML</button>
                 </div>
             </div>
 
-            <div id="camp-detail-preview" class="bg-white border border-gray-200 rounded-lg p-6 min-h-[200px] text-sm text-gray-700 transition-all duration-300 hover:shadow-md">
+            <div id="camp-detail-preview" class="bg-white border border-gray-200 rounded-lg p-6 min-h-[200px] text-sm text-gray-700 transition-all duration-300">
             </div>
             <div id="camp-detail-html" class="code-preview hidden" style="max-height: 400px;">
             </div>
 
             <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-100">
-                <button onclick="deleteCampaign()" class="btn-danger transition-all duration-300 hover:shadow-lg active:scale-95" id="camp-delete-btn">Delete Record</button>
-                <button onclick="resendCampaign()" class="btn-primary transition-all duration-300 hover:shadow-lg active:scale-95">Resend</button>
+                <button onclick="deleteCampaign()" class="btn-danger ripple" id="camp-delete-btn">Delete Record</button>
+                <button onclick="resendCampaign()" class="btn-primary ripple">Resend</button>
             </div>
             <input type="hidden" id="viewing-camp-id" value="">
         </div>
@@ -1221,173 +1242,127 @@
         let cacheSenders = [];
         let cacheTemplates = [];
 
+        // Router State
+        let currentPage = 'dashboard';
+        let isTransitioning = false;
+
         // Set current year in footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         // ==========================================
-        // ROUTING SYSTEM (Clean URLs without #)
+        // ROUTER IMPLEMENTATION (Clean URLs)
         // ==========================================
 
-        const routes = {
-            '/auth/login': 'auth',
-            '/dashboard': 'dashboard',
-            '/marketing': 'marketing',
-            '/mail': 'mail',
-            '/contacts': 'contacts',
-            '/templates': 'templates',
-            '/settings': 'settings',
-            '/admin': 'admin'
+        const routeMap = {
+            'auth/login': 'view-auth',
+            'dashboard': 'view-dashboard',
+            'marketing': 'view-marketing',
+            'mail': 'view-mail',
+            'contacts': 'view-contacts',
+            'templates': 'view-templates',
+            'settings': 'view-settings',
+            'admin': 'view-admin'
         };
 
-        // Reverse lookup for navigation
-        const pageToRoute = {
-            'auth': '/auth/login',
-            'dashboard': '/dashboard',
-            'marketing': '/marketing',
-            'mail': '/mail',
-            'contacts': '/contacts',
-            'templates': '/templates',
-            'settings': '/settings',
-            'admin': '/admin'
-        };
+        function getRouteFromPath(pathname) {
+            // Remove leading slash and extract route
+            const path = pathname.replace(/^\//, '').replace(/\/$/, '');
+            return routeMap[path] || null;
+        }
 
-        let currentPage = 'auth';
+        function getPathFromView(viewId) {
+            // Reverse lookup
+            for (const [path, view] of Object.entries(routeMap)) {
+                if (view === viewId) return '/' + path;
+            }
+            return '/';
+        }
 
-        function navigateTo(page) {
-            if (currentPage === page) return;
+        function navigateTo(page, pushState = true) {
+            if (isTransitioning || currentPage === page) return;
             
+            isTransitioning = true;
             const oldPage = currentPage;
             currentPage = page;
 
-            // Update URL using History API (clean URLs without #)
-            const urlPath = pageToRoute[page];
-            if (urlPath && window.history.pushState) {
+            // Update URL (History API)
+            if (pushState && window.history && window.history.pushState) {
                 try {
-                    window.history.pushState({ page }, '', urlPath);
+                    const newPath = getPathFromView(`view-${page}`);
+                    window.history.pushState({ page }, '', newPath || '/');
                 } catch (e) {
-                    console.log("History API not supported or restricted");
+                    console.log('History API not supported');
                 }
             }
 
-            // Animate out old page
+            // Animate out old view
             const oldView = document.getElementById(`view-${oldPage}`);
             if (oldView) {
-                oldView.classList.remove('active');
                 oldView.classList.add('exiting');
                 setTimeout(() => {
-                    oldView.classList.remove('exiting');
-                    oldView.style.display = 'none';
-                }, 300);
+                    oldView.classList.remove('active', 'exiting');
+                    showNewView(page);
+                }, 150);
+            } else {
+                showNewView(page);
             }
+        }
 
-            // Animate in new page
-            setTimeout(() => {
-                const targetView = document.getElementById(`view-${page}`);
-                if (targetView) {
-                    targetView.style.display = 'block';
-                    // Force reflow for animation restart
-                    void targetView.offsetWidth;
-                    targetView.classList.add('active');
-                    
-                    // Re-trigger card animations by removing and adding class
-                    const cards = targetView.querySelectorAll('.glass-card');
-                    cards.forEach(card => {
-                        card.style.animation = 'none';
-                        void card.offsetWidth;
-                        card.style.animation = null;
+        function showNewView(page) {
+            // Hide all views
+            document.querySelectorAll('.page-view').forEach(v => {
+                v.classList.remove('active', 'exiting');
+            });
+
+            // Show new view
+            const targetView = document.getElementById(`view-${page}`);
+            if (targetView) {
+                targetView.classList.add('active');
+                
+                // Trigger stagger animation for children
+                const staggerContainer = targetView.querySelector('.stagger-children');
+                if (staggerContainer) {
+                    staggerContainer.style.opacity = '0';
+                    requestAnimationFrame(() => {
+                        staggerContainer.style.opacity = '1';
                     });
                 }
-                
-                // Update nav links
-                document.querySelectorAll('.nav-link').forEach(l => {
-                    l.classList.remove('active');
-                    if (l.dataset.nav === page) {
-                        l.classList.add('active');
-                        // Add ripple effect
-                        createRipple(l);
-                    }
-                });
+            }
+            
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.remove('active');
+                if (l.dataset.nav === page) l.classList.add('active');
+            });
 
-                // Load page-specific data
+            // Load page-specific data
+            setTimeout(() => {
                 if (page === 'contacts') renderContactsTable();
                 if (page === 'settings') renderSettingsSenders();
                 if (page === 'marketing') renderMarketingHistory();
                 if (page === 'templates') renderTemplatesGrid();
                 if (page === 'admin') loadAdminUsers();
-            }, oldView ? 150 : 0);
+                isTransitioning = false;
+            }, 100);
         }
 
-        // Handle browser back/forward buttons
+        // Handle browser back/forward
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.page) {
-                // Direct navigation without pushing state again
-                const page = event.state.page;
-                const oldPage = currentPage;
-                currentPage = page;
-
-                const oldView = document.getElementById(`view-${oldPage}`);
-                if (oldView) {
-                    oldView.classList.remove('active');
-                    oldView.style.display = 'none';
-                }
-
-                const targetView = document.getElementById(`view-${page}`);
-                if (targetView) {
-                    targetView.style.display = 'block';
-                    targetView.classList.add('active');
-                }
-
-                document.querySelectorAll('.nav-link').forEach(l => {
-                    l.classList.remove('active');
-                    if (l.dataset.nav === page) l.classList.add('active');
-                });
+                navigateTo(event.state.page, false);
             }
         });
 
-        // Initialize URL on first load
-        function initRouting() {
-            const path = window.location.pathname;
-            const page = routes[path];
+        // Initial route check
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialPath = window.location.pathname;
+            const initialView = getRouteFromPath(initialPath);
             
-            if (page && currentUser) {
-                // User is logged in and visiting a valid route
-                navigateTo(page);
-            } else if (!currentUser) {
-                // Not logged in, go to auth
-                if (window.history.replaceState) {
-                    window.history.replaceState({ page: 'auth' }, '', '/auth/login');
-                }
-            } else {
-                // Logged in but invalid route, go to dashboard
-                navigateTo('dashboard');
+            if (initialView && initialView !== 'view-auth') {
+                // We'll let auth logic handle this later, but store intent
+                window.__intendedRoute = initialView.replace('view-', '');
             }
-        }
-
-        // Ripple effect utility
-        function createRipple(element) {
-            const circle = document.createElement('span');
-            const diameter = Math.max(element.clientWidth, element.clientHeight);
-            const radius = diameter / 2;
-            
-            circle.style.width = circle.style.height = `${diameter}px`;
-            circle.style.left = `${element.clientWidth / 2 - radius}px`;
-            circle.style.top = `${element.clientHeight / 2 - radius}px`;
-            circle.classList.add('absolute', 'rounded-full', 'bg-current', 'opacity-10', 'pointer-events-none');
-            circle.style.animation = 'ripple 0.6s ease-out forwards';
-            
-            element.appendChild(circle);
-            setTimeout(() => circle.remove(), 600);
-        }
-
-        // Add ripple keyframe dynamically
-        const styleSheet = document.createElement('style');
-        styleSheet.textContent = `
-            @keyframes ripple {
-                from { transform: scale(0); opacity: 0.3; }
-                to { transform: scale(2); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(styleSheet);
+        });
 
         // ==========================================
         // AUTHENTICATION MODE SWITCHING
@@ -1399,17 +1374,20 @@
             const pwdGroup = document.getElementById('password-field-group');
             const otpGroup = document.getElementById('otp-field-group');
             const modeInput = document.getElementById('auth-mode-value');
+            const slider = document.getElementById('auth-toggle-slider');
 
             if(mode === 'password') {
-                pwdBtn.className = 'flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-300 bg-white shadow-sm text-black';
-                otpBtn.className = 'flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-300 text-gray-500';
+                pwdBtn.className = 'relative z-10 flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-200 bg-transparent text-black';
+                otpBtn.className = 'relative z-10 flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-200 text-gray-500';
+                slider.style.left = '4px';
                 pwdGroup.style.display = 'block';
                 otpGroup.classList.remove('active');
                 modeInput.value = 'password';
                 document.getElementById('auth-pass').required = true;
             } else {
-                otpBtn.className = 'flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-300 bg-white shadow-sm text-black';
-                pwdBtn.className = 'flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-300 text-gray-500';
+                otpBtn.className = 'relative z-10 flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-200 bg-transparent text-black';
+                pwdBtn.className = 'relative z-10 flex-1 py-2 px-3 rounded-md text-sm font-semibold transition-all duration-200 text-gray-500';
+                slider.style.left = 'calc(50% + 4px)';
                 pwdGroup.style.display = 'none';
                 otpGroup.classList.add('active');
                 modeInput.value = 'otp';
@@ -1426,18 +1404,29 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Sending...';
 
-            const { error } = await _supabase.auth.signInWithOtp({ email });
-            
-            if(error) {
-                showToast(error.message, 'error');
+            try {
+                const { error } = await _supabase.auth.signInWithOtp({ email });
+                
+                if(error) {
+                    // Check if error is because user doesn't exist or isn't confirmed
+                    if (error.message.includes('not found') || error.message.includes('signup_disabled') || error.message.includes('Invalid')) {
+                        showToast("This email is not registered. Please contact admin to create account.", "error");
+                    } else {
+                        showToast(error.message, 'error');
+                    }
+                    btn.disabled = false;
+                    btn.innerHTML = 'Send OTP Code';
+                    return;
+                }
+
+                document.getElementById('otp-send-step').style.display = 'none';
+                document.getElementById('otp-verify-step').style.display = 'block';
+                showToast("OTP sent! Check your email.", "success");
+            } catch (err) {
+                showToast("Network error. Please try again.", "error");
                 btn.disabled = false;
                 btn.innerHTML = 'Send OTP Code';
-                return;
             }
-
-            document.getElementById('otp-send-step').style.display = 'none';
-            document.getElementById('otp-verify-step').style.display = 'block';
-            showToast("OTP sent! Check your email.", "success");
         }
 
         function resetOTPState() {
@@ -1459,8 +1448,11 @@
             if (session) {
                 initApp(session.user);
             } else {
+                // Show auth view with intended route if any
                 document.getElementById('view-auth').classList.add('active');
-                initRouting();
+                if (window.__intendedRoute) {
+                    console.log('Intended route:', window.__intendedRoute);
+                }
                 
                 _supabase.auth.onAuthStateChange((event, session) => {
                     if (event === 'SIGNED_IN' && session) {
@@ -1480,6 +1472,7 @@
             
             btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Authenticating...';
             btn.disabled = true;
+            btn.style.transform = 'scale(0.98)';
 
             const email = document.getElementById('auth-email').value.trim();
             
@@ -1503,9 +1496,14 @@
                 
                 initApp(data.user);
             } catch (err) {
+                // Shake animation for error
+                btn.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => btn.style.animation = '', 500);
+                
                 showToast(err.message || "Authentication failed", 'error');
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
+                btn.style.transform = '';
             }
         }
 
@@ -1514,9 +1512,10 @@
              const password = document.getElementById('auth-pass').value;
              
              if(!email || !password) return showToast("Please enter email and password", "error");
+             
              const { error } = await _supabase.auth.signUp({ email, password });
              if(error) return showToast(error.message, 'error');
-             showToast("Account created! Please verify your email.", "success");
+             showToast("Account created! Please verify your email or contact admin for approval.", "success");
         }
 
         async function handleLogout() {
@@ -1527,11 +1526,13 @@
             document.getElementById('auth-form').reset();
             switchAuthMode('password'); // Reset to password mode
             
+            // Navigate to login
+            if (window.history && window.history.pushState) {
+                window.history.pushState({}, '', '/auth/login');
+            }
+            
             setTimeout(() => {
                 document.getElementById('view-auth').classList.add('active');
-                if (window.history.pushState) {
-                    window.history.pushState({ page: 'auth' }, '', '/auth/login');
-                }
             }, 100);
         }
 
@@ -1545,10 +1546,14 @@
             document.getElementById('view-auth').classList.remove('active');
             document.getElementById('app-container').style.display = 'block';
             
-            // Avatar
+            // Avatar with gradient animation
+            const avatar = document.getElementById('user-avatar');
             const initial = user.email.charAt(0).toUpperCase();
-            document.getElementById('user-avatar').innerText = initial;
-            document.getElementById('user-avatar').style.background = `linear-gradient(135deg, hsl(${Math.random()*360}, 70%, 50%), hsl(${Math.random()*360}, 70%, 40%))`;
+            avatar.innerText = initial;
+            const hue1 = Math.random() * 360;
+            const hue2 = hue1 + 40;
+            avatar.style.background = `linear-gradient(135deg, hsl(${hue1}, 70%, 50%), hsl(${hue2}, 70%, 40%))`;
+            avatar.style.transition = 'all 0.5s var(--ease-spring)';
             
             // Dashboard Greeting
             const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
@@ -1558,7 +1563,9 @@
             
             // SuperAdmin Check
             if(user.email === 'people@luviio.com') {
-                document.getElementById('nav-admin').classList.remove('hidden');
+                const adminNav = document.getElementById('nav-admin');
+                adminNav.classList.remove('hidden');
+                adminNav.style.animation = 'fadeUp 0.5s ease 0.5s both';
             }
             
             // Init Quill
@@ -1582,24 +1589,9 @@
                     const el = document.getElementById(id);
                     if(el) el.addEventListener('input', updateChecklist);
                 });
-
-                // AUTO-SYNC SENDER NAME: When sender dropdown changes, update name field
-                document.getElementById('mail-sender-email').addEventListener('change', function() {
-                    const selectedId = this.value;
-                    const sender = cacheSenders.find(s => s.id === selectedId);
-                    if (sender && sender.alias_name) {
-                        const nameInput = document.getElementById('mail-sender-name');
-                        // Animate the change
-                        nameInput.style.transform = 'scale(0.98)';
-                        nameInput.value = sender.alias_name;
-                        setTimeout(() => {
-                            nameInput.style.transform = 'scale(1)';
-                        }, 150);
-                        updateChecklist();
-                    }
-                });
             }
 
+            // Load all data concurrently
             await Promise.allSettled([
                 loadSenders(),
                 loadContacts(),
@@ -1608,13 +1600,13 @@
                 loadTemplatesSidebar()
             ]);
 
+            // Populate settings form
             document.getElementById('set-email').value = user.email;
             document.getElementById('set-name').value = displayName;
             
-            // Navigate to dashboard or restore from URL
-            const path = window.location.pathname;
-            const startPage = routes[path] || 'dashboard';
-            navigateTo(startPage);
+            // Navigate to intended route or dashboard
+            const intendedRoute = window.__intendedRoute || 'dashboard';
+            navigateTo(intendedRoute, true);
         }
 
         // ==========================================
@@ -1626,11 +1618,13 @@
                 .from('senders')
                 .select('*')
                 .eq('user_id', currentUser.id)
-                .order('is_default', { ascending: false });
+                .order('is_default', { ascending: false })
+                .order('created_at', { ascending: true });
 
             if (!error && data) {
                 cacheSenders = data;
                 populateSenderDropdown();
+                syncSenderNameField(); // Auto-sync name field
             }
         }
 
@@ -1670,8 +1664,8 @@
                 return;
             }
 
-            container.innerHTML = data.map((c, idx) => `
-                <div class="group flex items-center justify-between p-4 bg-black/[0.02] hover:bg-black/[0.04] rounded-xl transition-all duration-300 cursor-pointer hover:shadow-sm hover:-translate-y-0.5" onclick="openCampaignDetail('${c.id}')" style="animation: fadeInUp 0.4s ease-out ${idx * 50}ms both;">
+            container.innerHTML = data.map((c, index) => `
+                <div class="group flex items-center justify-between p-4 bg-black/[0.02] hover:bg-black/[0.04] rounded-xl transition-all duration-300 cursor-pointer hover:shadow-md hover:-translate-y-0.5" onclick="openCampaignDetail('${c.id}')" style="animation: fadeUp 0.5s ease ${index * 0.1}s both;">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[var(--text-sub)] group-hover:text-black group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
                             <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -1681,7 +1675,7 @@
                             <div class="text-xs text-[var(--text-sub)]">${formatDate(c.created_at)} • ${c.recipients?.length || 0} recipients</div>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-all duration-300 ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}">${c.status}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-all duration-300 ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500'}">${c.status}</span>
                 </div>
             `).join('');
         }
@@ -1696,7 +1690,7 @@
             }
 
             container.innerHTML = data.map(t => `
-                <button onclick="loadTemplateToComposer('${t.id}')" class="w-full text-left p-2.5 text-xs font-medium bg-black/[0.02] hover:bg-black/[0.05] rounded-lg border border-transparent hover:border-black/10 truncate transition-all duration-300 hover:shadow-sm hover:-translate-x-1">
+                <button onclick="loadTemplateToComposer('${t.id}')" class="w-full text-left p-2.5 text-xs font-medium bg-black/[0.02] hover:bg-black/[0.05] rounded-lg border border-transparent hover:border-black/10 truncate transition-all duration-200 hover:translate-x-1">
                     ${escapeHtml(t.name)}
                 </button>
             `).join('');
@@ -1716,15 +1710,15 @@
                 return;
             }
 
-            container.innerHTML = data.map((c, idx) => `
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-300 cursor-pointer hover:shadow-sm hover:-translate-y-0.5" onclick="openCampaignDetail('${c.id}')" style="animation: fadeInUp 0.4s ease-out ${idx * 50}ms both;">
+            container.innerHTML = data.map((c, index) => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-300 cursor-pointer hover:shadow-sm hover:-translate-y-0.5" onclick="openCampaignDetail('${c.id}')" style="animation: fadeUp 0.4s ease ${index * 0.05}s both;">
                     <div class="flex-1 min-w-0 mr-4">
                         <div class="font-bold text-sm text-gray-800 truncate">${escapeHtml(c.subject)}</div>
                         <div class="text-xs text-gray-500">${formatDate(c.sent_at || c.created_at)}</div>
                     </div>
                     <div class="flex items-center gap-3">
                          <span class="text-xs font-medium text-gray-500">${c.recipients?.length || 0} sent</span>
-                         <span class="w-2 h-2 rounded-full transition-all duration-300 ${c.status === 'sent' ? 'bg-green-400 shadow-sm shadow-green-200' : 'bg-yellow-400'}"></span>
+                         <span class="w-2 h-2 rounded-full transition-all duration-300 ${c.status === 'sent' ? 'bg-green-400' : 'bg-yellow-400'}"></span>
                     </div>
                 </div>
             `).join('');
@@ -1744,22 +1738,22 @@
             }
 
             cacheTemplates = data;
-            grid.innerHTML = data.map((t, idx) => `
-                <div class="glass-card p-6 flex flex-col justify-between hover:shadow-xl" style="animation-delay: ${idx * 80}ms;">
+            grid.innerHTML = data.map((t, index) => `
+                <div class="glass-card p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl" style="animation: fadeUp 0.5s ease ${index * 0.1}s both;">
                     <div>
                         <div class="flex justify-between items-start mb-3">
                             <h3 class="font-bold text-lg">${escapeHtml(t.name)}</h3>
-                            <span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-1 rounded transition-colors duration-300 hover:bg-gray-200">${t.updated_at ? formatDate(t.updated_at).split(',')[0] : ''}</span>
+                            <span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-1 rounded transition-colors duration-200 hover:bg-gray-200">${t.updated_at ? formatDate(t.updated_at).split(',')[0] : ''}</span>
                         </div>
                         <p class="text-sm text-gray-500 line-clamp-2 mb-4">${escapeHtml(t.subject)}</p>
-                        <div class="bg-gray-50 rounded p-3 text-xs text-gray-400 mb-4 max-h-24 overflow-hidden relative transition-all duration-300 hover:max-h-32 hover:shadow-inner">
+                        <div class="bg-gray-50 rounded p-3 text-xs text-gray-400 mb-4 max-h-24 overflow-hidden relative transition-all duration-300 hover:max-h-32">
                             <div class="opacity-70">${stripHtml(t.html_content).substring(0, 100)}...</div>
                         </div>
                     </div>
                     <div class="flex gap-2 mt-4 pt-4 border-t border-gray-100">
-                        <button onclick="viewTemplate('${t.id}')" class="flex-1 btn-secondary text-xs py-2 transition-all duration-300 hover:shadow-md active:scale-95">View</button>
-                        <button onclick="editTemplate('${t.id}')" class="flex-1 btn-secondary text-xs py-2 transition-all duration-300 hover:shadow-md active:scale-95">Edit</button>
-                        <button onclick="deleteTemplate('${t.id}')" class="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-all duration-300 hover:shadow-sm active:scale-95">
+                        <button onclick="viewTemplate('${t.id}')" class="flex-1 btn-secondary text-xs py-2 ripple">View</button>
+                        <button onclick="editTemplate('${t.id}')" class="flex-1 btn-secondary text-xs py-2 ripple">Edit</button>
+                        <button onclick="deleteTemplate('${t.id}')" class="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 hover:scale-110">
                             <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
                     </div>
@@ -1846,8 +1840,9 @@
 
         function copyTemplateCode() {
             const code = document.getElementById('template-code-content').textContent;
-            navigator.clipboard.writeText(code);
-            showToast("HTML copied to clipboard!", 'success');
+            navigator.clipboard.writeText(code).then(() => {
+                showToast("HTML copied to clipboard!", 'success');
+            });
         }
 
         function useThisTemplate() {
@@ -1894,16 +1889,14 @@
             
             if(tab === 'preview') {
                 prev.classList.remove('hidden');
-                prev.style.animation = 'fadeIn 0.3s ease';
                 html.classList.add('hidden');
-                tPrev.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300';
-                tHtml.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300';
+                tPrev.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-200';
+                tHtml.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-200';
             } else {
                 prev.classList.add('hidden');
                 html.classList.remove('hidden');
-                html.style.animation = 'fadeIn 0.3s ease';
-                tHtml.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300';
-                tPrev.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300';
+                tHtml.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-200';
+                tPrev.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-200';
             }
         }
 
@@ -1962,6 +1955,7 @@
             
             btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending via Resend...';
             btn.disabled = true;
+            btn.style.transform = 'scale(0.95)';
 
             try {
                 const { data, error: fnError } = await _supabase.functions.invoke('send-email', {
@@ -1991,9 +1985,12 @@
             } catch (err) {
                 console.error("Send Error:", err);
                 showToast(`Error: ${err.message}`, 'error');
+                btn.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => btn.style.animation = '', 500);
             } finally {
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
+                btn.style.transform = '';
             }
         }
 
@@ -2026,16 +2023,14 @@
             
             if(tab === 'rendered') {
                 rend.classList.remove('hidden');
-                rend.style.animation = 'fadeIn 0.3s ease';
                 src.classList.add('hidden');
-                tR.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300';
-                tS.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300';
+                tR.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-200';
+                tS.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-200';
             } else {
                 rend.classList.add('hidden');
                 src.classList.remove('hidden');
-                src.style.animation = 'fadeIn 0.3s ease';
-                tS.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300';
-                tR.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300';
+                tS.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-200';
+                tR.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-200';
             }
         }
 
@@ -2056,16 +2051,12 @@
                 const el = document.getElementById(id);
                 const icon = el.querySelector('.check-icon');
                 if(isValid) {
-                    el.classList.add('bg-emerald-500', 'border-emerald-500');
+                    el.classList.add('checked');
                     el.classList.remove('border-gray-300');
                     icon.classList.remove('text-transparent');
                     icon.classList.add('text-white');
-                    // Trigger animation
-                    icon.style.animation = 'none';
-                    void icon.offsetWidth;
-                    icon.style.animation = null;
                 } else {
-                    el.classList.remove('bg-emerald-500', 'border-emerald-500');
+                    el.classList.remove('checked');
                     el.classList.add('border-gray-300');
                     icon.classList.add('text-transparent');
                     icon.classList.remove('text-white');
@@ -2126,6 +2117,10 @@
             if(id) {
                 const { error: err } = await _supabase.from('contacts').update({ name, email }).eq('id', id);
                 error = err;
+                if(!error) {
+                    const idx = cacheContacts.findIndex(c => c.id === id);
+                    if(idx >= 0) cacheContacts[idx] = {...cacheContacts[idx], name, email};
+                }
             } else {
                 const { data, error: err } = await _supabase.from('contacts').insert({ user_id: currentUser.id, name, email }).select().single();
                 error = err;
@@ -2156,42 +2151,36 @@
                 tbody.innerHTML = '<tr><td colspan="4" class="p-12 text-center text-[var(--text-sub)] text-sm">No contacts added yet.</td></tr>';
                 return;
             }
-            tbody.innerHTML = cacheContacts.map((c, idx) => `
-                <tr class="group hover:bg-black/[0.02] transition-all duration-300" style="animation: fadeInUp 0.4s ease-out ${idx * 50}ms both;">
+            tbody.innerHTML = cacheContacts.map((c, index) => `
+                <tr class="group hover:bg-black/[0.02] transition-all duration-300" style="animation: fadeUp 0.4s ease ${index * 0.05}s both;">
                     <td class="p-4 font-medium text-sm">${escapeHtml(c.name)}</td>
                     <td class="p-4 text-sm text-[var(--text-sub)]">${escapeHtml(c.email)}</td>
                     <td class="p-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 transition-colors duration-300">Active</span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 transition-colors duration-200">Active</span>
                     </td>
                     <td class="p-4 text-right space-x-2">
-                        <button onclick="openContactModalById('${c.id}')" class="text-blue-500 hover:text-blue-700 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:underline">Edit</button>
-                        <button onclick="deleteContact('${c.id}')" class="text-red-500 hover:text-red-700 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 hover:underline">Delete</button>
+                        <button onclick='openContactModal(${JSON.stringify(c)})' class="text-blue-500 hover:text-blue-700 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-200 hover:underline">Edit</button>
+                        <button onclick="deleteContact('${c.id}')" class="text-red-500 hover:text-red-700 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-200 hover:underline">Delete</button>
                     </td>
                 </tr>
             `).join('');
             
             document.getElementById('picker-list').innerHTML = cacheContacts.map(c => `
-                <div class="flex items-center justify-between p-2.5 hover:bg-black/[0.03] rounded-lg cursor-pointer transition-all duration-300 hover:shadow-sm hover:-translate-x-1" onclick="addToRecipients('${c.email}')">
+                <div class="flex items-center justify-between p-2.5 hover:bg-black/[0.03] rounded-lg cursor-pointer transition-all duration-200 hover:translate-x-1" onclick="addToRecipients('${c.email}')">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-xs font-bold transition-transform duration-300 group-hover:scale-110">${c.name.charAt(0)}</div>
+                        <div class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-xs font-bold transition-transform duration-200">${c.name.charAt(0)}</div>
                         <div>
                             <div class="text-sm font-medium">${escapeHtml(c.name)}</div>
                             <div class="text-xs text-[var(--text-sub)]">${escapeHtml(c.email)}</div>
                         </div>
                     </div>
-                    <svg class="icon w-4 h-4 text-[var(--text-sub)] transition-transform duration-300 group-hover:rotate-45" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                    <svg class="icon w-4 h-4 text-[var(--text-sub)] transition-transform duration-200 group-hover:rotate-45" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
                 </div>
             `).join('');
         }
 
-        // Helper to find contact by ID for edit (avoids JSON stringify issues)
-        function openContactModalById(id) {
-            const contact = cacheContacts.find(c => c.id === id);
-            if(contact) openContactModal(contact);
-        }
-
         // ==========================================
-        // CRUD OPERATIONS - SENDERS (FIXED)
+        // CRUD OPERATIONS - SENDERS (Enhanced Sync)
         // ==========================================
 
         function openSenderModal(sender) {
@@ -2211,12 +2200,6 @@
             openModal('sender-modal');
         }
 
-        // NEW FUNCTION: Open sender modal by ID (fixes JSON issues)
-        function openSenderModalById(id) {
-            const sender = cacheSenders.find(s => s.id === id);
-            if(sender) openSenderModal(sender);
-        }
-
         async function saveSender(e) {
             e.preventDefault();
             const id = document.getElementById('edit-sender-id').value;
@@ -2231,51 +2214,109 @@
             if(id) {
                 const { error: err } = await _supabase.from('senders').update(payload).eq('id', id);
                 error = err;
+                if(!error) {
+                    // Update local cache
+                    const idx = cacheSenders.findIndex(s => s.id === id);
+                    if(idx >= 0) cacheSenders[idx] = {...cacheSenders[idx], ...payload};
+                    
+                    // Auto-update composer if this sender is selected
+                    syncSenderNameField();
+                }
             } else {
                 const { error: err } = await _supabase.from('senders').insert(payload);
                 error = err;
+                if(!error) {
+                    await loadSenders(); // Reload to get ID
+                }
             }
 
             if(error) return showToast(error.message, 'error');
 
             closeModal('sender-modal');
             showToast(`Sender ${id ? 'updated' : 'added'}!`, 'success');
-            await loadSenders(); // Refresh cache and dropdown
             renderSettingsSenders();
+            populateSenderDropdown();
             e.target.reset();
         }
 
         async function deleteSender(id) {
-            if(!confirm("Remove this sender?")) return;
+            if(!confirm("Remove this sender? Emails using this will fail.")) return;
             const { error } = await _supabase.from('senders').delete().eq('id', id);
             if(error) return showToast(error.message, 'error');
-            await loadSenders();
-            renderSettingsSenders();
+            
+            // Remove from cache
+            cacheSenders = cacheSenders.filter(s => s.id !== id);
+            
+            // Clear from composer if selected
+            const select = document.getElementById('mail-sender-email');
+            if(select.value === id) {
+                select.value = '';
+                document.getElementById('mail-sender-name').value = '';
+                showToast("Selected sender removed. Please choose another.", "warning");
+            }
+            
+            await renderSettingsSenders();
+            populateSenderDropdown();
             showToast("Sender removed.", 'success');
         }
+
+        // NEW: Auto-sync sender name field when selection changes
+        function syncSenderNameField() {
+            const select = document.getElementById('mail-sender-email');
+            const nameInput = document.getElementById('mail-sender-name');
+            const selectedId = select.value;
+            
+            if(selectedId) {
+                const sender = cacheSenders.find(s => s.id === selectedId);
+                if(sender && !nameInput.value || nameInput.value === 'LuvMail Team') {
+                    nameInput.value = sender.alias_name;
+                    // Animate the change
+                    nameInput.style.transform = 'scale(1.02)';
+                    setTimeout(() => nameInput.style.transform = '', 200);
+                }
+            }
+        }
+
+        // Add listener for sender dropdown change
+        document.addEventListener('change', (e) => {
+            if(e.target && e.target.id === 'mail-sender-email') {
+                syncSenderNameField();
+                updateChecklist();
+            }
+        });
 
         function populateSenderDropdown() {
             const selects = [document.getElementById('mail-sender-email')];
             selects.forEach(select => {
                 if(!select) return;
+                const currentValue = select.value; // Preserve selection
+                
                 if (cacheSenders.length === 0) {
                     select.innerHTML = '<option value="">No senders configured</option>';
                     return;
                 }
-                select.innerHTML = cacheSenders.map(s => 
-                    `<option value="${s.id}">${escapeHtml(s.alias_name)} &lt;${escapeHtml(s.email)}&gt;</option>`
-                ).join('');
+                
+                select.innerHTML = '<option value="">Select sender...</option>' + 
+                    cacheSenders.map(s => 
+                        `<option value="${s.id}" ${s.id === currentValue ? 'selected' : ''}>${escapeHtml(s.alias_name)} &lt;${escapeHtml(s.email)}&gt;</option>`
+                    ).join('');
+                
+                // If previously selected item still exists, keep it, otherwise clear
+                if(currentValue && !cacheSenders.find(s => s.id === currentValue)) {
+                    select.value = '';
+                    document.getElementById('mail-sender-name').value = '';
+                }
             });
         }
 
         function renderSettingsSenders() {
             const list = document.getElementById('settings-sender-list');
             if(cacheSenders.length === 0) {
-                list.innerHTML = '<li class="text-sm text-[var(--text-sub)] italic py-4 text-center">No senders configured</li>';
+                list.innerHTML = '<li class="text-sm text-[var(--text-sub)] italic py-4 text-center animate-pulse-soft">No senders configured</li>';
                 return;
             }
-            list.innerHTML = cacheSenders.map((s, idx) => `
-                <li class="flex items-center justify-between p-4 bg-black/[0.02] rounded-xl group transition-all duration-300 hover:bg-black/[0.04] hover:shadow-sm" style="animation: fadeInUp 0.4s ease-out ${idx * 50}ms both;">
+            list.innerHTML = cacheSenders.map((s, index) => `
+                <li class="flex items-center justify-between p-4 bg-black/[0.02] rounded-xl group transition-all duration-300 hover:bg-black/[0.04] hover:shadow-sm" style="animation: fadeUp 0.4s ease ${index * 0.1}s both;">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xs font-bold text-gray-600 transition-transform duration-300 group-hover:scale-110">${s.alias_name.charAt(0)}</div>
                         <div>
@@ -2283,12 +2324,12 @@
                             <div class="text-xs text-[var(--text-sub)]">${escapeHtml(s.email)}</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        ${s.is_default ? '<span class="text-[10px] font-bold uppercase tracking-wider bg-black text-white px-2 py-1 rounded transition-transform duration-300 hover:scale-105">Primary</span>' : ''}
-                        <button onclick="openSenderModalById('${s.id}')" class="p-1.5 hover:bg-gray-200 rounded text-gray-500 hover:text-black transition-all duration-300 hover:scale-110" title="Edit">
+                    <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        ${s.is_default ? '<span class="text-[10px] font-bold uppercase tracking-wider bg-black text-white px-2 py-1 rounded transition-transform duration-200 hover:scale-105">Primary</span>' : ''}
+                        <button onclick='openSenderModal(${JSON.stringify(s)})' class="p-1.5 hover:bg-gray-200 rounded text-gray-500 hover:text-black transition-all duration-200 hover:scale-110" title="Edit">
                             <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                         </button>
-                        <button onclick="deleteSender('${s.id}')" class="p-1.5 hover:bg-red-50 rounded text-red-500 hover:text-red-700 transition-all duration-300 hover:scale-110" title="Delete">
+                        <button onclick="deleteSender('${s.id}')" class="p-1.5 hover:bg-red-50 rounded text-red-500 hover:text-red-700 transition-all duration-200 hover:scale-110" title="Delete">
                             <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
                     </div>
@@ -2302,7 +2343,7 @@
             const { error } = await _supabase.auth.updateUser({ data: { full_name: name } });
             if(error) return showToast(error.message, 'error');
             showToast("Profile updated!", 'success');
-            document.getElementById('dashboard-greeting').textContent = `Hi, ${name}!`;
+                        document.getElementById('dashboard-greeting').textContent = `Hi, ${name}!`;
         }
 
         // ==========================================
@@ -2313,12 +2354,8 @@
             const tbody = document.getElementById('admin-users-body');
             tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-gray-400"><span class="spinner inline-block w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full mr-2"></span>Loading users...</td></tr>';
 
-            // Note: This requires service_role key to work properly. 
-            // With anon key, this will fail unless RLS allows it (which it shouldn't for security).
-            // We attempt to call an edge function or direct query if possible.
-            
             try {
-                // Attempting to list users (will likely fail with anon key, but demonstrates intent)
+                // Attempt to list users (will likely fail with anon key, but demonstrates intent)
                 const { data, error } = await _supabase.from('profiles').select('*').order('created_at', { ascending: false }).limit(50);
                 
                 if (error) throw error;
@@ -2328,21 +2365,21 @@
                     return;
                 }
 
-                tbody.innerHTML = data.map((u, idx) => `
-                    <tr style="animation: fadeInUp 0.4s ease-out ${idx * 30}ms both;">
+                tbody.innerHTML = data.map((u, index) => `
+                    <tr style="animation: fadeUp 0.4s ease ${index * 0.05}s both;">
                         <td class="font-mono text-xs">${u.id.substring(0,8)}...</td>
                         <td>${u.email || u.raw_user_meta_data?.email || 'N/A'}</td>
                         <td>${formatDate(u.created_at)}</td>
                         <td>${formatDate(u.updated_at)}</td>
                         <td class="text-right">
-                            <button onclick="adminDeleteUser('${u.id}')" class="text-red-500 hover:text-red-700 text-xs font-semibold px-2 py-1 rounded hover:bg-red-50 transition-all duration-300 active:scale-95">Delete</button>
+                            <button onclick="adminDeleteUser('${u.id}')" class="text-red-500 hover:text-red-700 text-xs font-semibold px-2 py-1 rounded hover:bg-red-50 transition-all duration-200 hover:scale-105">Delete</button>
                         </td>
                     </tr>
                 `).join('');
 
             } catch (err) {
                 console.error("Admin Error:", err);
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-red-500 text-sm transition-all duration-300">
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-red-500 text-sm">
                     <strong>Permission Denied</strong><br>
                     <span class="text-gray-400 text-xs">Cannot list users with public API key. Configure Service Role credentials in backend to enable this feature.</span>
                 </td></tr>`;
@@ -2351,12 +2388,11 @@
 
         async function adminDeleteUser(userId) {
             if(!confirm("Permanently delete this user? This action cannot be undone.")) return;
-            // Requires admin API
             showToast("Delete action requires server-side implementation with Service Role key.", 'error');
         }
 
         // ==========================================
-        // UTILITIES
+        // UTILITIES & HELPERS
         // ==========================================
 
         function setEditorMode(mode) {
@@ -2367,19 +2403,26 @@
 
             if(mode === 'html') {
                 htmlContainer.style.display = 'block';
-                htmlContainer.style.animation = 'fadeIn 0.3s ease';
                 textContainer.style.display = 'none';
-                htmlBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-300";
-                textBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-300";
+                htmlBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-200";
+                textBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-200";
+                
+                // Sync content if switching back
+                const textContent = document.getElementById('comp-body-text').value;
+                if(textContent && quillEditor.root.innerHTML === '<p><br></p>') {
+                    quillEditor.root.innerHTML = `<p>${textContent.replace(/\n/g, '</p><p>')}</p>`;
+                }
             } else {
                 htmlContainer.style.display = 'none';
                 textContainer.style.display = 'block';
-                textContainer.style.animation = 'fadeIn 0.3s ease';
-                textBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-300";
-                htmlBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-300";
+                textBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-200";
+                htmlBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-200";
                 
-                const text = quillEditor.root.innerText;
-                if(text) document.getElementById('comp-body-text').value = text;
+                // Sync content to textarea
+                const htmlContent = quillEditor.root.innerText;
+                if(htmlContent) {
+                    document.getElementById('comp-body-text').value = htmlContent;
+                }
             }
         }
 
@@ -2394,32 +2437,36 @@
             }
             
             input.value = emails.length > 0 ? `${current}, ${email}` : email;
+            closeModal('contact-picker-modal');
+            updateChecklist();
             
-            // Visual feedback animation
+            // Animate the input field
             input.style.transform = 'scale(1.02)';
             input.style.borderColor = '#22c55e';
             setTimeout(() => {
-                input.style.transform = 'scale(1)';
+                input.style.transform = '';
                 input.style.borderColor = '';
             }, 300);
             
-            closeModal('contact-picker-modal');
-            updateChecklist();
             showToast(`${email} added`, 'success');
         }
 
         function openModal(id) { 
             const modal = document.getElementById(id);
-            modal.classList.add('open'); 
-            // Prevent body scroll
-            document.body.style.overflow = 'hidden';
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
         }
         
         function closeModal(id) { 
             const modal = document.getElementById(id);
-            modal.classList.remove('open'); 
-            // Restore body scroll
-            document.body.style.overflow = '';
+            modal.classList.remove('open');
+            document.body.style.overflow = ''; // Restore scroll
+            
+            // Reset form inside modal if exists
+            const form = modal.querySelector('form');
+            if(form && id !== 'preview-modal' && id !== 'template-view-modal' && id !== 'campaign-detail-modal') {
+                setTimeout(() => form.reset(), 300); // Wait for close animation
+            }
         }
 
         function showToast(msg, type='success') {
@@ -2431,29 +2478,42 @@
             const iconColor = type === 'success' ? 'text-emerald-500' : 'text-red-500';
             
             toast.innerHTML = `
-                <div class="${iconColor}">
+                <div class="${iconColor} flex-shrink-0">
                     <svg class="icon" viewBox="0 0 24 24">${iconPath}</svg>
                 </div>
                 <span class="font-medium text-gray-800 flex-1">${escapeHtml(msg)}</span>
-                <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                <button onclick="removeToast(this.parentElement)" class="text-gray-400 hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-2">
                     <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             `;
             container.appendChild(toast);
             
-            requestAnimationFrame(() => toast.classList.add('show'));
+            // Trigger animation
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
             
+            // Auto-remove after delay
+            setTimeout(() => removeToast(toast), 4500);
+        }
+
+        function removeToast(toastElement) {
+            if (!toastElement || !toastElement.classList) return;
+            toastElement.classList.add('removing');
             setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 4500);
+                if (toastElement.parentNode) {
+                    toastElement.remove();
+                }
+            }, 300);
         }
 
         function animateValue(id, end) {
             const el = document.getElementById(id);
+            if (!el) return;
+            
             const start = parseInt(el.innerText) || 0;
             const range = end - start;
-            if(range === 0) return;
+            if(range === 0 && start > 0) return; // Don't animate if already at value
             
             const duration = 1000; // Slightly longer for smoother feel
             const startTime = performance.now();
@@ -2461,11 +2521,22 @@
             function update(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                // Easing function for smooth deceleration
-                const eased = 1 - Math.pow(1 - progress, 4); // Quartic ease out
-                el.innerText = Math.floor(start + (range * eased));
                 
-                if(progress < 1) requestAnimationFrame(update);
+                // Easing function: ease-out-expo
+                const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                const current = Math.floor(start + (range * eased));
+                
+                el.innerText = current.toLocaleString();
+                
+                if(progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    // Final value ensure exact match
+                    el.innerText = end.toLocaleString();
+                    // Add a subtle pulse on completion
+                    el.style.transform = 'scale(1.1)';
+                    setTimeout(() => el.style.transform = '', 200);
+                }
             }
             requestAnimationFrame(update);
         }
@@ -2485,54 +2556,154 @@
 
         function formatHtmlCode(html) {
             // Simple formatting for display
-            return html.replace(/</g, '\n<').replace(/>/g, '>\n').replace(/\n\s*\n/g, '\n');
+            let formatted = html.replace(/</g, '<');
+            formatted = formatted.replace(/>/g, '>');
+            formatted = formatted.replace(/\s*/g, '');
+            return formatted.trim();
         }
 
         function formatDate(dateStr) {
             if(!dateStr) return '';
-            return new Date(dateStr).toLocaleDateString('en-US', { 
-                month: 'short', day: 'numeric', year: 'numeric',
-                hour: '2-digit', minute: '2-digit'
-            });
+            try {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('en-US', { 
+                    month: 'short', day: 'numeric', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+            } catch(e) {
+                return dateStr;
+            }
         }
 
-        // Close modals on outside click with smooth fade
+        // Close modals on outside click (with animation)
         document.querySelectorAll('.modal-overlay').forEach(modal => {
             modal.addEventListener('click', e => {
-                if(e.target === modal) closeModal(modal.id);
+                if(e.target === modal) {
+                    closeModal(modal.id);
+                }
             });
         });
-        
-        // Keyboard shortcut: Cmd/Ctrl + Enter to send
+
+        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
+            // Escape to close modals
+            if(e.key === 'Escape') {
+                const openModals = document.querySelectorAll('.modal-overlay.open');
+                openModals.forEach(m => closeModal(m.id));
+            }
+            
+            // Cmd/Ctrl + Enter to send email
             if((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
                 if(document.getElementById('view-mail').classList.contains('active')) {
+                    e.preventDefault();
                     sendViaResend();
                 }
             }
-            // Escape to close modals
-            if(e.key === 'Escape') {
-                const openModal = document.querySelector('.modal-overlay.open');
-                if(openModal) closeModal(openModal.id);
+            
+            // Cmd/Ctrl + S to save draft
+            if((e.metaKey || e.ctrlKey) && e.key === 's') {
+                if(document.getElementById('view-mail').classList.contains('active')) {
+                    e.preventDefault();
+                    saveAsDraft();
+                }
             }
         });
 
-        // Add fadeIn animation keyframe dynamically
-        const fadeInStyle = document.createElement('style');
-        fadeInStyle.textContent = `
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
+        // Shake animation keyframe definition (injected via JS for completeness)
+        const shakeStyle = document.createElement('style');
+        shakeStyle.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+                20%, 40%, 60%, 80% { transform: translateX(4px); }
             }
-            @keyframes fadeInUp {
+            @keyframes fadeUp {
                 from { opacity: 0; transform: translateY(15px); }
                 to { opacity: 1; transform: translateY(0); }
             }
         `;
-        document.head.appendChild(fadeInStyle);
+        document.head.appendChild(shakeStyle);
 
-        // Initialize routing when DOM is ready
-        initRouting();
+        // Prevent double-tap zoom on mobile
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if(now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Visibility change handler (pause animations when tab not visible)
+        document.addEventListener('visibilitychange', () => {
+            if(document.hidden) {
+                document.body.classList.add('animations-paused');
+            } else {
+                document.body.classList.remove('animations-paused');
+            }
+        });
+
+        console.log('%c🚀 LuvMail Pro Initialized', 'color: #000; font-size: 16px; font-weight: bold; background: #fff; padding: 10px 20px; border-radius: 6px;');
     </script>
+
+    <style>
+        /* Pause animations when tab is hidden to save resources */
+        .animations-paused *,
+        .animations-paused {
+            animation-play-state: paused !important;
+            transition-duration: 0s !important;
+        }
+
+        /* Focus visible styles for accessibility */
+        .btn-primary:focus-visible,
+        .btn-secondary:focus-visible,
+        .input-glass:focus-visible,
+        .nav-link:focus-visible {
+            outline: 2px solid rgba(0,0,0,0.3);
+            outline-offset: 2px;
+        }
+
+        /* Reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .glass-card:hover {
+                transform: none !important;
+            }
+            
+            .modal-box {
+                margin: 1rem;
+                max-height: calc(100vh - 2rem);
+            }
+            
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white !important;
+            }
+            .glass-panel, .bg-scene, nav, footer, .modal-overlay {
+                display: none !important;
+            }
+            .page-view {
+                display: block !important;
+                opacity: 1 !important;
+            }
+        }
+    </style>
 </body>
 </html>
