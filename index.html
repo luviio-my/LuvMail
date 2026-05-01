@@ -530,6 +530,48 @@
         .status-active { background: #dcfce7; color: #166534; }
         .status-suspended { background: #fef2f2; color: #991b1b; }
         .status-pending { background: #fefce8; color: #854d0e; }
+
+        /* Editor Mode Tabs */
+        .editor-mode-tab {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .editor-mode-tab.active {
+            background: #000;
+            color: white;
+        }
+        .editor-mode-tab:not(.active):hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* Template Editor Styles */
+        .template-editor-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            background: rgba(0,0,0,0.03);
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+            width: fit-content;
+        }
+        .template-editor-tab {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #666;
+        }
+        .template-editor-tab.active {
+            background: white;
+            color: #000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .template-editor-tab:not(.active):hover {
+            background: rgba(0,0,0,0.05);
+        }
     </style>
 </head>
 <body>
@@ -622,14 +664,14 @@
                     <svg class="icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> Dashboard
                 </a>
                 
-                <!-- CRM Section -->
-                <div class="flex items-center px-2 text-xs font-bold text-gray-400 uppercase tracking-wider select-none">CRM:</div>
-                <a class="nav-link" data-nav="marketing" data-path="/marketing" onclick="navigateTo('marketing')">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> Marketing
+                <!-- Email Section -->
+                <div class="flex items-center px-2 text-xs font-bold text-gray-400 uppercase tracking-wider select-none">EMAIL:</div>
+                <a class="nav-link" data-nav="mail" data-path="/mail" onclick="navigateTo('mail')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Compose
                 </a>
 
-                <a class="nav-link" data-nav="mail" data-path="/mail" onclick="navigateTo('mail')">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Mail
+                <a class="nav-link" data-nav="history" data-path="/history" onclick="navigateTo('history')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Email History
                 </a>
 
                 <a class="nav-link" data-nav="contacts" data-path="/contacts" onclick="navigateTo('contacts')">
@@ -705,8 +747,8 @@
 
                 <div class="glass-card p-6">
                     <div class="flex justify-between items-center mb-5">
-                        <h3 class="font-display font-bold text-lg tracking-tight">Recent Campaigns</h3>
-                        <button onclick="navigateTo('marketing')" class="text-xs font-semibold text-black hover:text-gray-600 transition-colors hover:translate-x-1 inline-block">View All →</button>
+                        <h3 class="font-display font-bold text-lg tracking-tight">Recent Email Activity</h3>
+                        <button onclick="navigateTo('history')" class="text-xs font-semibold text-black hover:text-gray-600 transition-colors hover:translate-x-1 inline-block">View All →</button>
                     </div>
                     <div id="dashboard-recent-list" class="space-y-3">
                         <div class="flex items-center justify-center py-12 text-[var(--text-sub)] text-sm animate-pulse-soft">Loading activity...</div>
@@ -714,48 +756,48 @@
                 </div>
             </section>
 
-            <!-- MARKETING (/marketing) -->
-            <section id="view-marketing" class="page-view">
+            <!-- EMAIL HISTORY (/history) - RENAMED FROM MARKETING -->
+            <section id="view-history" class="page-view">
                 <header class="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4 stagger-children">
                     <div>
-                        <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Marketing Hub</h1>
-                        <p class="text-[var(--text-sub)]">Analyze performance and manage automation.</p>
+                        <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Email History</h1>
+                        <p class="text-[var(--text-sub)]">Track all sent emails and delivery status.</p>
                     </div>
                     <button onclick="navigateTo('mail')" class="btn-primary ripple">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Create Campaign
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Send New Email
                     </button>
                 </header>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 stagger-children">
                     <!-- Stats Cards -->
                     <div class="glass-card p-6 col-span-1">
-                        <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Performance</h3>
+                        <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Overview</h3>
                         <div class="space-y-6">
                             <div>
                                 <div class="flex justify-between mb-1 text-sm">
-                                    <span class="font-medium">Open Rate</span>
-                                    <span class="font-bold text-emerald-600">42%</span>
+                                    <span class="font-medium">Total Sent</span>
+                                    <span class="font-bold text-emerald-600" id="history-total-sent">0</span>
                                 </div>
                                 <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-emerald-500 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 42%"></div>
+                                    <div class="bg-emerald-500 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 100%"></div>
                                 </div>
                             </div>
                             <div>
                                 <div class="flex justify-between mb-1 text-sm">
-                                    <span class="font-medium">Click Rate</span>
-                                    <span class="font-bold text-blue-600">12%</span>
+                                    <span class="font-medium">This Week</span>
+                                    <span class="font-bold text-blue-600" id="history-week-sent">0</span>
                                 </div>
                                 <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-blue-500 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 12%"></div>
+                                    <div class="bg-blue-500 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 60%"></div>
                                 </div>
                             </div>
                             <div>
                                 <div class="flex justify-between mb-1 text-sm">
-                                    <span class="font-medium">Bounce Rate</span>
-                                    <span class="font-bold text-red-500">0.4%</span>
+                                    <span class="font-medium">Delivered</span>
+                                    <span class="font-bold text-green-600" id="history-delivered">0</span>
                                 </div>
                                 <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                                    <div class="bg-red-500 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 0.4%"></div>
+                                    <div class="bg-green-500 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 95%"></div>
                                 </div>
                             </div>
                         </div>
@@ -763,9 +805,9 @@
 
                     <!-- Recent Activity List -->
                     <div class="glass-card p-6 col-span-2">
-                        <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Campaign History</h3>
+                        <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Sent Emails Log</h3>
                         <div id="marketing-history-list" class="space-y-4">
-                             <div class="text-center py-8 text-gray-400 text-sm animate-pulse-soft">No data yet.</div>
+                             <div class="text-center py-8 text-gray-400 text-sm animate-pulse-soft">No emails sent yet.</div>
                         </div>
                     </div>
                 </div>
@@ -775,8 +817,8 @@
             <section id="view-mail" class="page-view">
                 <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4 stagger-children">
                     <div>
-                        <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Email Campaign</h1>
-                        <p class="text-[var(--text-sub)]">Design, configure, and send your email.</p>
+                        <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Compose Email</h1>
+                        <p class="text-[var(--text-sub)]">Send via Rich Text, Plain Text, or HTML Code.</p>
                     </div>
                     <div class="flex gap-3">
                         <button onclick="openModal('template-modal')" class="btn-secondary ripple">Save as Template</button>
@@ -840,18 +882,19 @@
                             </div>
                         </div>
 
-                        <!-- Content Editor -->
+                        <!-- Content Editor with Three Modes -->
                         <div>
                             <div class="flex items-center justify-between mb-4">
-                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Content</label>
-                                <div class="flex gap-2">
-                                     <button onclick="setEditorMode('html')" id="mode-html-btn" class="text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-200">Rich Text</button>
-                                     <button onclick="setEditorMode('text')" id="mode-text-btn" class="text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-200">Plain Text</button>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Content Mode</label>
+                                <div class="flex gap-1 bg-gray-100 p-1 rounded-lg">
+                                     <button onclick="setEditorMode('html')" id="mode-html-btn" class="editor-mode-tab active px-3 py-1.5 rounded text-xs font-semibold transition-all">Rich Text</button>
+                                     <button onclick="setEditorMode('text')" id="mode-text-btn" class="editor-mode-tab px-3 py-1.5 rounded text-xs font-semibold transition-all text-gray-500">Plain Text</button>
+                                     <button onclick="setEditorMode('code')" id="mode-code-btn" class="editor-mode-tab px-3 py-1.5 rounded text-xs font-semibold transition-all text-gray-500">HTML Code</button>
                                 </div>
                             </div>
                             
                             <p class="text-sm text-gray-500 mb-4 bg-blue-50/50 p-3 rounded-lg border border-blue-100/50 transition-all duration-300 hover:border-blue-200">
-                                Add content and design from scratch using the editor or an existing template.
+                                Choose your preferred editing mode. Rich Text for visual editing, Plain Text for simple messages, or HTML Code for full control.
                             </p>
 
                             <div id="editor-html-container">
@@ -859,7 +902,12 @@
                             </div>
 
                             <div id="editor-text-container" style="display: none;">
-                                <textarea id="comp-body-text" class="input-glass resize-none" rows="12" placeholder="Write your message here..." style="min-height: 300px;"></textarea>
+                                <textarea id="comp-body-text" class="input-glass resize-none font-mono" rows="12" placeholder="Write your plain text message here..." style="min-height: 300px;"></textarea>
+                            </div>
+
+                            <div id="editor-code-container" style="display: none;">
+                                <textarea id="comp-body-code" class="code-preview resize-none w-full" rows="16" placeholder="<html>&#10;<body>&#10;<!-- Your HTML here -->&#10;</body>&#10;</html>" spellcheck="false" style="min-height: 350px; background: #1e1e1e; color: #d4d4d4; border: 1px solid rgba(0,0,0,0.1); border-radius: 0.75rem; padding: 1rem; font-family: 'Courier New', monospace; font-size: 0.875rem;"></textarea>
+                                <p class="text-xs text-gray-400 mt-2 ml-1">Paste or write raw HTML code here. Full HTML document structure supported.</p>
                             </div>
                         </div>
 
@@ -928,15 +976,15 @@
                 </div>
             </section>
 
-            <!-- TEMPLATES PAGE (/templates) - NEW FULL MANAGER -->
+            <!-- TEMPLATES PAGE (/templates) - ENHANCED WITH FULL CRUD AND MULTI-MODE EDITOR -->
             <section id="view-templates" class="page-view">
                 <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4 stagger-children">
                     <div>
                         <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Template Manager</h1>
-                        <p class="text-[var(--text-sub)]">Create, edit, and manage your email templates.</p>
+                        <p class="text-[var(--text-sub)]">Create, edit, and manage email templates using any format.</p>
                     </div>
                     <button onclick="openNewTemplateModal()" class="btn-primary ripple">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> New Template
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Create New Template
                     </button>
                 </header>
 
@@ -1141,15 +1189,55 @@
         </div>
     </div>
 
-    <!-- Template Modal (Save New) -->
+    <!-- Template Modal (Save New / Create New with Multi-Mode) -->
     <div class="modal-overlay" id="template-modal">
-        <div class="modal-box">
-            <h2 class="font-display font-bold text-xl mb-6 tracking-tight">Save Template</h2>
-            <form onsubmit="saveTemplate(event)" class="space-y-4">
+        <div class="modal-box large" style="max-width: 700px;">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h2 class="font-display font-bold text-xl tracking-tight" id="template-modal-title">Create New Template</h2>
+                <button onclick="closeModal('template-modal')" class="text-gray-400 hover:text-black transition-colors duration-200 hover:rotate-90 inline-block">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            
+            <form onsubmit="saveTemplate(event)" class="space-y-5">
                 <input type="hidden" id="edit-template-id" value="">
-                <input type="text" id="new-t-name" class="input-glass" placeholder="e.g., Welcome Series #1" required>
-                <p class="text-xs text-[var(--text-sub)]">Saves current subject and body content.</p>
-                <div class="flex gap-3 pt-4">
+                
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Template Name *</label>
+                    <input type="text" id="new-t-name" class="input-glass" placeholder="e.g., Welcome Series #1" required>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Subject Line</label>
+                    <input type="text" id="new-t-subject" class="input-glass" placeholder="Subject line for this template...">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Content Format</label>
+                    <div class="template-editor-tabs">
+                        <button type="button" onclick="setTemplateEditorMode('rich')" id="tmode-rich" class="template-editor-tab active">Rich Text</button>
+                        <button type="button" onclick="setTemplateEditorMode('plain')" id="tmode-plain" class="template-editor-tab">Plain Text</button>
+                        <button type="button" onclick="setTemplateEditorMode('html')" id="tmode-html" class="template-editor-tab">HTML Code</button>
+                    </div>
+                </div>
+
+                <!-- Rich Text Editor Container -->
+                <div id="template-editor-rich" class="template-editor-pane">
+                    <div id="template-quill" style="min-height: 250px;"></div>
+                </div>
+
+                <!-- Plain Text Editor Container -->
+                <div id="template-editor-plain" class="template-editor-pane" style="display: none;">
+                    <textarea id="template-plain-text" class="input-glass resize-none font-mono" rows="10" placeholder="Enter your plain text content here..."></textarea>
+                </div>
+
+                <!-- HTML Code Editor Container -->
+                <div id="template-editor-html" class="template-editor-pane" style="display: none;">
+                    <textarea id="template-html-code" class="code-preview resize-none w-full" rows="12" placeholder="<html>&#10;<body>&#10;<!-- Write your HTML here -->&#10;</body>&#10;</html>" spellcheck="false" style="min-height: 280px; background: #1e1e1e; color: #d4d4d4; border: 1px solid rgba(0,0,0,0.1); border-radius: 0.75rem; padding: 1rem; font-family: 'Courier New', monospace; font-size: 0.85rem;"></textarea>
+                    <p class="text-xs text-gray-400 mt-1">Supports full HTML documents with head/body tags.</p>
+                </div>
+
+                <div class="flex gap-3 pt-4 border-t border-gray-100">
                     <button type="button" onclick="closeModal('template-modal')" class="btn-secondary flex-1 ripple">Cancel</button>
                     <button type="submit" class="btn-primary flex-1 ripple">Save Template</button>
                 </div>
@@ -1176,7 +1264,7 @@
                 </div>
                 <div>
                     <div class="flex justify-between items-center mb-2">
-                        <h4 class="text-xs font-bold text-gray-400 uppercase">HTML Source Code</h4>
+                        <h4 class="text-xs font-bold text-gray-400 uppercase">Source Code</h4>
                         <button onclick="copyTemplateCode()" class="text-xs bg-black text-white px-2 py-1 rounded hover:bg-gray-800 transition-all duration-200 hover:scale-105">Copy Code</button>
                     </div>
                     <div class="code-preview" id="template-code-content">
@@ -1251,7 +1339,7 @@
     <div class="modal-overlay" id="campaign-detail-modal">
         <div class="modal-box large">
             <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-                <h2 class="font-display font-bold text-xl tracking-tight">Campaign Details</h2>
+                <h2 class="font-display font-bold text-xl tracking-tight">Email Details</h2>
                 <button onclick="closeModal('campaign-detail-modal')" class="text-gray-400 hover:text-black transition-all duration-200 hover:rotate-90 inline-block">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
@@ -1318,6 +1406,7 @@
 
         let currentUser = null;
         let quillEditor = null;
+        let templateQuillEditor = null;
 
         // State caches
         let cacheContacts = [];
@@ -1338,7 +1427,7 @@
         const routeMap = {
             'auth/login': 'view-auth',
             'dashboard': 'view-dashboard',
-            'marketing': 'view-marketing',
+            'history': 'view-history',
             'mail': 'view-mail',
             'contacts': 'view-contacts',
             'templates': 'view-templates',
@@ -1412,7 +1501,7 @@
             setTimeout(() => {
                 if (page === 'contacts') renderContactsTable();
                 if (page === 'settings') renderSettingsSenders();
-                if (page === 'marketing') renderMarketingHistory();
+                if (page === 'history') renderMarketingHistory();
                 if (page === 'templates') renderTemplatesGrid();
                 if (page === 'admin') loadAdminUsers();
                 isTransitioning = false;
@@ -1476,7 +1565,6 @@
 
             try {
                 // CRITICAL CHECK: Verify user exists in database before allowing OTP
-                // This prevents automatic user creation for unauthorized emails
                 const { data: existingUser, error: checkError } = await _supabase
                     .from('profiles')
                     .select('id, email')
@@ -1698,7 +1786,7 @@
                 }
             }
             
-            // Init Quill
+            // Init Quill (Main Composer)
             if (!quillEditor) {
                 quillEditor = new Quill('#editor-quill', {
                     theme: 'snow',
@@ -1801,7 +1889,7 @@
                 .limit(5);
 
             if (!data || data.length === 0) {
-                container.innerHTML = '<div class="text-center py-8 text-[var(--text-sub)] text-sm">No campaigns yet. Start composing!</div>';
+                container.innerHTML = '<div class="text-center py-8 text-[var(--text-sub)] text-sm">No emails sent yet. Start composing!</div>';
                 return;
             }
 
@@ -1839,15 +1927,30 @@
         
         async function renderMarketingHistory() {
             const container = document.getElementById('marketing-history-list');
+            const totalSentEl = document.getElementById('history-total-sent');
+            const weekSentEl = document.getElementById('history-week-sent');
+            const deliveredEl = document.getElementById('history-delivered');
+
             const { data, error } = await _supabase
                 .from('campaigns')
                 .select('*')
                 .eq('user_id', currentUser.id)
                 .order('created_at', { ascending: false })
-                .limit(10);
+                .limit(20);
+
+            // Calculate stats
+            const totalSent = data?.length || 0;
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            const weekSent = data?.filter(c => new Date(c.created_at) >= oneWeekAgo).length || 0;
+            const delivered = data?.filter(c => c.status === 'sent').length || 0;
+
+            if(totalSentEl) totalSentEl.textContent = totalSent;
+            if(weekSentEl) weekSentEl.textContent = weekSent;
+            if(deliveredEl) deliveredEl.textContent = delivered;
 
             if (!data || data.length === 0) {
-                container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">No marketing history available.</div>';
+                container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">No email history available.</div>';
                 return;
             }
 
@@ -1858,16 +1961,18 @@
                         <div class="text-xs text-gray-500">${formatDate(c.sent_at || c.created_at)}</div>
                     </div>
                     <div class="flex items-center gap-3">
-                         <span class="text-xs font-medium text-gray-500">${c.recipients?.length || 0} sent</span>
-                         <span class="w-2 h-2 rounded-full transition-all duration-300 ${c.status === 'sent' ? 'bg-green-400' : 'bg-yellow-400'}"></span>
+                         <span class="text-xs font-medium text-gray-500">${c.recipients?.length || 0} recipient(s)</span>
+                         <span class="w-2 h-2 rounded-full transition-all duration-300 ${c.status === 'sent' ? 'bg-green-400' : c.status === 'draft' ? 'bg-yellow-400' : 'bg-gray-300'}"></span>
                     </div>
                 </div>
             `).join('');
         }
 
         // ==========================================
-        // TEMPLATE MANAGER (FULL CRUD)
+        // TEMPLATE MANAGER (FULL CRUD WITH MULTI-MODE)
         // ==========================================
+
+        let templateEditorMode = 'rich'; // Track which editor mode is active in template modal
 
         async function renderTemplatesGrid() {
             const grid = document.getElementById('templates-grid');
@@ -1890,6 +1995,11 @@
                         <div class="bg-gray-50 rounded p-3 text-xs text-gray-400 mb-4 max-h-24 overflow-hidden relative transition-all duration-300 hover:max-h-32">
                             <div class="opacity-70">${stripHtml(t.html_content).substring(0, 100)}...</div>
                         </div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded ${t.content_type === 'html' ? 'bg-purple-50 text-purple-700' : t.content_type === 'plain' ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-600'}">
+                                ${t.content_type === 'html' ? 'HTML Code' : t.content_type === 'plain' ? 'Plain Text' : 'Rich Text'}
+                            </span>
+                        </div>
                     </div>
                     <div class="flex gap-2 mt-4 pt-4 border-t border-gray-100">
                         <button onclick="viewTemplate('${t.id}')" class="flex-1 btn-secondary text-xs py-2 ripple">View</button>
@@ -1905,23 +2015,91 @@
         function openNewTemplateModal() {
             document.getElementById('edit-template-id').value = '';
             document.getElementById('new-t-name').value = '';
+            document.getElementById('new-t-subject').value = '';
+            document.getElementById('template-modal-title').textContent = 'Create New Template';
+            
+            // Reset editors
+            setTemplateEditorMode('rich');
+            if(templateQuillEditor) {
+                templateQuillEditor.root.innerHTML = '';
+            }
+            document.getElementById('template-plain-text').value = '';
+            document.getElementById('template-html-code').value = '';
+            
             openModal('template-modal');
+            
+            // Initialize template Quill if not exists
+            setTimeout(() => {
+                if(!templateQuillEditor && document.getElementById('template-quill')) {
+                    templateQuillEditor = new Quill('#template-quill', {
+                        theme: 'snow',
+                        placeholder: 'Start typing your template content...',
+                        modules: {
+                            toolbar: [
+                                [{ 'header': [1, 2, false] }],
+                                ['bold', 'italic', 'underline', 'strike'],
+                                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                ['link'],
+                                ['clean']
+                            ]
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        function setTemplateEditorMode(mode) {
+            templateEditorMode = mode;
+            
+            // Update tab styles
+            document.querySelectorAll('.template-editor-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(`tmode-${mode}`).classList.add('active');
+            
+            // Show/hide editors
+            document.querySelectorAll('.template-editor-pane').forEach(pane => {
+                pane.style.display = 'none';
+            });
+            document.getElementById(`template-editor-${mode}`).style.display = 'block';
         }
 
         async function saveTemplate(e) {
             e.preventDefault();
             const id = document.getElementById('edit-template-id').value;
             const name = document.getElementById('new-t-name').value.trim();
-            const subject = document.getElementById('mail-subject').value;
-            const html = quillEditor.root.innerHTML;
+            const subject = document.getElementById('new-t-subject').value.trim();
+            
+            // Get content based on active mode
+            let htmlContent = '';
+            let contentType = 'rich'; // Default
+            
+            switch(templateEditorMode) {
+                case 'rich':
+                    if(templateQuillEditor) {
+                        htmlContent = templateQuillEditor.root.innerHTML;
+                    }
+                    contentType = 'rich';
+                    break;
+                case 'plain':
+                    const plainText = document.getElementById('template-plain-text').value;
+                    htmlContent = `<pre style="white-space: pre-wrap; font-family: monospace;">${escapeHtml(plainText)}</pre>`;
+                    contentType = 'plain';
+                    break;
+                case 'html':
+                    htmlContent = document.getElementById('template-html-code').value;
+                    contentType = 'html';
+                    break;
+            }
 
-            if(!subject && !id) return showToast("Cannot save template without subject/content.", "error");
+            if(!name) return showToast("Template name is required.", "error");
 
             const payload = {
                 user_id: currentUser.id,
                 name,
-                subject,
-                html_content: html
+                subject: subject || '(No Subject)',
+                html_content: htmlContent,
+                content_type: contentType
             };
 
             let error;
@@ -1958,14 +2136,29 @@
             const { data, error } = await _supabase.from('templates').select('*').eq('id', id).single();
             if(error || !data) return showToast("Error loading template", 'error');
             
+            // Open modal with existing data
             document.getElementById('edit-template-id').value = id;
             document.getElementById('new-t-name').value = data.name;
+            document.getElementById('new-t-subject').value = data.subject || '';
+            document.getElementById('template-modal-title').textContent = 'Edit Template';
             
-            navigateTo('mail');
-            document.getElementById('mail-subject').value = data.subject;
-            quillEditor.root.innerHTML = data.html_content;
+            // Set correct mode based on stored content_type
+            const mode = data.content_type || 'rich';
+            setTemplateEditorMode(mode);
             
-            showToast("Template loaded into composer. Make changes and save again.", 'success');
+            // Populate content based on mode
+            setTimeout(() => {
+                if(mode === 'rich' && templateQuillEditor) {
+                    templateQuillEditor.root.innerHTML = data.html_content;
+                } else if(mode === 'plain') {
+                    // Extract text from HTML if it was stored that way
+                    document.getElementById('template-plain-text').value = stripHtml(data.html_content);
+                } else if(mode === 'html') {
+                    document.getElementById('template-html-code').value = data.html_content;
+                }
+            }, 100);
+            
+            openModal('template-modal');
         }
 
         async function deleteTemplate(id) {
@@ -1996,8 +2189,20 @@
             if(error || !data) return showToast("Error loading template", 'error');
             
             navigateTo('mail');
-            document.getElementById('mail-subject').value = data.subject;
-            quillEditor.root.innerHTML = data.html_content;
+            document.getElementById('mail-subject').value = data.subject || '';
+            
+            // Load based on content type
+            if(data.content_type === 'html') {
+                setEditorMode('code');
+                document.getElementById('comp-body-code').value = data.html_content;
+            } else if(data.content_type === 'plain') {
+                setEditorMode('text');
+                document.getElementById('comp-body-text').value = stripHtml(data.html_content);
+            } else {
+                setEditorMode('html');
+                quillEditor.root.innerHTML = data.html_content;
+            }
+            
             showToast(`Loaded "${data.name}"`, 'success');
         }
 
@@ -2089,16 +2294,24 @@
             if(!senderObj) return showToast("Sender configuration error.", "error");
             const fromAddress = `${senderName || senderObj.alias_name} <${senderObj.email}>`;
 
-            // Get HTML content from editor
-            const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
-            let htmlBody;
+            // Get HTML content based on active mode
+            let htmlBody = '';
+            let contentType = 'rich';
             
-            if (isHtmlMode) {
+            const htmlContainerVisible = document.getElementById('editor-html-container').style.display !== 'none';
+            const textContainerVisible = document.getElementById('editor-text-container').style.display !== 'none';
+            const codeContainerVisible = document.getElementById('editor-code-container').style.display !== 'none';
+            
+            if(htmlContainerVisible) {
                 htmlBody = quillEditor.root.innerHTML;
-            } else {
-                // Convert plain text to basic HTML for sending
+                contentType = 'rich';
+            } else if(textContainerVisible) {
                 const plainText = document.getElementById('comp-body-text').value;
-                htmlBody = `<pre style="white-space: pre-wrap; font-family: monospace;">${plainText.replace(/</g, '&lt;')}</pre>`;
+                htmlBody = `<pre style="white-space: pre-wrap; font-family: monospace;">${escapeHtml(plainText)}</pre>`;
+                contentType = 'plain';
+            } else if(codeContainerVisible) {
+                htmlBody = document.getElementById('comp-body-code').value;
+                contentType = 'html';
             }
             
             // Validate HTML content has actual content beyond empty tags
@@ -2107,7 +2320,7 @@
                 return showToast("Please add more content to your email body.", "warning");
             }
             
-            btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending via Resend...';
+            btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span>Sending via Resend...';
             btn.disabled = true;
             btn.style.transform = 'scale(0.95)';
 
@@ -2118,9 +2331,8 @@
                         to: recipients, 
                         subject: subject, 
                         html: htmlBody,
-                        // Additional metadata for tracking
                         metadata: {
-                            campaign_type: 'manual',
+                            content_type: contentType,
                             sent_via: 'web_composer'
                         }
                     }
@@ -2133,7 +2345,7 @@
                     user_id: currentUser.id,
                     sender_id: senderObj.id,
                     subject: subject,
-                    html_content: htmlBody, // Full HTML stored
+                    html_content: htmlBody,
                     recipients: recipients,
                     status: 'sent',
                     external_id: data?.id,
@@ -2172,15 +2384,19 @@
             document.getElementById('prev-subject').innerText = subject;
             document.getElementById('prev-from').innerText = `${senderName} <${senderObj ? senderObj.email : 'Unknown'}>`;
             
-            // Get HTML content based on mode
+            // Get HTML content based on active mode (3 modes now)
+            let htmlBody = '';
             const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
-            let htmlBody;
+            const isTextMode = document.getElementById('editor-text-container').style.display !== 'none';
+            const isCodeMode = document.getElementById('editor-code-container').style.display !== 'none';
             
-            if (isHtmlMode) {
+            if(isHtmlMode) {
                 htmlBody = quillEditor.root.innerHTML;
-            } else {
+            } else if(isTextMode) {
                 const plainText = document.getElementById('comp-body-text').value;
-                htmlBody = `<pre style="white-space: pre-wrap; font-family: monospace;">${plainText}</pre>`;
+                htmlBody = `<pre style="white-space: pre-wrap; font-family: monospace;">${escapeHtml(plainText)}</pre>`;
+            } else if(isCodeMode) {
+                htmlBody = document.getElementById('comp-body-code').value;
             }
             
             document.getElementById('prev-body-rendered').innerHTML = htmlBody;
@@ -2214,18 +2430,96 @@
             closeModal('preview-modal');
         }
 
+        // Enhanced Editor Mode Switching (Now supports 3 modes)
+        function setEditorMode(mode) {
+            const htmlContainer = document.getElementById('editor-html-container');
+            const textContainer = document.getElementById('editor-text-container');
+            const codeContainer = document.getElementById('editor-code-container');
+            const htmlBtn = document.getElementById('mode-html-btn');
+            const textBtn = document.getElementById('mode-text-btn');
+            const codeBtn = document.getElementById('mode-code-btn');
+
+            // Hide all containers first
+            htmlContainer.style.display = 'none';
+            textContainer.style.display = 'none';
+            codeContainer.style.display = 'none';
+
+            // Reset all button styles
+            [htmlBtn, textBtn, codeBtn].forEach(btn => {
+                btn.className = 'editor-mode-tab px-3 py-1.5 rounded text-xs font-semibold transition-all text-gray-500';
+            });
+
+            if(mode === 'html') {
+                htmlContainer.style.display = 'block';
+                htmlBtn.classList.add('active');
+                
+                // Sync content from other modes if needed
+                const textContent = document.getElementById('comp-body-text').value;
+                const codeContent = document.getElementById('comp-body-code').value;
+                
+                if(textContent && quillEditor.root.innerHTML === '<p><br></p>' && !codeContent) {
+                    quillEditor.root.innerHTML = `<p>${textContent.replace(/</g, '</p><p>')}</p>`;
+                } else if(codeContent && quillEditor.root.innerHTML === '<p><br></p>') {
+                    // If coming from code mode, keep as is or convert
+                    quillEditor.root.innerHTML = codeContent; // Quill can handle HTML
+                }
+                
+            } else if(mode === 'text') {
+                textContainer.style.display = 'block';
+                textBtn.classList.add('active');
+                
+                // Convert rich text to plain text
+                const htmlContent = quillEditor.root.innerText;
+                const codeContent = document.getElementById('comp-body-code').value;
+                
+                if(htmlContent && !document.getElementById('comp-body-text').value) {
+                    document.getElementById('comp-body-text').value = htmlContent;
+                } else if(codeContent && !document.getElementById('comp-body-text').value) {
+                    document.getElementById('comp-body-text').value = stripHtml(codeContent);
+                }
+                
+            } else if(mode === 'code') {
+                codeContainer.style.display = 'block';
+                codeBtn.classList.add('active');
+                
+                // Convert to HTML source
+                const htmlFromRich = quillEditor.root.innerHTML;
+                const plainText = document.getElementById('comp-body-text').value;
+                
+                if(htmlFromRich && htmlFromRich !== '<p><br></p>' && !document.getElementById('comp-body-code').value) {
+                    document.getElementById('comp-body-code').value = formatHtmlCodeForEditing(htmlFromRich);
+                } else if(plainText && !document.getElementById('comp-body-code').value) {
+                    document.getElementById('comp-body-code').value = `<pre>${escapeHtml(plainText)}</pre>`;
+                }
+            }
+            
+            updateChecklist();
+        }
+
         function updateChecklist() {
             const checks = {
                 'check-sender': document.getElementById('mail-sender-email').value !== '',
                 'check-subject': document.getElementById('mail-subject').value.trim() !== '',
-                'check-content': quillEditor.getText().trim().length > 10,
+                'check-content': () => {
+                    // Check all three modes for content
+                    const htmlMode = document.getElementById('editor-html-container').style.display !== 'none';
+                    const textMode = document.getElementById('editor-text-container').style.display !== 'none';
+                    const codeMode = document.getElementById('editor-code-container').style.display !== 'none';
+                    
+                    if(htmlMode) return quillEditor.getText().trim().length > 10;
+                    if(textMode) return document.getElementById('comp-body-text').value.trim().length > 10;
+                    if(codeMode) return document.getElementById('comp-body-code').value.trim().length > 10;
+                    return false;
+                },
                 'check-recipients': document.getElementById('mail-to').value.trim() !== ''
             };
 
             for(const [id, isValid] of Object.entries(checks)) {
                 const el = document.getElementById(id);
                 const icon = el.querySelector('.check-icon');
-                if(isValid) {
+                const valid = typeof isValid === 'function' ? isValid() : isValid;
+                
+                if(valid) {
                     el.classList.add('checked');
                     el.classList.remove('border-gray-300');
                     icon.classList.remove('text-transparent');
@@ -2250,8 +2544,20 @@
 
         async function saveAsDraft() {
              const subject = document.getElementById('mail-subject').value || 'Untitled Draft';
+             
+             // Get content from active mode
+             let htmlBody = '';
              const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
-             const htmlBody = isHtmlMode ? quillEditor.root.innerHTML : `<pre>${document.getElementById('comp-body-text').value}</pre>`;
+             const isTextMode = document.getElementById('editor-text-container').style.display !== 'none';
+             const isCodeMode = document.getElementById('editor-code-container').style.display !== 'none';
+             
+             if(isHtmlMode) {
+                 htmlBody = quillEditor.root.innerHTML;
+             } else if(isTextMode) {
+                 htmlBody = `<pre>${escapeHtml(document.getElementById('comp-body-text').value)}</pre>`;
+             } else if(isCodeMode) {
+                 htmlBody = document.getElementById('comp-body-code').value;
+             }
              
              const { error } = await _supabase.from('campaigns').insert({
                 user_id: currentUser.id,
@@ -2682,7 +2988,7 @@
                 
                 if(error) throw error;
                 
-                showToast(`Password reset link generated for ${email}. Link should arrive in their inbox shortly.`, 'success');
+                showToast(`Password reset link generated for ${email}.`, 'success');
                 closeModal('admin-action-modal');
             } catch(err) {
                 showToast(err.message || 'Failed to generate reset link', 'error');
@@ -2703,7 +3009,6 @@
             btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Updating...';
             
             try {
-                // Find user by email first
                 const { data: userData, error: findError } = await _supabase.auth.admin.listUsers({
                     filters: `email.eq.${email}`,
                     page: 1,
@@ -2716,22 +3021,20 @@
                 
                 const userId = userData.users[0].id;
                 
-                // Update user metadata
                 const { error: updateError } = await _supabase.auth.admin.updateUserById(userId, {
                     user_metadata: { full_name: newName }
                 });
                 
                 if(updateError) throw updateError;
                 
-                // Also update profiles table if it exists
                 await _supabase.from('profiles')
                     .update({ display_name: newName })
                     .eq('email', email)
-                    .maybeSingle(); // Don't throw if profile doesn't exist
+                    .maybeSingle();
                 
                 showToast(`Display name updated to "${newName}" for ${email}`, 'success');
                 closeModal('admin-action-modal');
-                loadAdminUsers(); // Refresh list
+                loadAdminUsers();
             } catch(err) {
                 console.error('Admin Name Change Error:', err);
                 showToast(err.message || 'Failed to update name. Service role may be required.', 'error');
@@ -2754,7 +3057,6 @@
             btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Suspending...';
             
             try {
-                // Update user status in profiles table (custom implementation)
                 const { error } = await _supabase
                     .from('profiles')
                     .update({ 
@@ -2792,7 +3094,6 @@
             btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Deleting...';
             
             try {
-                // First get user ID
                 const { data: userData, error: findError } = await _supabase.auth.admin.listUsers({
                     filters: `email.eq.${email}`,
                     page: 1,
@@ -2805,7 +3106,6 @@
                 
                 const userId = userData.users[0].id;
                 
-                // Delete using Supabase Admin API (requires service role)
                 const { error: deleteError } = await _supabase.auth.admin.deleteUser(userId);
                 
                 if(deleteError) throw deleteError;
@@ -2827,7 +3127,6 @@
             tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-400"><span class="spinner inline-block w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full mr-2"></span>Loading users...</td></tr>';
 
             try {
-                // Try to fetch from profiles table first (more likely to work with anon key if RLS allows)
                 const { data: profilesData, error: profilesError } = await _supabase
                     .from('profiles')
                     .select('*')
@@ -2862,7 +3161,6 @@
                     return;
                 }
 
-                // Fallback: Try auth.admin.listUsers (requires service_role)
                 const { data, error } = await _supabase.auth.admin.listUsers({ page: 1, perPage: 50 });
                 
                 if (error) throw error;
@@ -2907,43 +3205,9 @@
             openAdminActionModal(action);
         }
 
-        async function adminDeleteUser(userId) {
-            if(!confirm("Permanently delete this user?")) return;
-            showToast("Use the enhanced Delete Account tool in Quick Actions for better control.", 'warning');
-        }
-
         // ==========================================
         // UTILITIES & HELPERS
         // ==========================================
-
-        function setEditorMode(mode) {
-            const htmlContainer = document.getElementById('editor-html-container');
-            const textContainer = document.getElementById('editor-text-container');
-            const htmlBtn = document.getElementById('mode-html-btn');
-            const textBtn = document.getElementById('mode-text-btn');
-
-            if(mode === 'html') {
-                htmlContainer.style.display = 'block';
-                textContainer.style.display = 'none';
-                htmlBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-200";
-                textBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-200";
-                
-                const textContent = document.getElementById('comp-body-text').value;
-                if(textContent && quillEditor.root.innerHTML === '<p><br></p>') {
-                    quillEditor.root.innerHTML = `<p>${textContent.replace(/\n/g, '</p><p>')}</p>`;
-                }
-            } else {
-                htmlContainer.style.display = 'none';
-                textContainer.style.display = 'block';
-                textBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-200";
-                htmlBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-200";
-                
-                const htmlContent = quillEditor.root.innerText;
-                if(htmlContent) {
-                    document.getElementById('comp-body-text').value = htmlContent;
-                }
-            }
-        }
 
         function addToRecipients(email) {
             const input = document.getElementById('mail-to');
@@ -3077,6 +3341,17 @@
             return formatted.trim();
         }
 
+        // Helper to format HTML for editing (preserves structure but makes readable)
+        function formatHtmlCodeForEditing(html) {
+            // Simple formatting: add newlines after block elements
+            let formatted = html
+                .replace(/></g, '><')
+                .replace(/<br\s*\/?>/gi, '')
+                .replace(/<\/p>/gi, '')
+                .replace(/<\/div>/gi, '');
+            return formatted;
+        }
+
         function formatDate(dateStr) {
             if(!dateStr) return '';
             try {
@@ -3155,7 +3430,7 @@
             }
         });
 
-        console.log('%c🚀 LuvMail Pro Initialized - Enhanced Edition', 'color: #000; font-size: 16px; font-weight: bold; background: #fff; padding: 10px 20px; border-radius: 6px;');
+        console.log('%c🚀 LuvMail Pro Initialized - Enhanced Edition v2.0', 'color: #000; font-size: 16px; font-weight: bold; background: #fff; padding: 10px 20px; border-radius: 6px;');
     </script>
 
     <style>
@@ -3227,6 +3502,21 @@
             color: inherit;
             text-decoration: underline;
             font-weight: 600;
+        }
+
+        /* Code editor specific styling */
+        #comp-body-code::placeholder,
+        #template-html-code::placeholder {
+            color: #666;
+            opacity: 0.6;
+        }
+
+        /* Ensure template modal doesn't overflow on small screens */
+        @media (max-width: 640px) {
+            .modal-box.large {
+                max-width: 95vw;
+                padding: 1.5rem;
+            }
         }
     </style>
 </body>
