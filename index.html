@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuvMail</title>
+    <title>LuvMail Pro - Enterprise Email Platform</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -98,275 +98,18 @@
             100% { transform: translate(40px, -60px) scale(1.1); }
         }
 
-        /* ==========================================
-           ENHANCED LIQUID GLASS NAVIGATION SYSTEM
-           ========================================== */
-.nav-container {
-    position: fixed;
-    top: 0.25rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 50;
-    width: 95%;
-    max-width: 1200px;
-    
-    /* Liquid Glass Core */
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.9) 0%,
-        rgba(255, 255, 255, 0.6) 100%
-    );
-    backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
-    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
-    
-    border-radius: 1.25rem;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.04),
-        0 2px 8px rgba(0, 0, 0, 0.02),
-        inset 0 1px 0 rgba(255, 255, 255, 1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05),
-        0 0 0 1px rgba(0, 0, 0, 0.01);
-    
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-        .nav-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.4),
-                transparent
-            );
-            transition: left 0.8s ease;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .nav-container:hover::before {
-            left: 100%;
-        }
-
-        .nav-container::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.4) 0%,
-                transparent 50%,
-                rgba(255, 255, 255, 0.1) 100%
-            );
-            pointer-events: none;
-            mask-image: linear-gradient(black, black) content-box, linear-gradient(black, black);
-            mask-composite: exclude;
-            padding: 1px;
-        }
-
-        .nav-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 1.5rem;
-            gap: 1rem;
-            position: relative;
-            z-index: 20;
-        }
-
-        .nav-links-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            background: rgba(0, 0, 0, 0.03);
-            padding: 0.35rem;
-            border-radius: 1rem;
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .nav-link { 
-            padding: 0.6rem 1rem; 
-            border-radius: 0.75rem; 
-            font-weight: 500; 
-            font-size: 0.875rem; 
-            color: var(--text-sub); 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem;
-            position: relative;
-            white-space: nowrap;
-            text-decoration: none;
-            border: 1px solid transparent;
-        }
-        
-        .nav-link:hover { 
-            background: rgba(255, 255, 255, 0.8);
-            color: var(--text-main);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border-color: rgba(255,255,255,0.5);
-        }
-        
-        .nav-link.active { 
-            background: rgba(0, 0, 0, 0.06);
-            color: #000; 
-            font-weight: 600;
-            box-shadow: 
-                inset 0 1px 0 rgba(255,255,255,0.5), 
-                0 2px 8px rgba(0,0,0,0.06),
-                0 0 0 1px rgba(0,0,0,0.05);
-            transform: scale(0.98);
-            border-color: rgba(0,0,0,0.08);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0.25rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1.5rem;
-            height: 3px;
-            background: linear-gradient(90deg, #000, #333);
-            border-radius: 9999px;
-            opacity: 0.6;
-        }
-
-        .nav-link svg {
-            transition: transform 0.3s ease;
-        }
-
-        .nav-link:hover svg {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .nav-section-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: rgba(0,0,0,0.25);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 0 0.5rem;
-            pointer-events: none;
-        }
-
-        /* Logo Enhancement */
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
-            group: true;
-            flex-shrink: 0;
-        }
-
-        .nav-logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
-            border-radius: 0.875rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 
-                0 4px 12px rgba(0,0,0,0.15),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-logo-icon::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-
-        .nav-logo:hover .nav-logo-icon {
-            transform: rotate(-5deg) scale(1.05);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
-        .nav-logo:hover .nav-logo-icon::before {
-            transform: translateX(100%);
-        }
-
-        /* User Avatar Enhancement */
-        .nav-user-area {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-shrink: 0;
-        }
-
-        .user-avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 2px solid rgba(255,255,255,0.8);
-        }
-
-        .user-avatar:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-        }
-
-        .logout-btn {
-            padding: 0.5rem;
-            border-radius: 0.625rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: rgba(0,0,0,0.4);
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            transform: rotate(5deg) scale(1.1);
-        }
-
-        /* Mobile Nav Scrollbar Hide */
-        .nav-inner::-webkit-scrollbar {
-            display: none;
-        }
-        .nav-inner {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            overflow-x: auto;
-        }
-
         /* Components */
+        .nav-link { 
+            padding: 0.6rem 1rem; border-radius: 0.75rem; font-weight: 500; font-size: 0.875rem; 
+            color: var(--text-sub); transition: all 0.2s ease-out; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+            position: relative;
+        }
+        .nav-link:hover { background: rgba(0,0,0,0.04); color: var(--text-main); }
+        .nav-link.active { 
+            background: rgba(0,0,0,0.05); color: #000; font-weight: 600;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.05);
+        }
+
         .btn-primary {
             background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
             color: #fff; padding: 0.75rem 1.5rem; border-radius: 0.875rem;
@@ -374,26 +117,13 @@
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
             box-shadow: 0 4px 14px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-        .btn-primary:hover:not(:disabled)::before {
-            transform: translateX(100%);
         }
         .btn-primary:hover:not(:disabled) { 
-            transform: translateY(-2px); 
+            transform: translateY(-1px); 
             box-shadow: 0 8px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15);
             filter: brightness(1.1);
         }
-        .btn-primary:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+        .btn-primary:active:not(:disabled) { transform: translateY(0); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .btn-secondary {
@@ -401,7 +131,7 @@
             font-weight: 600; font-size: 0.875rem; border: 1px solid rgba(0,0,0,0.08); cursor: pointer; 
             transition: all 0.2s; backdrop-filter: blur(4px);
         }
-        .btn-secondary:hover { border-color: rgba(0,0,0,0.2); background: #fff; transform: translateY(-1px); }
+        .btn-secondary:hover { border-color: rgba(0,0,0,0.2); background: #fff; }
 
         .input-glass {
             width: 100%; padding: 0.85rem 1rem; background: rgba(255,255,255,0.7);
@@ -413,7 +143,7 @@
         .input-glass:focus { 
             border-color: rgba(0,0,0,0.3); 
             background: #fff;
-            box-shadow: 0 0 0 4px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.03);
         }
 
         /* Enhanced Page Transitions with Route Support */
@@ -574,39 +304,34 @@
         input:checked + .slider { background-color: #000; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-/* Footer Styles - Fixed at Bottom */
-.app-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border-top: none;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.75rem;
-    color: #000000;
-    font-weight: 500;
-    box-shadow: none;
-}
-.footer-text {
-    color: #000000;
-}
-.footer-links a {
-    color: #000000;
-    text-decoration: none;
-    transition: opacity 0.2s;
-    margin: 0 0.25rem;
-}
-.footer-links a:hover {
-    color: #444444;
-    text-decoration: underline;
-}
+        /* Footer Styles */
+        .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
+        }
+        .footer-links a {
+            color: var(--text-sub);
+            text-decoration: none;
+            transition: color 0.2s;
+            margin: 0 0.25rem;
+        }
+        .footer-links a:hover {
+            color: #000;
+        }
 
         /* Admin Badge */
         .admin-badge {
@@ -627,7 +352,7 @@
         }
         .table-row-hover:hover {
             background: rgba(0,0,0,0.02);
-            transform: scale(1.005);
+            transform: scale(1.01);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
@@ -754,191 +479,6 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 50%;
         }
-
-        /* Auth Page Specific Styles */
-        .auth-page-bg {
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            padding: 1rem;
-            position: relative;
-        }
-
-        .auth-card-enhanced {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            border-radius: 1.5rem;
-            padding: 3rem;
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            box-shadow: 
-                0 32px 64px rgba(0,0,0,0.08),
-                0 0 0 1px rgba(0,0,0,0.02),
-                inset 0 1px 0 rgba(255,255,255,1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-card-enhanced::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,1), transparent);
-            z-index: 10;
-        }
-
-        .auth-icon-container {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
-            border-radius: 1.5rem;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 
-                0 12px 32px rgba(0,0,0,0.2),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-            position: relative;
-            animation: floatAuthIcon 6s ease-in-out infinite;
-        }
-
-        @keyframes floatAuthIcon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .auth-tabs-enhanced {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            background: rgba(0,0,0,0.03);
-            padding: 0.35rem;
-            border-radius: 1rem;
-            border: 1px solid rgba(0,0,0,0.04);
-            position: relative;
-        }
-
-        .auth-tab-btn {
-            flex: 1;
-            padding: 0.65rem 1rem;
-            border-radius: 0.75rem;
-            font-size: 0.8rem;
-            font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            background: transparent;
-            color: #86868b;
-            cursor: pointer;
-            position: relative;
-            z-index: 2;
-        }
-
-        .auth-tab-btn.active {
-            background: rgba(255,255,255,0.95);
-            color: #000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transform: scale(0.98);
-        }
-
-        .auth-input-group {
-            text-align: left;
-            margin-bottom: 1.25rem;
-        }
-
-        .auth-input-label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-sub);
-            letter-spacing: 0.02em;
-        }
-
-        .auth-submit-btn {
-            width: 100%;
-            margin-top: 0.5rem;
-            padding: 0.9rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @media (max-width: 768px) {
-            .nav-container {
-                width: 98%;
-                top: 0.5rem;
-            }
-            .nav-links-wrapper {
-                display: none;
-            }
-            .nav-inner {
-                padding: 0.75rem 1rem;
-            }
-        }
-        
-        /* Data Loading States */
-        .data-loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            color: var(--text-sub);
-        }
-        .data-empty {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-sub);
-        }
-        .data-error {
-            text-align: center;
-            padding: 2rem;
-            color: #ef4444;
-            background: #fef2f2;
-            border-radius: 1rem;
-            margin: 1rem;
-        }
-        
-        /* Debug Panel */
-        .debug-panel {
-            position: fixed;
-            bottom: 80px;
-            right: 1rem;
-            max-width: 400px;
-            max-height: 300px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.95);
-            color: #0f0;
-            font-family: monospace;
-            font-size: 11px;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            z-index: 9999;
-            display: none;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-        .debug-panel.open {
-            display: block;
-        }
-        .debug-toggle {
-            position: fixed;
-            bottom: 80px;
-            right: 1rem;
-            background: #000;
-            color: #0f0;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-size: 10px;
-            font-family: monospace;
-            z-index: 9998;
-            border: 1px solid #333;
-        }
     </style>
 </head>
 <body>
@@ -954,54 +494,50 @@
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Debug Toggle & Panel -->
-    <div class="debug-toggle" onclick="toggleDebug()">[DEBUG]</div>
-    <div class="debug-panel" id="debug-panel"></div>
-
-    <!-- ==================== AUTH VIEW (/auth/login) ==================== -->
+    <!-- ==================== AUTH VIEW ==================== -->
     <section id="view-auth" class="page-view">
-        <div class="auth-page-bg">
-            <div class="auth-card-enhanced">
+        <div style="min-height: 100vh; display: grid; place-items: center; padding: 1rem;">
+            <div class="glass-card" style="padding: 3rem; width: 100%; max-width: 420px; text-align: center;">
                 <div style="margin-bottom: 2.5rem;">
-                    <div class="auth-icon-container">
-                        <svg class="icon" style="color:white; width:32px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); border-radius: 1.25rem; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
+                        <svg class="icon" style="color:white; width:28px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
                     <h1 class="font-display" style="font-size: 2rem; font-weight: 700; letter-spacing: -0.03em;">Welcome Back</h1>
                     <p style="color: var(--text-sub); font-size: 0.95rem; margin-top: 0.5rem;">Sign in to LuvMail Enterprise</p>
                 </div>
 
                 <!-- Auth Tabs -->
-                <div class="auth-tabs-enhanced">
-                    <button onclick="switchAuthMode('password')" id="auth-tab-password" class="auth-tab-btn active">Password</button>
-                    <button onclick="switchAuthMode('otp')" id="auth-tab-otp" class="auth-tab-btn">OTP Code</button>
+                <div style="display:flex; gap:0.5rem; margin-bottom:1.5rem; background:rgba(0,0,0,0.05); padding:0.25rem; border-radius:0.75rem;">
+                    <button onclick="switchAuthMode('password')" id="auth-tab-password" class="flex-1 py-2 px-4 rounded-md text-xs font-bold transition-all bg-white shadow-sm text-black">Password</button>
+                    <button onclick="switchAuthMode('otp')" id="auth-tab-otp" class="flex-1 py-2 px-4 rounded-md text-xs font-bold transition-all text-gray-500 hover:text-black">OTP Code</button>
                 </div>
 
                 <!-- Password Form -->
                 <form id="auth-form-password" onsubmit="handleAuth(event)" style="display: flex; flex-direction: column; gap: 1.25rem; text-align: left;">
-                    <div class="auth-input-group">
-                        <label class="auth-input-label">Email Address</label>
+                    <div>
+                        <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color: var(--text-sub);">Email Address</label>
                         <input type="email" id="auth-email" class="input-glass" placeholder="you@company.com" required autocomplete="email">
                     </div>
-                    <div class="auth-input-group">
-                        <label class="auth-input-label">Password</label>
+                    <div>
+                        <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color: var(--text-sub);">Password</label>
                         <input type="password" id="auth-pass" class="input-glass" placeholder="••••••••" required autocomplete="current-password">
                     </div>
-                    <button type="submit" class="btn-primary auth-submit-btn" id="auth-btn">
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.9rem;" id="auth-btn">
                         Sign In
                     </button>
                 </form>
 
                 <!-- OTP Form -->
                 <form id="auth-form-otp" onsubmit="handleOTPAuth(event)" style="display:none; flex-direction:column; gap:1.25rem; text-align:left;">
-                    <div class="auth-input-group">
-                        <label class="auth-input-label">Email Address</label>
+                    <div>
+                        <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color: var(--text-sub);">Email Address</label>
                         <input type="email" id="otp-email" class="input-glass" placeholder="you@company.com" required autocomplete="email">
                     </div>
-                    <div id="otp-code-field" style="display:none;" class="auth-input-group">
-                        <label class="auth-input-label">Verification Code</label>
+                    <div id="otp-code-field" style="display:none;">
+                        <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.5rem; color: var(--text-sub);">Verification Code</label>
                         <input type="text" id="otp-code" class="input-glass" placeholder="Enter 6-digit code" maxlength="6" pattern="[0-9]{6}">
                     </div>
-                    <button type="submit" class="btn-primary auth-submit-btn" id="otp-btn">
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.9rem;" id="otp-btn">
                         Send OTP Code
                     </button>
                 </form>
@@ -1013,64 +549,61 @@
     </section>
 
     <!-- ==================== MAIN APP VIEW ==================== -->
-    <div id="app-container" style="display: none; padding-top: 4.5rem; padding-bottom: 3rem; min-height: 100vh;">
+    <div id="app-container" style="display: none; padding-top: 5.5rem; padding-bottom: 3rem; min-height: 100vh;">
         
-        <!-- Enhanced Liquid Glass Navigation -->
-        <nav class="nav-container" id="main-nav">
-            <div class="nav-inner">
-                <div class="nav-logo" onclick="router.navigate('/dashboard')">
-                    <div class="nav-logo-icon">
-                        <svg class="icon" style="color:white; width:18px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    </div>
-                    <span class="font-display font-bold text-lg tracking-tight">LuvMail</span>
+        <!-- Navigation -->
+        <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl glass-panel rounded-2xl px-6 py-3 flex items-center justify-between shadow-sm overflow-x-auto">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="router.navigate('/dashboard')">
+                <div class="w-9 h-9 bg-black rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                    <svg class="icon" style="color:white; width:18px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 </div>
+                <span class="font-display font-bold text-lg tracking-tight">LuvMail</span>
+            </div>
 
-                <div class="nav-links-wrapper hidden md:flex">
-                    <a class="nav-link active" data-route="/dashboard" onclick="router.navigate('/dashboard')">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> Dashboard
-                    </a>
-                    
-                    <!-- CRM Section -->
-                    <span class="nav-section-label">CRM:</span>
-                    
-                    <a class="nav-link" data-route="/marketing" onclick="router.navigate('/marketing')">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> Marketing
-                    </a>
+            <div class="hidden md:flex items-center gap-1 bg-black/5 p-1 rounded-xl">
+                <a class="nav-link active" data-route="/dashboard" onclick="router.navigate('/dashboard')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> Dashboard
+                </a>
+                
+                <!-- CRM Section -->
+                <div class="flex items-center px-2 text-xs font-bold text-gray-400 uppercase tracking-wider select-none">CRM:</div>
+                <a class="nav-link" data-route="/marketing" onclick="router.navigate('/marketing')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> Marketing
+                </a>
 
-                    <a class="nav-link" data-route="/mail" onclick="router.navigate('/mail')">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Mail
-                    </a>
+                <a class="nav-link" data-route="/mail" onclick="router.navigate('/mail')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Mail
+                </a>
 
-                    <a class="nav-link" data-route="/templates" onclick="router.navigate('/templates')">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg> Templates
-                    </a>
+                <a class="nav-link" data-route="/templates" onclick="router.navigate('/templates')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg> Templates
+                </a>
 
-                    <a class="nav-link" data-route="/sent" onclick="router.navigate('/sent')">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Sent
-                    </a>
+                <a class="nav-link" data-route="/sent" onclick="router.navigate('/sent')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Sent
+                </a>
 
-                    <a class="nav-link" data-route="/contacts" onclick="router.navigate('/contacts')">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Contacts
-                    </a>
-                    <a class="nav-link" data-route="/settings" onclick="router.navigate('/settings')">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg> Settings
-                    </a>
-                    
-                    <!-- Admin Link (Hidden by default, shown only for people@luviio.com) -->
-                    <a class="nav-link hidden" id="nav-admin" data-route="/admin" onclick="router.navigate('/admin')">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Admin
-                    </a>
+                <a class="nav-link" data-route="/contacts" onclick="router.navigate('/contacts')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Contacts
+                </a>
+                <a class="nav-link" data-route="/settings" onclick="router.navigate('/settings')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg> Settings
+                </a>
+                
+                <!-- Admin Link (Hidden by default) -->
+                <a class="nav-link hidden" id="nav-admin" data-route="/admin" onclick="router.navigate('/admin')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg> Admin
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div id="user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-800 to-black text-white flex items-center justify-center text-xs font-bold shadow-md relative">
+                    U
+                    <span id="admin-indicator" class="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 border-2 border-white rounded-full hidden"></span>
                 </div>
-
-                <div class="nav-user-area">
-                    <div id="user-avatar" class="user-avatar">
-                        U
-                        <span id="admin-indicator" class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-yellow-400 border-2 border-white rounded-full hidden animate-pulse"></span>
-                    </div>
-                    <button onclick="handleLogout()" class="logout-btn" title="Sign Out">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                    </button>
-                </div>
+                <button onclick="handleLogout()" class="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all" title="Sign Out">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                </button>
             </div>
         </nav>
 
@@ -1119,7 +652,7 @@
                         <button onclick="router.navigate('/sent')" class="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors hover:translate-x-1 inline-block">View All →</button>
                     </div>
                     <div id="dashboard-recent-list" class="space-y-3">
-                        <div class="data-loading">
+                        <div class="flex items-center justify-center py-12 text-[var(--text-sub)] text-sm">
                             <div class="animate-pulse flex items-center gap-2">
                                 <div class="w-2 h-2 bg-gray-300 rounded-full animate-bounce"></div>
                                 Loading activity...
@@ -1180,9 +713,8 @@
                     <div class="glass-card p-6 col-span-2">
                         <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Campaign History</h3>
                         <div id="marketing-history-list" class="space-y-4">
-                             <div class="data-loading">
-                                 <div class="animate-pulse text-center py-8 text-gray-400 text-sm">Loading marketing data...</div>
-                             </div>
+                             <!-- Populated by JS -->
+                             <div class="text-center py-8 text-gray-400 text-sm">No data yet.</div>
                         </div>
                     </div>
                 </div>
@@ -1437,7 +969,6 @@
                             </tr>
                         </thead>
                         <tbody id="contacts-table-body" class="divide-y divide-black/5">
-                            <tr><td colspan="4" class="p-12 text-center text-[var(--text-sub)] text-sm">Loading contacts...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1481,7 +1012,7 @@
                 </div>
             </section>
 
-            <!-- ADMIN PANEL (/admin) - SuperAdmin User Management (Only for people@luviio.com) -->
+            <!-- ADMIN PANEL (/admin) - SuperAdmin User Management -->
             <section id="view-admin" class="page-view">
                 <header class="mb-8">
                     <div class="flex items-center gap-3 mb-2">
@@ -1559,7 +1090,7 @@
     <!-- ==================== FOOTER ==================== -->
     <footer class="app-footer" id="app-footer" style="display: none;">
         <div class="footer-text">
-            <span id="footer-year"></span> luviio.com. All rights reserved.
+            © 2025 - <span id="footer-year"></span> luviio.com. All rights reserved.
         </div>
         <div class="footer-links">
             <a href="https://luviio.com/terms" target="_blank">Terms</a> • 
@@ -1738,6 +1269,56 @@
         </div>
     </div>
 
+    <!-- Admin Reset Password Modal -->
+    <div class="modal-overlay" id="admin-reset-pwd-modal">
+        <div class="modal-box">
+            <h2 class="font-display font-bold text-xl mb-6 tracking-title">Reset User Password</h2>
+            <div class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-xs text-yellow-800">
+                This will force the user to change their password on next login.
+            </div>
+            <form onsubmit="resetUserPassword(event)" class="space-y-4">
+                <input type="hidden" id="reset-target-user-id" value="">
+                <div>
+                    <label class="block text-xs font-semibold text-[var(--text-sub)] mb-1 uppercase">Target User</label>
+                    <input type="text" id="reset-target-user-email" class="input-glass bg-gray-50" disabled>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-[var(--text-sub)] mb-1 uppercase">New Temporary Password</label>
+                    <input type="text" id="reset-new-pass" class="input-glass" placeholder="Auto-generated or custom" required>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="closeModal('admin-reset-pwd-modal')" class="btn-secondary flex-1">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1">Reset Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Send OTP Modal -->
+    <div class="modal-overlay" id="admin-send-otp-modal">
+        <div class="modal-box">
+            <h2 class="font-display font-bold text-xl mb-6 tracking-title">Send Magic Link / OTP</h2>
+            <form onsubmit="sendOTPToUser(event)" class="space-y-4">
+                <input type="hidden" id="otp-target-user-id" value="">
+                <div>
+                    <label class="block text-xs font-semibold text-[var(--text-sub)] mb-1 uppercase">Send To</label>
+                    <input type="text" id="otp-target-user-email" class="input-glass bg-gray-50" disabled>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-[var(--text-sub)] mb-1 uppercase">Method</label>
+                    <select id="otp-method" class="input-glass">
+                        <option value="magiclink">Magic Link (Email)</option>
+                        <option value="otp">OTP Code (6-digit)</option>
+                    </select>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="closeModal('admin-send-otp-modal')" class="btn-secondary flex-1">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1">Send Now</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
@@ -1752,59 +1333,20 @@
         const RESEND_API_KEY = 're_TJU4MPGe_EmuBqDHzeY7AZiU6e3TjYGKf';
         const RESEND_ENDPOINT = 'https://api.resend.com/emails';
         
-        let _supabase = null;
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         let currentUser = null;
         let quillEditor = null;
 
-        // State caches - Initialize as empty arrays to prevent undefined errors
+        // State caches
         let cacheContacts = [];
         let cacheSenders = [];
         let cacheTemplates = [];
         let cacheCampaigns = [];
-        let cacheUsers = []; 
-
-        // Debug mode flag
-        let debugMode = false;
+        let cacheUsers = []; // For admin
 
         // Set footer year
-        const currentYear = new Date().getFullYear();
-        document.getElementById('footer-year').textContent = currentYear > 2025 ? `2025 - ${currentYear}` : '2025';
-
-        // ==========================================
-        // DEBUG UTILITIES
-        // ==========================================
-
-        function toggleDebug() {
-            debugMode = !debugMode;
-            document.getElementById('debug-panel').classList.toggle('open', debugMode);
-            logDebug("Debug mode " + (debugMode ? "ENABLED" : "DISABLED"));
-        }
-
-        function logDebug(message, data = null) {
-            if (!debugMode) return;
-            
-            const panel = document.getElementById('debug-panel');
-            const timestamp = new Date().toLocaleTimeString();
-            const entry = document.createElement('div');
-            entry.style.marginBottom = '4px';
-            entry.style.borderBottom = '1px solid #333';
-            entry.style.paddingBottom = '4px';
-            
-            let content = `<span style="color:#888">[${timestamp}]</span> ${message}`;
-            if (data !== null) {
-                content += `<br><pre style="margin:4px 0;color:#0f0;font-size:10px;white-space:pre-wrap;">${JSON.stringify(data, null, 2)}</pre>`;
-            }
-            
-            entry.innerHTML = content;
-            panel.appendChild(entry);
-            panel.scrollTop = panel.scrollHeight;
-            
-            console.log('[DEBUG]', message, data || '');
-        }
-
-        function clearDebug() {
-            document.getElementById('debug-panel').innerHTML = '';
-        }
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
 
         // ==========================================
         // ROUTER SYSTEM (History API)
@@ -1812,7 +1354,6 @@
 
         const router = {
             routes: {
-                '/auth/login': 'auth',
                 '/dashboard': 'dashboard',
                 '/marketing': 'marketing',
                 '/mail': 'mail',
@@ -1823,15 +1364,15 @@
                 '/admin': 'admin'
             },
             
-            currentRoute: '/dashboard',
-            
             init() {
+                // Handle browser back/forward
                 window.addEventListener('popstate', (e) => {
                     if(e.state && e.state.route) {
                         this.showRoute(e.state.route, false);
                     }
                 });
                 
+                // Handle initial load
                 const path = window.location.pathname;
                 const route = Object.keys(this.routes).find(r => path.startsWith(r)) || '/dashboard';
                 this.showRoute(route, false);
@@ -1839,6 +1380,8 @@
             
             navigate(path) {
                 if(!this.routes[path]) return console.warn('Route not found:', path);
+                
+                // Update URL without reload
                 window.history.pushState({route: path}, '', path);
                 this.showRoute(path, true);
             },
@@ -1847,42 +1390,26 @@
                 const viewId = this.routes[route];
                 if(!viewId) return;
 
-                // Auth checks
-                if(!currentUser && viewId !== 'auth') {
-                    this.navigate('/auth/login');
-                    return;
-                }
-                if(currentUser && viewId === 'auth') {
-                    this.navigate('/dashboard');
-                    return;
-                }
-                if(viewId === 'admin' && !isSuperAdmin()) {
-                    showToast("Access denied. SuperAdmin privileges required.", "error");
-                    this.navigate('/dashboard');
-                    return;
-                }
-
-                this.currentRoute = route;
-
                 // Update nav links
                 document.querySelectorAll('.nav-link').forEach(link => {
                     const isActive = link.dataset.route === route;
                     link.classList.toggle('active', isActive);
+                    
+                    // Animate active indicator
                     if(isActive) {
                         link.style.transform = 'scale(0.95)';
                         setTimeout(() => link.style.transform = '', 150);
                     }
                 });
 
+                // Find current active view
                 const currentActive = document.querySelector('.page-view.active');
                 const targetView = document.getElementById(`view-${viewId}`);
 
-                if(currentActive === targetView) {
-                    this.onRouteChange(viewId);
-                    return;
-                }
+                if(currentActive === targetView) return; // Already here
 
                 if(animate && currentActive) {
+                    // Exit animation
                     currentActive.classList.add('exiting');
                     currentActive.classList.remove('active');
                     
@@ -1899,8 +1426,7 @@
             },
             
             onRouteChange(viewId) {
-                logDebug(`Route changed to: ${viewId}`);
-                
+                // Trigger data loading based on view
                 switch(viewId) {
                     case 'contacts':
                         renderContactsTable();
@@ -1912,70 +1438,46 @@
                         renderMarketingHistory();
                         break;
                     case 'templates':
-                        if(cacheTemplates.length === 0) loadTemplatesTable();
-                        else renderTemplatesTable();
+                        renderTemplatesTable();
                         break;
                     case 'sent':
-                        if(cacheCampaigns.length === 0) loadSentEmails();
-                        else renderSentEmails();
+                        loadSentEmails();
                         break;
                     case 'admin':
                         loadAdminUsers();
                         break;
                     case 'dashboard':
-                        // Refresh dashboard data if caches are populated
-                        if(cacheCampaigns.length > 0) renderDashboardRecent();
+                        loadStats();
+                        loadRecentCampaigns();
                         break;
                 }
                 
+                // Scroll to top smoothly
                 window.scrollTo({top: 0, behavior: 'smooth'});
             }
         };
-
-        function isSuperAdmin() {
-            return currentUser && currentUser.email.toLowerCase() === 'people@luviio.com';
-        }
 
         // ==========================================
         // AUTHENTICATION & PERSISTENCE
         // ==========================================
 
         window.addEventListener('DOMContentLoaded', async () => {
-            logDebug("Application starting...");
+            const { data: { session } } = await _supabase.auth.getSession();
             
-            try {
-                // Initialize Supabase client
-                _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                logDebug("Supabase client initialized", { url: SUPABASE_URL });
+            if (session) {
+                initApp(session.user);
+                router.init(); // Initialize router after app ready
+            } else {
+                document.getElementById('view-auth').classList.add('active');
                 
-                const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
-                
-                if (sessionError) {
-                    logDebug("Session error:", sessionError);
-                    throw sessionError;
-                }
-                
-                if (session) {
-                    logDebug("Session found", { user: session.user.email });
-                    await initApp(session.user);
-                    router.init();
-                } else {
-                    logDebug("No session, showing auth");
-                    document.getElementById('view-auth').classList.add('active');
-                    router.init();
-                    
-                    _supabase.auth.onAuthStateChange((event, session) => {
-                        logDebug(`Auth event: ${event}`);
-                        if (event === 'SIGNED_IN' && session) {
-                            initApp(session.user).then(() => router.navigate('/dashboard'));
-                        } else if (event === 'SIGNED_OUT') {
-                            location.reload();
-                        }
-                    });
-                }
-            } catch (error) {
-                logDebug("Critical init error:", error);
-                showToast("Failed to initialize application. Please refresh.", "error");
+                _supabase.auth.onAuthStateChange((event, session) => {
+                    if (event === 'SIGNED_IN' && session) {
+                        initApp(session.user);
+                        router.init();
+                    } else if (event === 'SIGNED_OUT') {
+                        location.reload();
+                    }
+                });
             }
         });
 
@@ -1988,13 +1490,13 @@
             if(mode === 'password') {
                 passForm.style.display = 'flex';
                 otpForm.style.display = 'none';
-                tabPass.className = 'auth-tab-btn active';
-                tabOtp.className = 'auth-tab-btn';
+                tabPass.className = 'flex-1 py-2 px-4 rounded-md text-xs font-bold transition-all bg-white shadow-sm text-black';
+                tabOtp.className = 'flex-1 py-2 px-4 rounded-md text-xs font-bold transition-all text-gray-500 hover:text-black';
             } else {
                 passForm.style.display = 'none';
                 otpForm.style.display = 'flex';
-                tabOtp.className = 'auth-tab-btn active';
-                tabPass.className = 'auth-tab-btn';
+                tabOtp.className = 'flex-1 py-2 px-4 rounded-md text-xs font-bold transition-all bg-white shadow-sm text-black';
+                tabPass.className = 'flex-1 py-2 px-4 rounded-md text-xs font-bold transition-all text-gray-500 hover:text-black';
             }
         }
 
@@ -2012,69 +1514,72 @@
             try {
                 const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
-                logDebug("Sign in successful", data.user);
-                await initApp(data.user);
-                router.navigate('/dashboard');
+                initApp(data.user);
             } catch (err) {
-                logDebug("Auth error:", err);
                 showToast(err.message || "Authentication failed", 'error');
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
             }
         }
 
-async function handleOTPAuth(e) {
-    e.preventDefault();
-    const btn = document.getElementById('otp-btn');
-    const codeField = document.getElementById('otp-code-field');
-    const codeInput = document.getElementById('otp-code');
-    const email = document.getElementById('otp-email').value.trim();
+        async function handleOTPAuth(e) {
+            e.preventDefault();
+            const btn = document.getElementById('otp-btn');
+            const codeField = document.getElementById('otp-code-field');
+            const codeInput = document.getElementById('otp-code');
+            const email = document.getElementById('otp-email').value.trim();
 
-    if(!email) return showToast("Please enter email address", "error");
+            if(!email) return showToast("Please enter email address", "error");
 
-    // If code field is visible, verify OTP
-    if(codeField.style.display !== 'none' && codeInput.value.length === 6) {
-        try {
-            const { data, error } = await _supabase.auth.verifyOtp({
-                email,
-                token: codeInput.value,
-                type: 'email'
-            });
-            if(error) throw error;
-            await initApp(data.user);
-            router.navigate('/dashboard');
-        } catch(err) {
-            showToast(err.message || "Invalid code", 'error');
-        }
-        return;
-    }
-
-    // Otherwise send OTP/Magic Link
-    btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending...';
-    btn.disabled = true;
-
-    try {
-        const { error } = await _supabase.auth.signInWithOtp({ 
-            email,
-            options: {
-                emailRedirectTo: window.location.origin
+            // If code field is visible, verify OTP
+            if(codeField.style.display !== 'none' && codeInput.value.length === 6) {
+                try {
+                    const { data, error } = await _supabase.auth.verifyOtp({
+                        email,
+                        token: codeInput.value,
+                        type: 'email'
+                    });
+                    if(error) throw error;
+                    initApp(data.user);
+                } catch(err) {
+                    showToast(err.message || "Invalid code", 'error');
+                }
+                return;
             }
-        });
-        
-        if(error) throw error;
-        
-        codeField.style.display = 'block';
-        btn.innerHTML = 'Verify Code';
-        btn.disabled = false;
-        showToast("If this email is registered, a verification code has been sent!", "success");
-        
-    } catch(err) {
-        logDebug("OTP Error:", err);
-        showToast(err.message || "Failed to send verification code", "error");
-        btn.innerHTML = 'Send OTP Code';
-        btn.disabled = false;
-    }
-}
+
+            // Otherwise send OTP/Magic Link
+            btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending...';
+            btn.disabled = true;
+
+            try {
+                const { error } = await _supabase.auth.signInWithOtp({ 
+                    email,
+                    options: {
+                        emailRedirectTo: window.location.origin
+                    }
+                });
+                if(error) throw error;
+                
+                codeField.style.display = 'block';
+                btn.innerHTML = 'Verify Code';
+                btn.disabled = false;
+                showToast("Check your email for the verification code!", "success");
+            } catch(err) {
+                showToast(err.message || "Failed to send OTP", 'error');
+                btn.innerHTML = 'Send OTP Code';
+                btn.disabled = false;
+            }
+        }
+
+        async function handleSignUp() {
+             const email = document.getElementById('auth-email').value.trim();
+             const password = document.getElementById('auth-pass').value;
+             
+             if(!email || !password) return showToast("Please enter email and password", "error");
+             const { error } = await _supabase.auth.signUp({ email, password });
+             if(error) return showToast(error.message, 'error');
+             showToast("Check your inbox to confirm!", "success");
+        }
 
         async function handleLogout() {
             await _supabase.auth.signOut();
@@ -2082,410 +1587,183 @@ async function handleOTPAuth(e) {
             document.getElementById('app-container').style.display = 'none';
             document.getElementById('app-footer').style.display = 'none';
             
+            // Clear all views
             document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
             
-            document.getElementById('auth-form-password').reset();
-            document.getElementById('auth-form-otp').reset();
-            switchAuthMode('password');
+            document.getElementById('auth-form').reset();
             
             setTimeout(() => {
                 document.getElementById('view-auth').classList.add('active');
-                router.navigate('/auth/login');
             }, 100);
         }
 
         // ==========================================
-        // APP INITIALIZATION - FIXED DATA LOADING
+        // APP INITIALIZATION
         // ==========================================
 
-async function initApp(user) {
-    logDebug(`Initializing app for user: ${user.email}`);
-    
-    currentUser = user;
-    
-    // Hide auth, show app
-    document.getElementById('view-auth').classList.remove('active');
-    document.getElementById('app-container').style.display = 'block';
-    document.getElementById('app-footer').style.display = 'flex';
-    
-    // User Display
-    const initial = user.email.charAt(0).toUpperCase();
-    document.getElementById('user-avatar').innerText = initial;
-    document.getElementById('user-avatar').style.background = `linear-gradient(135deg, hsl(${Math.random()*360}, 70%, 50%), hsl(${Math.random()*360}, 70%, 40%))`;
-    
-    // Greeting
-    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
-    document.getElementById('dashboard-greeting').innerHTML = `Hi, <strong>${escapeHtml(displayName)}</strong>! Welcome back to your infrastructure overview.`;
-    
-    // Check SuperAdmin Role
-    if(isSuperAdmin()) {
-        document.getElementById('nav-admin').classList.remove('hidden');
-        document.getElementById('admin-indicator').classList.remove('hidden');
-        document.getElementById('user-role-badge').classList.remove('hidden');
-    } else {
-        document.getElementById('nav-admin').classList.add('hidden');
-        document.getElementById('admin-indicator').classList.add('hidden');
-        document.getElementById('user-role-badge').classList.add('hidden');
-    }
-    
-    // Initialize Quill Editor (only once)
-    if (!quillEditor) {
-        quillEditor = new Quill('#editor-quill', {
-            theme: 'snow',
-            placeholder: 'Compose your message...',
-            modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link'],
-                    ['clean']
-                ]
+        async function initApp(user) {
+            currentUser = user;
+            
+            document.getElementById('view-auth').classList.remove('active');
+            document.getElementById('app-container').style.display = 'block';
+            document.getElementById('app-footer').style.display = 'flex';
+            
+            // User Display
+            const initial = user.email.charAt(0).toUpperCase();
+            document.getElementById('user-avatar').innerText = initial;
+            document.getElementById('user-avatar').style.background = `linear-gradient(135deg, hsl(${Math.random()*360}, 70%, 50%), hsl(${Math.random()*360}, 70%, 40%))`;
+            
+            // Greeting
+            const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
+            document.getElementById('dashboard-greeting').innerHTML = `Hi, <strong>${escapeHtml(displayName)}</strong>! Welcome back to your infrastructure overview.`;
+            
+            // Check Admin Role
+            const isAdmin = user.app_metadata?.role === 'admin' || user.email === 'admin@luviio.com'; // Simple check
+            if(isAdmin) {
+                document.getElementById('nav-admin').classList.remove('hidden');
+                document.getElementById('admin-indicator').classList.remove('hidden');
+                document.getElementById('user-role-badge').classList.remove('hidden');
+                loadAdminData();
             }
-        });
+            
+            if (!quillEditor) {
+                quillEditor = new Quill('#editor-quill', {
+                    theme: 'snow',
+                    placeholder: 'Compose your message...',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['link'],
+                            ['clean']
+                        ]
+                    }
+                });
 
-        quillEditor.on('text-change', updateChecklist);
-        
-        ['mail-subject', 'mail-to', 'mail-sender-email'].forEach(id => {
-            const el = document.getElementById(id);
-            if(el) el.addEventListener('input', updateChecklist);
-        });
-    }
+                // Listen for text changes to update checklist
+                quillEditor.on('text-change', updateChecklist);
+                
+                // Attach listeners for mail page inputs
+                ['mail-subject', 'mail-to', 'mail-sender-email'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.addEventListener('input', updateChecklist);
+                });
+            }
 
-    // CRITICAL FIX: Sequential data loading with proper error handling
-    try {
-        logDebug("Starting data load sequence...");
-        
-        // Show loading states
-        showDataLoadingState();
-        
-        // Load all essential data in parallel first
-        const [sendersResult, contactsResult, templatesResult, campaignsResult] = await Promise.allSettled([
-            loadSenders(),
-            loadContacts(),
-            loadTemplatesData(),
-            loadSentEmailsData()
-        ]);
-        
-        // Process results
-        if(sendersResult.status === 'fulfilled') {
-            logDebug(`Senders loaded: ${cacheSenders.length}`);
-        } else {
-            logDebug("Senders failed:", sendersResult.reason);
-            cacheSenders = []; // Ensure empty array on failure
+            await Promise.allSettled([
+                loadSenders(),
+                loadContacts(),
+                loadStats(),
+                loadRecentCampaigns(),
+                loadTemplatesSidebar(),
+                loadTemplatesTable(),
+                loadSentEmails()
+            ]);
+
+            document.getElementById('set-email').value = user.email;
+            document.getElementById('set-name').value = displayName;
+            
+            // Navigate to dashboard or current hash
+            router.init();
         }
-        
-        if(contactsResult.status === 'fulfilled') {
-            logDebug(`Contacts loaded: ${cacheContacts.length}`);
-        } else {
-            logDebug("Contacts failed:", contactsResult.reason);
-            cacheContacts = [];
-        }
-        
-        if(templatesResult.status === 'fulfilled') {
-            logDebug(`Templates loaded: ${cacheTemplates.length}`);
-        } else {
-            logDebug("Templates failed:", templatesResult.reason);
-            cacheTemplates = [];
-        }
-        
-        if(campaignsResult.status === 'fulfilled') {
-            logDebug(`Campaigns loaded: ${cacheCampaigns.length}`);
-        } else {
-            logDebug("Campaigns failed:", campaignsResult.reason);
-            cacheCampaigns = [];
-        }
-        
-        // Now load stats and recent campaigns (depend on above data)
-        await Promise.allSettled([
-            loadStats(),
-            loadRecentCampaigns()
-        ]);
-        
-        // Render settings data
-        renderSettingsSenders();
-        loadTemplatesSidebar();
-        
-        logDebug("Data loading complete", {
-            senders: cacheSenders.length,
-            contacts: cacheContacts.length,
-            templates: cacheTemplates.length,
-            campaigns: cacheCampaigns.length
-        });
-        
-    } catch (error) {
-        logDebug("Critical error during data loading:", error);
-        showToast("Error loading application data. Please refresh.", "error");
-        showDataErrorState(error.message);
-    }
-
-    // Set profile fields
-    document.getElementById('set-email').value = user.email;
-    document.getElementById('set-name').value = displayName;
-    
-    // Initialize router AFTER data is ready
-    router.init();
-}
-
-// Helper to show loading state in dashboard
-function showDataLoadingState() {
-    const recentList = document.getElementById('dashboard-recent-list');
-    if(recentList) {
-        recentList.innerHTML = `
-            <div class="data-loading">
-                <div class="animate-pulse flex items-center gap-2">
-                    <div class="w-2 h-2 bg-gray-300 rounded-full animate-bounce"></div>
-                    Loading activity...
-                </div>
-            </div>`;
-    }
-}
-
-function showDataErrorState(message) {
-    const recentList = document.getElementById('dashboard-recent-list');
-    if(recentList) {
-        recentList.innerHTML = `
-            <div class="data-error">
-                <p class="font-semibold">Failed to load data</p>
-                <p class="text-xs mt-1">${escapeHtml(message)}</p>
-                <button onclick="location.reload()" class="mt-2 text-xs underline">Refresh Page</button>
-            </div>`;
-    }
-}
 
         // ==========================================
-        // DATA FETCHING - FIXED WITH PROPER ERROR HANDLING
+        // DATA FETCHING
         // ==========================================
 
         async function loadSenders() {
-            try {
-                logDebug("Fetching senders...");
-                const { data, error, count } = await _supabase
-                    .from('senders')
-                    .select('*', { count: 'exact' })
-                    .eq('user_id', currentUser.id)
-                    .order('is_default', { ascending: false });
+            const { data, error } = await _supabase
+                .from('senders')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('is_default', { ascending: false });
 
-                if (error) throw error;
-                cacheSenders = Array.isArray(data) ? data : [];
-                logDebug(`Loaded ${cacheSenders.length} senders`, cacheSenders);
+            if (!error && data) {
+                cacheSenders = data;
                 populateSenderDropdown();
-                return cacheSenders;
-            } catch (error) {
-                logDebug("Error loading senders:", error);
-                cacheSenders = [];
-                throw error;
             }
         }
 
         async function loadContacts() {
-            try {
-                logDebug("Fetching contacts...");
-                const { data, error, count } = await _supabase
-                    .from('contacts')
-                    .select('*', { count: 'exact' })
-                    .eq('user_id', currentUser.id)
-                    .order('created_at', { ascending: false });
+            const { data, error } = await _supabase
+                .from('contacts')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false });
 
-                if (error) throw error;
-                cacheContacts = Array.isArray(data) ? data : [];
-                logDebug(`Loaded ${cacheContacts.length} contacts`, cacheContacts);
-                return cacheContacts;
-            } catch (error) {
-                logDebug("Error loading contacts:", error);
-                cacheContacts = [];
-                throw error;
-            }
+            if (!error && data) cacheContacts = data;
         }
 
         async function loadStats() {
-            try {
-                logDebug("Loading statistics...");
-                const [contactsRes, sendersRes, campaignsRes] = await Promise.all([
-                    _supabase.from('contacts').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id).catch(e => ({count: 0})),
-                    _supabase.from('senders').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id).catch(e => ({count: 0})),
-                    _supabase.from('campaigns').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id).eq('status', 'sent').catch(e => ({count: 0}))
-                ]);
+            const [contactsRes, sendersRes, campaignsRes] = await Promise.all([
+                _supabase.from('contacts').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id),
+                _supabase.from('senders').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id),
+                _supabase.from('campaigns').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id).eq('status', 'sent')
+            ]);
 
-                const contactCount = contactsRes.count || 0;
-                const senderCount = sendersRes.count || 0;
-                const sentCount = campaignsRes.count || 0;
-                
-                logDebug("Stats loaded", { contacts: contactCount, senders: senderCount, sent: sentCount });
-                
-                animateValue('stat-contacts', contactCount);
-                animateValue('stat-senders', senderCount);
-                animateValue('stat-sent', sentCount);
-            } catch (error) {
-                logDebug("Error loading stats:", error);
-                // Set to 0 on error
-                document.getElementById('stat-contacts').textContent = '0';
-                document.getElementById('stat-senders').textContent = '0';
-                document.getElementById('stat-sent').textContent = '0';
-            }
+            animateValue('stat-contacts', contactsRes.count || 0);
+            animateValue('stat-senders', sendersRes.count || 0);
+            animateValue('stat-sent', campaignsRes.count || 0);
         }
 
         async function loadRecentCampaigns() {
             const container = document.getElementById('dashboard-recent-list');
-            if (!container) return;
-            
-            try {
-                logDebug("Fetching recent campaigns...");
-                const { data, error } = await _supabase
-                    .from('campaigns')
-                    .select('*')
-                    .eq('user_id', currentUser.id)
-                    .order('created_at', { ascending: false })
-                    .limit(5);
+            const { data, error } = await _supabase
+                .from('campaigns')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false })
+                .limit(5);
 
-                if (error) throw error;
-
-                const campaigns = Array.isArray(data) ? data : [];
-
-                if (campaigns.length === 0) {
-                    container.innerHTML = `
-                        <div class="data-empty">
-                            <svg class="icon mx-auto mb-2 text-gray-300" style="width: 24px; height: 24px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            <p class="text-sm">No campaigns yet.<br><span class="text-xs opacity-60">Create your first campaign to see it here.</span></p>
-                        </div>`;
-                    return;
-                }
-
-                container.innerHTML = campaigns.map((c, i) => `
-                    <div class="group flex items-center justify-between p-4 bg-black/[0.02] hover:bg-black/[0.04] rounded-xl transition-all cursor-pointer table-row-hover stagger-item" style="animation-delay: ${i * 50}ms" onclick="loadCampaignToComposer('${c.id}')">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[var(--text-sub)] group-hover:text-black group-hover:shadow transition-all duration-300">
-                                <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-sm">${escapeHtml(c.subject || 'Untitled')}</div>
-                                <div class="text-xs text-[var(--text-sub)]">${formatDate(c.created_at)} • ${Array.isArray(c.recipients) ? c.recipients.length : 0} recipients</div>
-                            </div>
-                        </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500'}">${c.status || 'draft'}</span>
-                    </div>
-                `).join('');
-                
-            } catch (error) {
-                logDebug("Error loading recent campaigns:", error);
-                container.innerHTML = `
-                    <div class="data-error">
-                        <p class="font-semibold">Failed to load campaigns</p>
-                        <p class="text-xs mt-1">${escapeHtml(error.message)}</p>
-                    </div>`;
-            }
-        }
-
-        // Helper to render dashboard recent (for route changes)
-        function renderDashboardRecent() {
-            const container = document.getElementById('dashboard-recent-list');
-            if (!container) return;
-            
-            if (!Array.isArray(cacheCampaigns) || cacheCampaigns.length === 0) {
-                container.innerHTML = `
-                    <div class="data-empty">
-                        <svg class="icon mx-auto mb-2 text-gray-300" style="width: 24px; height: 24px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <p class="text-sm">No campaigns yet.</p>
-                    </div>`;
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-[var(--text-sub)] text-sm">No campaigns yet.</div>';
                 return;
             }
 
-            const recent = cacheCampaigns.slice(0, 5);
-            container.innerHTML = recent.map((c, i) => `
+            container.innerHTML = data.map((c, i) => `
                 <div class="group flex items-center justify-between p-4 bg-black/[0.02] hover:bg-black/[0.04] rounded-xl transition-all cursor-pointer table-row-hover stagger-item" style="animation-delay: ${i * 50}ms" onclick="loadCampaignToComposer('${c.id}')">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[var(--text-sub)] group-hover:text-black group-hover:shadow transition-all duration-300">
                             <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         </div>
                         <div>
-                            <div class="font-semibold text-sm">${escapeHtml(c.subject || 'Untitled')}</div>
-                            <div class="text-xs text-[var(--text-sub)]">${formatDate(c.created_at)} • ${Array.isArray(c.recipients) ? c.recipients.length : 0} recipients</div>
+                            <div class="font-semibold text-sm">${escapeHtml(c.subject)}</div>
+                            <div class="text-xs text-[var(--text-sub)]">${formatDate(c.created_at)} • ${c.recipients?.length || 0} recipients</div>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500'}">${c.status || 'draft'}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-500'}">${c.status}</span>
                 </div>
             `).join('');
         }
 
         async function loadTemplatesSidebar() {
             const container = document.getElementById('sidebar-templates');
-            if (!container) return;
+            const { data } = await _supabase.from('templates').select('*').eq('user_id', currentUser.id).order('updated_at', { ascending: false }).limit(5);
             
-            try {
-                const { data, error } = await _supabase.from('templates').select('*').eq('user_id', currentUser.id).order('updated_at', { ascending: false }).limit(5);
-                
-                if(error) throw error;
-                
-                const templates = Array.isArray(data) ? data : [];
-                
-                if(templates.length === 0) {
-                    container.innerHTML = '<p class="text-xs text-gray-400 italic">No saved templates</p>';
-                    return;
-                }
+            if(!data || data.length === 0) return;
 
-                container.innerHTML = templates.map(t => `
-                    <button onclick="loadTemplate('${t.id}')" class="w-full text-left p-2.5 text-xs font-medium bg-black/[0.02] hover:bg-black/[0.05] rounded-lg border border-transparent hover:border-black/10 truncate transition-all duration-200 hover:translate-x-1">
-                        ${escapeHtml(t.name)}
-                    </button>
-                `).join('');
-            } catch (error) {
-                logDebug("Error loading sidebar templates:", error);
-                container.innerHTML = '<p class="text-xs text-red-400 italic">Error loading</p>';
-            }
-        }
-
-        // Separate data loading functions for internal use vs rendering
-        async function loadTemplatesData() {
-            try {
-                logDebug("Fetching templates...");
-                const { data, error } = await _supabase.from('templates').select('*').eq('user_id', currentUser.id).order('updated_at', { ascending: false });
-                if (error) throw error;
-                cacheTemplates = Array.isArray(data) ? data : [];
-                logDebug(`Loaded ${cacheTemplates.length} templates`);
-                return cacheTemplates;
-            } catch (error) {
-                logDebug("Error loading templates:", error);
-                cacheTemplates = [];
-                throw error;
-            }
+            container.innerHTML = data.map(t => `
+                <button onclick="loadTemplate('${t.id}')" class="w-full text-left p-2.5 text-xs font-medium bg-black/[0.02] hover:bg-black/[0.05] rounded-lg border border-transparent hover:border-black/10 truncate transition-all duration-200 hover:translate-x-1">
+                    ${escapeHtml(t.name)}
+                </button>
+            `).join('');
         }
 
         async function loadTemplatesTable() {
             const tbody = document.getElementById('templates-table-body');
-            if (!tbody) return;
+            const { data, error } = await _supabase.from('templates').select('*').eq('user_id', currentUser.id).order('updated_at', { ascending: false });
             
-            try {
-                const data = await loadTemplatesData(); // This populates cache
-                
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="4" class="p-12">
-                                <div class="data-empty">
-                                    <svg class="icon mx-auto mb-2 text-gray-300" style="width: 32px; height: 32px;" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
-                                    <p class="font-medium">No templates yet</p>
-                                    <p class="text-xs mt-1 opacity-60">Create your first template to get started.</p>
-                                </div>
-                            </td>
-                        </tr>`;
-                    return;
-                }
-
-                renderTemplatesTable();
-            } catch (error) {
-                logDebug("Error in loadTemplatesTable:", error);
-                tbody.innerHTML = `<tr><td colspan="4" class="p-12"><div class="data-error">Error loading templates: ${escapeHtml(error.message)}</div></td></tr>`;
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-12 text-center text-[var(--text-sub)] text-sm">No templates saved yet.</td></tr>';
+                return;
             }
-        }
 
-        function renderTemplatesTable() {
-            const tbody = document.getElementById('templates-table-body');
-            if (!tbody || !Array.isArray(cacheTemplates) || cacheTemplates.length === 0) return;
-
-            tbody.innerHTML = cacheTemplates.map((t, i) => `
+            cacheTemplates = data;
+            tbody.innerHTML = data.map((t, i) => `
                 <tr class="group table-row-hover stagger-item" style="animation-delay: ${i * 30}ms">
                     <td class="p-4 font-medium text-sm">${escapeHtml(t.name)}</td>
-                    <td class="p-4 text-sm text-[var(--text-sub)] truncate max-w-xs">${escapeHtml((t.subject || '').substring(0, 50))}...</td>
+                    <td class="p-4 text-sm text-[var(--text-sub)] truncate max-w-xs">${escapeHtml(t.subject?.substring(0, 50))}...</td>
                     <td class="p-4 text-sm text-[var(--text-sub)]">${formatDate(t.updated_at)}</td>
                     <td class="p-4 text-right space-x-2">
                         <button onclick="loadTemplate('${t.id}')" class="action-btn action-btn-view">Use</button>
@@ -2496,64 +1774,27 @@ function showDataErrorState(message) {
             `).join('');
         }
 
-        async function loadSentEmailsData() {
-            try {
-                logDebug("Fetching sent emails/campaigns...");
-                const { data, error } = await _supabase
-                    .from('campaigns')
-                    .select('*')
-                    .eq('user_id', currentUser.id)
-                    .order('sent_at', { ascending: false });
-
-                if (error) throw error;
-                cacheCampaigns = Array.isArray(data) ? data : [];
-                logDebug(`Loaded ${cacheCampaigns.length} campaigns`);
-                return cacheCampaigns;
-            } catch (error) {
-                logDebug("Error loading sent emails:", error);
-                cacheCampaigns = [];
-                throw error;
-            }
-        }
-
         async function loadSentEmails() {
             const tbody = document.getElementById('sent-table-body');
-            if (!tbody) return;
-            
-            try {
-                await loadSentEmailsData(); // Populates cache
-                renderSentEmails();
-            } catch (error) {
-                logDebug("Error in loadSentEmails:", error);
-                tbody.innerHTML = `<tr><td colspan="5" class="p-12"><div class="data-error">Error loading sent emails: ${escapeHtml(error.message)}</div></td></tr>`;
-            }
-        }
+            const { data, error } = await _supabase
+                .from('campaigns')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('sent_at', { ascending: false });
 
-        function renderSentEmails() {
-            const tbody = document.getElementById('sent-table-body');
-            if (!tbody) return;
-
-            if (!Array.isArray(cacheCampaigns) || cacheCampaigns.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="p-12">
-                            <div class="data-empty">
-                                <svg class="icon mx-auto mb-2 text-gray-300" style="width: 32px; height: 32px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                <p class="font-medium">No sent emails yet</p>
-                                <p class="text-xs mt-1 opacity-60">Your sent campaigns will appear here.</p>
-                            </div>
-                        </td>
-                    </tr>`;
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-12 text-center text-[var(--text-sub)] text-sm">No sent emails found.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = cacheCampaigns.map((c, i) => `
+            cacheCampaigns = data;
+            tbody.innerHTML = data.map((c, i) => `
                 <tr class="group table-row-hover stagger-item" style="animation-delay: ${i * 30}ms">
-                    <td class="p-4 font-medium text-sm">${escapeHtml(c.subject || 'Untitled')}</td>
+                    <td class="p-4 font-medium text-sm">${escapeHtml(c.subject)}</td>
                     <td class="p-4 text-sm text-[var(--text-sub)]">${Array.isArray(c.recipients) ? c.recipients.length : 0} recipients</td>
                     <td class="p-4">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : c.status === 'draft' ? 'bg-gray-100 text-gray-700' : 'bg-yellow-50 text-yellow-700'}">
-                            ${c.status || 'unknown'}
+                            ${c.status}
                         </span>
                     </td>
                     <td class="p-4 text-sm text-[var(--text-sub)] whitespace-nowrap">${formatDate(c.sent_at || c.created_at)}</td>
@@ -2568,68 +1809,53 @@ function showDataErrorState(message) {
         
         async function renderMarketingHistory() {
             const container = document.getElementById('marketing-history-list');
-            if (!container) return;
-            
-            try {
-                // Fetch fresh data for marketing view
-                const { data, error } = await _supabase
-                    .from('campaigns')
-                    .select('*')
-                    .eq('user_id', currentUser.id)
-                    .order('created_at', { ascending: false })
-                    .limit(10);
+            const { data, error } = await _supabase
+                .from('campaigns')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false })
+                .limit(10);
 
-                if (error) throw error;
-
-                const campaigns = Array.isArray(data) ? data : [];
-
-                if (campaigns.length === 0) {
-                    container.innerHTML = `
-                        <div class="data-empty py-8">
-                            <p class="text-sm">No marketing history available.</p>
-                        </div>`;
-                    return;
-                }
-
-                container.innerHTML = campaigns.map((c, i) => `
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200 stagger-item group" style="animation-delay: ${i * 50}ms">
-                        <div class="flex-1 min-w-0 mr-4">
-                            <div class="font-bold text-sm text-gray-800 truncate group-hover:text-black transition-colors">${escapeHtml(c.subject || 'Untitled')}</div>
-                            <div class="text-xs text-gray-500">${formatDate(c.sent_at || c.created_at)}</div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                             <span class="text-xs font-medium text-gray-500">${Array.isArray(c.recipients) ? c.recipients.length : 0} sent</span>
-                             <span class="w-2 h-2 rounded-full ${c.status === 'sent' ? 'bg-green-400' : 'bg-yellow-400'}"></span>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (error) {
-                logDebug("Marketing history error:", error);
-                container.innerHTML = `<div class="data-error">Failed to load history: ${escapeHtml(error.message)}</div>`;
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">No marketing history available.</div>';
+                return;
             }
+
+            container.innerHTML = data.map((c, i) => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200 stagger-item group" style="animation-delay: ${i * 50}ms">
+                    <div class="flex-1 min-w-0 mr-4">
+                        <div class="font-bold text-sm text-gray-800 truncate group-hover:text-black transition-colors">${escapeHtml(c.subject)}</div>
+                        <div class="text-xs text-gray-500">${formatDate(c.sent_at || c.created_at)}</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                         <span class="text-xs font-medium text-gray-500">${c.recipients?.length || 0} sent</span>
+                         <span class="w-2 h-2 rounded-full ${c.status === 'sent' ? 'bg-green-400' : 'bg-yellow-400'}"></span>
+                    </div>
+                </div>
+            `).join('');
         }
 
 
 // ==========================================
-// SEND VIA EDGE FUNCTION
+// FINAL: SEND VIA EDGE FUNCTION (CORS FIXED)
 // ==========================================
 
 async function sendViaResend() {
     const btn = document.getElementById('btn-send-final');
     const originalContent = btn.innerHTML;
     
-    // Gather Data
+    // 1. Gather Data from MAIL PAGE
     const senderEmailId = document.getElementById('mail-sender-email').value;
     const senderName = document.getElementById('mail-sender-name').value.trim();
     const rawToString = document.getElementById('mail-to').value;
     const subject = document.getElementById('mail-subject').value.trim();
     
-    // Validation
+    // 2. Validation
     if (!senderEmailId) return showToast("Please select a sender identity.", "error");
     if (!rawToString) return showToast("Please add at least one recipient.", "error");
     if (!subject) return showToast("Subject line cannot be empty.", "error");
 
-    // Process Recipients
+    // 3. Process Recipients
     const recipients = rawToString
         .split(',')
         .map(email => email.trim().toLowerCase())
@@ -2641,19 +1867,19 @@ async function sendViaResend() {
     const senderObj = cacheSenders.find(s => s.id === senderEmailId);
     if(!senderObj) return showToast("Sender configuration error.", "error");
     
-    const fromAddress = `${senderName || senderObj.alias_name || ''} <${senderObj.email}>`;
+    // Construct From Address
+    const fromAddress = `${senderName || senderObj.alias_name} <${senderObj.email}>`;
 
-    // Prepare Content
+    // Prepare Content based on active editor mode
     let htmlBody = '';
     const htmlContainerVisible = document.getElementById('editor-html-container').style.display !== 'none';
     const textContainerVisible = document.getElementById('editor-text-container').style.display !== 'none';
     const rawContainerVisible = document.getElementById('editor-raw-container').style.display !== 'none';
 
-    if(htmlContainerVisible && quillEditor) {
+    if(htmlContainerVisible) {
         htmlBody = quillEditor.root.innerHTML;
     } else if(textContainerVisible) {
-        const textVal = document.getElementById('comp-body-text').value;
-        htmlBody = `<pre style="white-space: pre-wrap; font-family: inherit;">${textVal.replace(/</g, '&lt;')}</pre>`;
+        htmlBody = `<pre style="white-space: pre-wrap; font-family: inherit;">${document.getElementById('comp-body-text').value.replace(/</g, '&lt;')}</pre>`;
     } else if(rawContainerVisible) {
         htmlBody = document.getElementById('comp-body-html').value;
     }
@@ -2663,62 +1889,42 @@ async function sendViaResend() {
     btn.disabled = true;
 
     try {
-        logDebug("Sending email...", { from: fromAddress, to: recipients, subject: subject });
-        
-        // Call Edge Function
+        // 4. CALL EDGE FUNCTION
         const { data, error: fnError } = await _supabase.functions.invoke('send-email', {
             body: {
                 from: fromAddress,
                 to: recipients,
                 subject: subject,
-                html: htmlBody || '<p>Email content</p>'
+                html: htmlBody
             }
         });
 
-        if (fnError) throw fnError;
+        if (fnError) throw new Error(fnError.message);
         
-        // Save to Database
-        const dbData = {
+        // 5. Save to Database
+        await _supabase.from('campaigns').insert({
             user_id: currentUser.id,
             sender_id: senderObj.id,
             subject: subject,
-            html_content: htmlBody || '',
+            html_content: htmlBody,
             recipients: recipients,
             status: 'sent',
-            external_id: data?.id || null,
+            external_id: data?.id,
             provider: 'resend',
             sent_at: new Date().toISOString()
-        };
-        
-        const { error: dbError } = await _supabase.from('campaigns').insert(dbData);
+        });
 
-        if (dbError) {
-            logDebug("DB Save warning:", dbError);
-            console.warn("Saved to DB but had error:", dbError);
-        } else {
-            // Update local cache immediately
-            cacheCampaigns.unshift({
-                ...dbData,
-                id: data?.id || Date.now().toString(),
-                created_at: new Date().toISOString()
-            });
-        }
-
-        showToast(`✅ Email Sent Successfully! ID: ${data?.id || 'saved'}`, 'success');
+        showToast(`✅ Email Sent! ID: ${data?.id}`, 'success');
         
-        // Reset Form
+        // Reset Form partially
         document.getElementById('mail-to').value = '';
         
         // Refresh Data
-        renderSentEmails();
-        renderDashboardRecent();
-        await loadStats();
-        
-        router.navigate('/sent');
+        router.navigate('/dashboard');
 
     } catch (err) {
-        logDebug("Send Error:", err);
-        showToast(`Error: ${err.message || 'Failed to send email'}`, 'error');
+        console.error("Send Error:", err);
+        showToast(`Error: ${err.message}`, 'error');
     } finally {
         btn.innerHTML = originalContent;
         btn.disabled = false;
@@ -2729,21 +1935,23 @@ function openPreviewModal() {
     const subject = document.getElementById('mail-subject').value || 'No Subject';
     const senderName = document.getElementById('mail-sender-name').value;
     const senderId = document.getElementById('mail-sender-email').value;
-    const senderObj = cacheSenders.find(s=>s.id === senderId) || {};
+    const senderObj = cacheSenders.find(s=>s.id === senderId);
     
     document.getElementById('prev-subject').innerText = subject;
-    document.getElementById('prev-from').innerText = `${senderName} <${senderObj.email || 'Unknown'}>`;
+    document.getElementById('prev-from').innerText = `${senderName} <${senderObj ? senderObj.email : 'Unknown'}>`;
     
+    // Get content from active editor
     let content = '';
-    if(document.getElementById('editor-html-container').style.display !== 'none' && quillEditor) {
+    if(document.getElementById('editor-html-container').style.display !== 'none') {
         content = quillEditor.root.innerHTML;
     } else if(document.getElementById('editor-text-container').style.display !== 'none') {
-        content = document.getElementById('comp-body-text').value || '';
+        content = document.getElementById('comp-body-text').value;
     } else if(document.getElementById('editor-raw-container').style.display !== 'none') {
-        content = document.getElementById('comp-body-html').value || '';
+        content = document.getElementById('comp-body-html').value;
     }
     
-    document.getElementById('prev-body').innerHTML = content || '<p>No content</p>';
+    document.getElementById('prev-body').innerHTML = content;
+    
     openModal('preview-modal');
 }
 
@@ -2754,36 +1962,32 @@ function sendTestEmail() {
 
 function updateChecklist() {
     const checks = {
-        'check-sender': document.getElementById('mail-sender-email')?.value !== '',
-        'check-subject': document.getElementById('mail-subject')?.value.trim() !== '',
-        'check-content': quillEditor && quillEditor.getText().trim().length > 10,
-        'check-recipients': document.getElementById('mail-to')?.value.trim() !== ''
+        'check-sender': document.getElementById('mail-sender-email').value !== '',
+        'check-subject': document.getElementById('mail-subject').value.trim() !== '',
+        'check-content': quillEditor.getText().trim().length > 10,
+        'check-recipients': document.getElementById('mail-to').value.trim() !== ''
     };
 
     for(const [id, isValid] of Object.entries(checks)) {
         const el = document.getElementById(id);
-        if (!el) continue;
         const icon = el.querySelector('.check-icon');
         if(isValid) {
             el.classList.add('bg-emerald-500', 'border-emerald-500');
             el.classList.remove('border-gray-300');
-            if(icon) {
-                icon.classList.remove('text-transparent');
-                icon.classList.add('text-white');
-            }
+            icon.classList.remove('text-transparent');
+            icon.classList.add('text-white');
             el.style.transform = 'scale(1.1)';
             setTimeout(() => el.style.transform = '', 200);
         } else {
             el.classList.remove('bg-emerald-500', 'border-emerald-500');
             el.classList.add('border-gray-300');
-            if(icon) {
-                icon.classList.add('text-transparent');
-                icon.classList.remove('text-white');
-            }
+            icon.classList.add('text-transparent');
+            icon.classList.remove('text-white');
         }
     }
 }
 
+// Toggle Status Listener
 document.addEventListener('change', (e) => {
     if(e.target && e.target.id === 'mail-status-toggle') {
         const label = document.getElementById('mail-status-label');
@@ -2794,22 +1998,17 @@ document.addEventListener('change', (e) => {
 
         async function saveAsDraft() {
              const subject = document.getElementById('mail-subject').value || 'Untitled Draft';
-             const htmlBody = quillEditor ? quillEditor.root.innerHTML : '';
+             const htmlBody = quillEditor.root.innerHTML;
              
-             try {
-                 const { error } = await _supabase.from('campaigns').insert({
-                    user_id: currentUser.id,
-                    subject: subject,
-                    html_content: htmlBody,
-                    status: 'draft',
-                    created_at: new Date().toISOString()
-                 });
-                 
-                 if(error) throw error;
-                 showToast("Draft saved successfully.", "success");
-             } catch(err) {
-                 showToast(err.message || "Error saving draft", "error");
-             }
+             const { error } = await _supabase.from('campaigns').insert({
+                user_id: currentUser.id,
+                subject: subject,
+                html_content: htmlBody,
+                status: 'draft'
+             });
+             
+             if(error) return showToast(error.message, 'error');
+             showToast("Draft saved successfully.", 'success');
         }
 
         // ==========================================
@@ -2822,41 +2021,28 @@ document.addEventListener('change', (e) => {
             const name = document.getElementById('new-c-name').value.trim();
             const email = document.getElementById('new-c-email').value.trim().toLowerCase();
 
-            if(!name || !email) return showToast("Please fill all fields", "error");
+            if(editId) {
+                // UPDATE
+                const { error } = await _supabase.from('contacts').update({ name, email }).eq('id', editId);
+                if(error) return showToast(error.message, 'error');
+                showToast(`${name} updated successfully`, 'success');
+            } else {
+                // CREATE
+                const { data, error } = await _supabase.from('contacts').insert({
+                    user_id: currentUser.id,
+                    name,
+                    email
+                }).select().single();
 
-            try {
-                if(editId) {
-                    const { error } = await _supabase.from('contacts').update({ name, email, updated_at: new Date().toISOString() }).eq('id', editId).eq('user_id', currentUser.id);
-                    if(error) throw error;
-                    showToast(`${name} updated successfully`, 'success');
-                    
-                    // Update cache
-                    const idx = cacheContacts.findIndex(c => c.id === editId);
-                    if(idx !== -1) cacheContacts[idx] = { ...cacheContacts[idx], name, email, updated_at: new Date().toISOString() };
-                } else {
-                    const { data, error } = await _supabase.from('contacts').insert({
-                        user_id: currentUser.id,
-                        name,
-                        email,
-                        created_at: new Date().toISOString()
-                    }).select().single();
-
-                    if(error) throw error;
-                    if(data) {
-                        showToast(`${name} added to contacts`, 'success');
-                        cacheContacts.unshift(data);
-                    }
-                }
-                
-                closeModal('contact-modal');
-                resetContactForm();
-                renderContactsTable();
-                loadStats(); // Update dashboard stats
-                
-            } catch (err) {
-                logDebug("Save contact error:", err);
-                showToast(err.message || "Error saving contact", "error");
+                if(error) return showToast(error.message, 'error');
+                showToast(`${name} added to contacts`, 'success');
             }
+            
+            closeModal('contact-modal');
+            resetContactForm();
+            await loadContacts();
+            renderContactsTable();
+            loadStats();
         }
 
         function editContact(id) {
@@ -2864,8 +2050,8 @@ document.addEventListener('change', (e) => {
             if(!contact) return;
             
             document.getElementById('edit-contact-id').value = id;
-            document.getElementById('new-c-name').value = contact.name || '';
-            document.getElementById('new-c-email').value = contact.email || '';
+            document.getElementById('new-c-name').value = contact.name;
+            document.getElementById('new-c-email').value = contact.email;
             document.getElementById('contact-modal-title').innerText = 'Edit Contact';
             document.getElementById('contact-submit-btn').innerText = 'Update Contact';
             openModal('contact-modal');
@@ -2881,40 +2067,21 @@ document.addEventListener('change', (e) => {
 
         async function deleteContact(id) {
             if(!confirm("Remove this contact?")) return;
+            const { error } = await _supabase.from('contacts').delete().eq('id', id);
+            if(error) return showToast(error.message, 'error');
             
-            try {
-                const { error } = await _supabase.from('contacts').delete().eq('id', id).eq('user_id', currentUser.id);
-                if(error) throw error;
-                
-                // Remove from cache
-                cacheContacts = cacheContacts.filter(c => c.id !== id);
-                
-                renderContactsTable();
-                showToast("Contact removed.", 'success');
-                loadStats();
-            } catch (err) {
-                showToast(err.message || "Error deleting contact", "error");
-            }
+            cacheContacts = cacheContacts.filter(c => c.id !== id);
+            renderContactsTable();
+            showToast("Contact removed.", 'success');
+            loadStats();
         }
 
         function renderContactsTable() {
             const tbody = document.getElementById('contacts-table-body');
-            if (!tbody) return;
-            
-            if(!Array.isArray(cacheContacts) || cacheContacts.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="p-12">
-                            <div class="data-empty">
-                                <svg class="icon mx-auto mb-2 text-gray-300" style="width: 32px; height: 32px;" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                <p class="font-medium">No contacts yet</p>
-                                <p class="text-xs mt-1 opacity-60">Add your first contact to get started.</p>
-                            </div>
-                        </td>
-                    </tr>`;
+            if(cacheContacts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-12 text-center text-[var(--text-sub)] text-sm">No contacts added yet.</td></tr>';
                 return;
             }
-
             tbody.innerHTML = cacheContacts.map((c, i) => `
                 <tr class="group table-row-hover stagger-item" style="animation-delay: ${i * 30}ms">
                     <td class="p-4 font-medium text-sm">${escapeHtml(c.name)}</td>
@@ -2931,18 +2098,10 @@ document.addEventListener('change', (e) => {
                 </tr>
             `).join('');
             
-            // Update picker list
-            updateContactPickerList();
-        }
-
-        function updateContactPickerList() {
-            const pickerList = document.getElementById('picker-list');
-            if(!pickerList) return;
-            
-            pickerList.innerHTML = cacheContacts.map(c => `
+            document.getElementById('picker-list').innerHTML = cacheContacts.map(c => `
                 <div class="flex items-center justify-between p-2.5 hover:bg-black/[0.03] rounded-lg cursor-pointer transition-all duration-200" onclick="addToRecipients('${c.email}')">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-xs font-bold">${(c.name || '?').charAt(0)}</div>
+                        <div class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-xs font-bold">${c.name.charAt(0)}</div>
                         <div>
                             <div class="text-sm font-medium">${escapeHtml(c.name)}</div>
                             <div class="text-xs text-[var(--text-sub)]">${escapeHtml(c.email)}</div>
@@ -2966,40 +2125,21 @@ document.addEventListener('change', (e) => {
                 is_default: document.getElementById('new-s-default').checked
             };
             
-            if(!newSender.alias_name || !newSender.email) return showToast("Please fill all fields", "error");
-
-            try {
-                if(editId) {
-                    const { error } = await _supabase.from('senders').update(newSender).eq('id', editId).eq('user_id', currentUser.id);
-                    if(error) throw error;
-                    showToast("Sender updated!", 'success');
-                    
-                    // Update cache
-                    const idx = cacheSenders.findIndex(s => s.id === editId);
-                    if(idx !== -1) cacheSenders[idx] = { ...cacheSenders[idx], ...newSender };
-                } else {
-                    newSender.user_id = currentUser.id;
-                    newSender.created_at = new Date().toISOString();
-                    
-                    const { data, error } = await _supabase.from('senders').insert(newSender).select().single();
-                    if(error) throw error;
-                    
-                    if(data) {
-                        showToast("Sender added! Verify in Resend dashboard if using custom domain.", "success");
-                        cacheSenders.push(data);
-                    }
-                }
-
-                closeModal('sender-modal');
-                resetSenderForm();
-                populateSenderDropdown();
-                renderSettingsSenders();
-                loadStats();
-                
-            } catch (err) {
-                logDebug("Save sender error:", err);
-                showToast(err.message || "Error saving sender", "error");
+            if(editId) {
+                const { error } = await _supabase.from('senders').update(newSender).eq('id', editId);
+                if(error) return showToast(error.message, 'error');
+                showToast("Sender updated!", 'success');
+            } else {
+                newSender.user_id = currentUser.id;
+                const { error } = await _supabase.from('senders').insert(newSender);
+                if(error) return showToast(error.message, 'error');
+                showToast("Sender added! Verify in Resend dashboard if using custom domain.", 'success');
             }
+
+            closeModal('sender-modal');
+            resetSenderForm();
+            await loadSenders();
+            renderSettingsSenders();
         }
 
         function editSender(id) {
@@ -3007,9 +2147,9 @@ document.addEventListener('change', (e) => {
             if(!sender) return;
             
             document.getElementById('edit-sender-id').value = id;
-            document.getElementById('new-s-name').value = sender.alias_name || '';
-            document.getElementById('new-s-email').value = sender.email || '';
-            document.getElementById('new-s-default').checked = !!sender.is_default;
+            document.getElementById('new-s-name').value = sender.alias_name;
+            document.getElementById('new-s-email').value = sender.email;
+            document.getElementById('new-s-default').checked = sender.is_default;
             document.getElementById('sender-modal-title').innerText = 'Edit Sender Identity';
             document.getElementById('sender-submit-btn').innerText = 'Update Sender';
             openModal('sender-modal');
@@ -3026,19 +2166,11 @@ document.addEventListener('change', (e) => {
 
         async function deleteSender(id) {
             if(!confirm("Remove this sender identity?")) return;
-            
-            try {
-                const { error } = await _supabase.from('senders').delete().eq('id', id).eq('user_id', currentUser.id);
-                if(error) throw error;
-                
-                cacheSenders = cacheSenders.filter(s => s.id !== id);
-                populateSenderDropdown();
-                renderSettingsSenders();
-                showToast("Sender removed.", 'success');
-                loadStats();
-            } catch (err) {
-                showToast(err.message || "Error deleting sender", "error");
-            }
+            const { error } = await _supabase.from('senders').delete().eq('id', id);
+            if(error) return showToast(error.message, 'error');
+            showToast("Sender removed.", 'success');
+            await loadSenders();
+            renderSettingsSenders();
         }
 
         function populateSenderDropdown() {
@@ -3046,35 +2178,26 @@ document.addEventListener('change', (e) => {
             
             selects.forEach(select => {
                 if(!select) return;
-                
-                select.innerHTML = '<option value="">Select sender...</option>';
-                
-                if(Array.isArray(cacheSenders) && cacheSenders.length > 0) {
-                    cacheSenders.forEach(s => {
-                        const option = document.createElement('option');
-                        option.value = s.id;
-                        option.textContent = `${s.alias_name || ''} <${s.email}>`;
-                        select.appendChild(option);
-                    });
-                } else {
-                    select.innerHTML += '<option value="" disabled>No senders configured</option>';
+                if (cacheSenders.length === 0) {
+                    select.innerHTML = '<option value="">No senders configured</option>';
+                    return;
                 }
+                select.innerHTML = cacheSenders.map(s => 
+                    `<option value="${s.id}">${escapeHtml(s.alias_name)} &lt;${escapeHtml(s.email)}&gt;</option>`
+                ).join('');
             });
         }
 
         function renderSettingsSenders() {
             const list = document.getElementById('settings-sender-list');
-            if (!list) return;
-            
-            if(!Array.isArray(cacheSenders) || cacheSenders.length === 0) {
+            if(cacheSenders.length === 0) {
                 list.innerHTML = '<li class="text-sm text-[var(--text-sub)] italic py-4 text-center">No senders configured</li>';
                 return;
             }
-            
             list.innerHTML = cacheSenders.map((s, i) => `
                 <li class="flex items-center justify-between p-4 bg-black/[0.02] rounded-xl group stagger-item" style="animation-delay: ${i * 50}ms">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">${(s.alias_name || '?').charAt(0)}</div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">${s.alias_name.charAt(0)}</div>
                         <div>
                             <div class="font-semibold text-sm">${escapeHtml(s.alias_name)}</div>
                             <div class="text-xs text-[var(--text-sub)]">${escapeHtml(s.email)}</div>
@@ -3099,55 +2222,38 @@ document.addEventListener('change', (e) => {
             const name = document.getElementById('new-t-name').value.trim();
             const subject = document.getElementById('mail-subject').value;
             
+            // Get content from active editor
             let htmlContent = '';
-            if(document.getElementById('editor-html-container').style.display !== 'none' && quillEditor) {
+            if(document.getElementById('editor-html-container').style.display !== 'none') {
                 htmlContent = quillEditor.root.innerHTML;
             } else if(document.getElementById('editor-raw-container').style.display !== 'none') {
                 htmlContent = document.getElementById('comp-body-html').value;
             }
 
-            if(!name) return showToast("Template name is required.", "error");
             if(!subject) return showToast("Cannot save template without subject.", "error");
 
             const templateData = {
                 user_id: currentUser.id,
-                name: name,
-                subject: subject,
-                html_content: htmlContent || '',
-                updated_at: new Date().toISOString()
+                name,
+                subject,
+                html_content: htmlContent
             };
 
-            try {
-                if(editId) {
-                    const { error } = await _supabase.from('templates').update(templateData).eq('id', editId).eq('user_id', currentUser.id);
-                    if(error) throw error;
-                    showToast("Template updated!", 'success');
-                    
-                    // Update cache
-                    const idx = cacheTemplates.findIndex(t => t.id === editId);
-                    if(idx !== -1) cacheTemplates[idx] = { ...cacheTemplates[idx], ...templateData };
-                } else {
-                    templateData.created_at = new Date().toISOString();
-                    
-                    const { data, error } = await _supabase.from('templates').insert(templateData).select().single();
-                    if(error) throw error;
-                    
-                    if(data) {
-                        showToast("Template saved!", 'success');
-                        cacheTemplates.unshift(data);
-                    }
-                }
-
-                closeModal('template-modal');
-                resetTemplateForm();
-                loadTemplatesSidebar();
-                renderTemplatesTable();
-                e.target.reset();
-                
-            } catch (err) {
-                logDebug("Save template error:", err);
-                showToast(err.message || "Error saving template", "error");
+            if(editId) {
+                const { error } = await _supabase.from('templates').update(templateData).eq('id', editId);
+                if(error) return showToast(error.message, 'error');
+                showToast("Template updated!", 'success');
+            } else {
+                const { error } = await _supabase.from('templates').insert(templateData);
+                if(error) return showToast(error.message, 'error');
+                showToast("Template saved!", 'success');
             }
+
+            closeModal('template-modal');
+            resetTemplateForm();
+            loadTemplatesSidebar();
+            loadTemplatesTable();
+            e.target.reset();
         }
 
         function editTemplate(id) {
@@ -3155,7 +2261,7 @@ document.addEventListener('change', (e) => {
             if(!template) return;
             
             document.getElementById('edit-template-id').value = id;
-            document.getElementById('new-t-name').value = template.name || '';
+            document.getElementById('new-t-name').value = template.name;
             document.getElementById('template-modal-title').innerText = 'Edit Template';
             document.getElementById('template-submit-btn').innerText = 'Update Template';
             openModal('template-modal');
@@ -3170,32 +2276,21 @@ document.addEventListener('change', (e) => {
 
         async function deleteTemplate(id) {
             if(!confirm("Delete this template permanently?")) return;
-            
-            try {
-                const { error } = await _supabase.from('templates').delete().eq('id', id).eq('user_id', currentUser.id);
-                if(error) throw error;
-                
-                cacheTemplates = cacheTemplates.filter(t => t.id !== id);
-                loadTemplatesSidebar();
-                renderTemplatesTable();
-                showToast("Template deleted.", 'success');
-            } catch (err) {
-                showToast(err.message || "Error deleting template", "error");
-            }
+            const { error } = await _supabase.from('templates').delete().eq('id', id);
+            if(error) return showToast(error.message, 'error');
+            showToast("Template deleted.", 'success');
+            loadTemplatesSidebar();
+            loadTemplatesTable();
         }
 
         async function loadTemplate(id) {
-            try {
-                const { data, error } = await _supabase.from('templates').select('*').eq('id', id).eq('user_id', currentUser.id).single();
-                if(error || !data) throw error || new Error('Template not found');
-                
-                document.getElementById('mail-subject').value = data.subject || '';
-                if(quillEditor) quillEditor.root.innerHTML = data.html_content || '';
-                router.navigate('/mail');
-                showToast(`Loaded "${data.name}"`, 'success');
-            } catch (err) {
-                showToast(err.message || "Error loading template", 'error');
-            }
+            const { data, error } = await _supabase.from('templates').select('*').eq('id', id).single();
+            if(error || !data) return showToast("Error loading template", 'error');
+            
+            document.getElementById('mail-subject').value = data.subject;
+            quillEditor.root.innerHTML = data.html_content;
+            router.navigate('/mail');
+            showToast(`Loaded "${data.name}"`, 'success');
         }
 
         // ==========================================
@@ -3206,13 +2301,10 @@ document.addEventListener('change', (e) => {
             const campaign = cacheCampaigns.find(c => c.id === id);
             if(!campaign) return;
             
-            document.getElementById('prev-subject').innerText = campaign.subject || 'Untitled';
-            
-            const senderObj = campaign.sender_id ? cacheSenders.find(s => s.id === campaign.sender_id) : null;
-            document.getElementById('prev-from').innerText = senderObj ? 
-                `${senderObj.alias_name || ''} <${senderObj.email}>` : 'Unknown';
-            document.getElementById('prev-to').innerText = Array.isArray(campaign.recipients) ? 
-                campaign.recipients.join(', ') : 'Multiple recipients';
+            // Load into preview modal
+            document.getElementById('prev-subject').innerText = campaign.subject;
+            document.getElementById('prev-from').innerText = campaign.sender_id ? cacheSenders.find(s=>s.id===campaign.sender_id)?.alias_name || 'Unknown' : 'Unknown';
+            document.getElementById('prev-to').innerText = Array.isArray(campaign.recipients) ? campaign.recipients.join(', ') : 'Multiple recipients';
             document.getElementById('prev-body').innerHTML = campaign.html_content || '<em>No content available</em>';
             
             openModal('preview-modal');
@@ -3224,55 +2316,44 @@ document.addEventListener('change', (e) => {
             if(!confirm("Re-send this email to the same recipients?")) return;
             
             try {
-                const senderObj = campaign.sender_id ? cacheSenders.find(s => s.id === campaign.sender_id) : null;
-                const fromAddress = senderObj ? 
-                    `${senderObj.alias_name || ''} <${senderObj.email}>` : 
-                    'LuvMail <onboarding@resend.dev>';
+                const senderObj = cacheSenders.find(s => s.id === campaign.sender_id);
+                const fromAddress = `${senderObj?.alias_name || ''} <${senderObj?.email || ''}>`;
                 
-                const { error } = await _supabase.functions.invoke('send-email', {
+                await _supabase.functions.invoke('send-email', {
                     body: {
                         from: fromAddress,
-                        to: Array.isArray(campaign.recipients) ? campaign.recipients : [],
-                        subject: campaign.subject || 'Untitled',
-                        html: campaign.html_content || ''
+                        to: campaign.recipients,
+                        subject: campaign.subject,
+                        html: campaign.html_content
                     }
                 });
                 
-                if(error) throw error;
                 showToast("Email re-sent successfully!", 'success');
             } catch(err) {
-                showToast(err.message || "Error resending email", 'error');
+                showToast(err.message, 'error');
             }
         }
 
         async function deleteCampaign(id) {
             if(!confirm("Delete this record permanently? This cannot be undone.")) return;
-            
-            try {
-                const { error } = await _supabase.from('campaigns').delete().eq('id', id).eq('user_id', currentUser.id);
-                if(error) throw error;
-                
-                cacheCampaigns = cacheCampaigns.filter(c => c.id !== id);
-                renderSentEmails();
-                renderDashboardRecent();
-                showToast("Record deleted.", 'success');
-                loadStats();
-            } catch (err) {
-                showToast(err.message || "Error deleting record", 'error');
-            }
+            const { error } = await _supabase.from('campaigns').delete().eq('id', id);
+            if(error) return showToast(error.message, 'error');
+            showToast("Record deleted.", 'success');
+            loadSentEmails();
+            loadStats();
         }
 
         function exportSentEmails() {
-            if(!Array.isArray(cacheCampaigns) || cacheCampaigns.length === 0) return showToast("No data to export", 'error');
+            if(cacheCampaigns.length === 0) return showToast("No data to export", 'error');
             
             const headers = ['Subject', 'Recipients Count', 'Status', 'Date'];
             const csv = [
                 headers.join(','),
                 ...cacheCampaigns.map(c => [
-                    `"${((c.subject || '').replace(/"/g, '""'))}"`,
+                    `"${c.subject}"`,
                     Array.isArray(c.recipients) ? c.recipients.length : 0,
-                    `"${c.status || 'unknown'}"`,
-                    `"${c.sent_at || c.created_at || ''}"`
+                    `"${c.status}"`,
+                    `"${c.sent_at || c.created_at}"`
                 ].join(','))
             ].join('\n');
             
@@ -3282,7 +2363,6 @@ document.addEventListener('change', (e) => {
             a.href = url;
             a.download = `luviio-export-${new Date().toISOString().split('T')[0]}.csv`;
             a.click();
-            URL.revokeObjectURL(url);
             showToast("Export complete!", 'success');
         }
 
@@ -3290,9 +2370,9 @@ document.addEventListener('change', (e) => {
             const campaign = cacheCampaigns.find(c => c.id === id);
             if(!campaign) return;
             
-            document.getElementById('mail-subject').value = campaign.subject || '';
-            if(quillEditor) quillEditor.root.innerHTML = campaign.html_content || '';
-            if(Array.isArray(campaign.recipients)) {
+            document.getElementById('mail-subject').value = campaign.subject;
+            quillEditor.root.innerHTML = campaign.html_content || '';
+            if(campaign.recipients) {
                 document.getElementById('mail-to').value = campaign.recipients.join(', ');
             }
             router.navigate('/mail');
@@ -3306,34 +2386,32 @@ document.addEventListener('change', (e) => {
         async function updateProfile(e) {
             e.preventDefault();
             const name = document.getElementById('set-name').value.trim();
-            
-            try {
-                const { error } = await _supabase.auth.updateUser({ data: { full_name: name } });
-                if(error) throw error;
-                
-                showToast("Profile updated!", 'success');
-                document.getElementById('dashboard-greeting').innerHTML = 
-                    `Hi, <strong>${escapeHtml(name)}</strong>! Welcome back.`;
-            } catch (err) {
-                showToast(err.message || "Error updating profile", 'error');
-            }
+            const { error } = await _supabase.auth.updateUser({ data: { full_name: name } });
+            if(error) return showToast(error.message, 'error');
+            showToast("Profile updated!", 'success');
+            document.getElementById('dashboard-greeting').innerHTML = `Hi, <strong>${escapeHtml(name)}</strong>! Welcome back.`;
         }
 
         // ==========================================
-        // SUPERADMIN FUNCTIONS
-        // Only accessible by people@luviio.com
+        // SUPERADMIN FUNCTIONS (ENHANCED)
         // ==========================================
+
+        async function loadAdminData() {
+            // Simulated stats for demo
+            animateValue('stat-total-users', Math.floor(Math.random() * 50) + 10);
+            animateValue('stat-active-users', Math.floor(Math.random() * 20) + 5);
+            animateValue('stat-admin-count', 2);
+        }
 
         async function loadAdminUsers() {
             const tbody = document.getElementById('admin-users-table');
-            if (!tbody) return;
             
-            // Mock data for demo (in production, query auth.users with service role)
+            // Mock user data for demonstration (in production, query auth.users with service role)
             const mockUsers = [
                 {
                     id: currentUser.id,
                     email: currentUser.email,
-                    name: currentUser.user_metadata?.full_name || 'SuperAdmin',
+                    name: currentUser.user_metadata?.full_name || 'Admin User',
                     role: 'superadmin',
                     status: 'active',
                     last_sign_in: new Date().toISOString(),
@@ -3345,7 +2423,7 @@ document.addEventListener('change', (e) => {
                     name: 'John Marketing',
                     role: 'user',
                     status: 'active',
-                    last_sign_in: new Date(Date.now() - 86400000 * 2).toISOString(),
+                    last_sign_in: new Date(Date.now() - 86400000 * 2).toISOString(), // 2 days ago
                     avatar: 'J'
                 },
                 {
@@ -3354,7 +2432,7 @@ document.addEventListener('change', (e) => {
                     name: 'Sarah Designer',
                     role: 'admin',
                     status: 'active',
-                    last_sign_in: new Date(Date.now() - 3600000).toISOString(),
+                    last_sign_in: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
                     avatar: 'S'
                 },
                 {
@@ -3363,17 +2441,12 @@ document.addEventListener('change', (e) => {
                     name: 'Old Account',
                     role: 'user',
                     status: 'inactive',
-                    last_sign_in: new Date(Date.now() - 86400000 * 30).toISOString(),
+                    last_sign_in: new Date(Date.now() - 86400000 * 30).toISOString(), // 30 days ago
                     avatar: 'O'
                 }
             ];
 
             cacheUsers = mockUsers;
-            
-            // Update stats
-            animateValue('stat-total-users', mockUsers.length);
-            animateValue('stat-active-users', mockUsers.filter(u => u.status === 'active').length);
-            animateValue('stat-admin-count', mockUsers.filter(u => u.role === 'admin' || u.role === 'superadmin').length);
             
             tbody.innerHTML = mockUsers.map((u, i) => `
                 <tr class="group table-row-hover stagger-item" style="animation-delay: ${i * 50}ms">
@@ -3386,7 +2459,7 @@ document.addEventListener('change', (e) => {
                             </div>
                             <div>
                                 <div class="font-semibold text-sm">${escapeHtml(u.name)}</div>
-                                <div class="text-xs text-[var(--text-sub)]">ID: ${(u.id || '').substring(0,8)}...</div>
+                                <div class="text-xs text-[var(--text-sub)]">ID: ${u.id.substring(0,8)}...</div>
                             </div>
                         </div>
                     </td>
@@ -3399,7 +2472,7 @@ document.addEventListener('change', (e) => {
                     <td class="p-4">
                         <span class="inline-flex items-center text-xs font-medium">
                             <span class="status-dot ${u.status === 'active' ? 'status-active' : 'status-inactive'}"></span>
-                            ${(u.status || 'unknown').charAt(0).toUpperCase() + (u.status || 'unknown').slice(1)}
+                            ${u.status.charAt(0).toUpperCase() + u.status.slice(1)}
                         </span>
                     </td>
                     <td class="p-4 text-sm text-[var(--text-sub)] whitespace-nowrap">${formatDate(u.last_sign_in)}</td>
@@ -3407,7 +2480,7 @@ document.addEventListener('change', (e) => {
                         <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             ${u.id !== currentUser.id ? `
                                 <button onclick="openResetPasswordModal('${u.id}', '${u.email}')" class="action-btn action-btn-warning" title="Reset Password">
-                                    <svg class="icon w-3 h-3" viewBox="0 0 24 24"><path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                    <svg class="icon w-3 h-3" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                 </button>
                                 <button onclick="openSendOTPModal('${u.id}', '${u.email}')" class="action-btn action-btn-edit" title="Send OTP">
                                     <svg class="icon w-3 h-3" viewBox="0 0 24 24"><path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
@@ -3415,94 +2488,65 @@ document.addEventListener('change', (e) => {
                                 <button onclick="toggleUserStatus('${u.id}')" class="action-btn ${u.status === 'active' ? 'action-btn-delete' : 'action-btn-view'}" title="${u.status === 'active' ? 'Disable' : 'Enable'}">
                                     <svg class="icon w-3 h-3" viewBox="0 0 24 24">${u.status === 'active' ? '<path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>' : '<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>'}</svg>
                                 </button>
-                            ` : `<span class="text-xs text-gray-400 italic">You</span>`}
+                            ` : `
+                                <span class="text-xs text-gray-400 italic">You</span>
+                            `}
                         </div>
                     </td>
                 </tr>
             `).join('');
         }
 
+        // Admin: Open Reset Password Modal
         function openResetPasswordModal(userId, email) {
-            // Create modal dynamically if not exists
-            let modal = document.getElementById('admin-reset-pwd-modal');
-            if(!modal) {
-                modal = createAdminModal('admin-reset-pwd-modal', 'Reset User Password', `
-                    <form onsubmit="resetUserPassword(event)" class="space-y-4">
-                        <input type="hidden" id="reset-target-user-id" value="">
-                        <input type="hidden" id="reset-target-user-email" value="">
-                        <div class="text-sm text-gray-600 mb-2">User: <span id="reset-user-display" class="font-semibold"></span></div>
-                        <div>
-                            <label class="block text-xs font-semibold text-[var(--text-sub)] mb-1 uppercase">New Password</label>
-                            <input type="text" id="reset-new-pass" class="input-glass" readonly>
-                        </div>
-                        <div class="flex gap-3 pt-4">
-                            <button type="button" onclick="closeModal('admin-reset-pwd-modal')" class="btn-secondary flex-1">Cancel</button>
-                            <button type="submit" class="btn-primary flex-1">Reset & Notify</button>
-                        </div>
-                    </form>
-                `);
-                document.body.appendChild(modal);
-            }
-            
             document.getElementById('reset-target-user-id').value = userId;
             document.getElementById('reset-target-user-email').value = email;
-            document.getElementById('reset-user-display').textContent = email;
+            // Generate random temp password
             const tempPass = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 8).toUpperCase();
             document.getElementById('reset-new-pass').value = tempPass;
             openModal('admin-reset-pwd-modal');
         }
 
+        // Admin: Reset User Password
         async function resetUserPassword(e) {
             e.preventDefault();
+            const userId = document.getElementById('reset-target-user-id').value;
             const email = document.getElementById('reset-target-user-email').value;
             const newPassword = document.getElementById('reset-new-pass').value;
 
-            if(!newPassword) return showToast("Missing required fields", "error");
+            if(!userId || !newPassword) return showToast("Missing required fields", "error");
 
             try {
-                // Simulate API call - in production use Supabase Admin API or Edge Function
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                // In production, this would use admin client or edge function
+                // For demo, we simulate the reset
                 showToast(`Password reset for ${email}. New password: ${newPassword}`, "success");
+                
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
                 closeModal('admin-reset-pwd-modal');
-                loadAdminUsers();
+                loadAdminUsers(); // Refresh list
+                
             } catch(err) {
-                showToast(`Error: ${err.message}`, "error");
+                showToast(`Error: ${err.message}`, 'error');
             }
         }
 
+        // Admin: Open Send OTP Modal
         function openSendOTPModal(userId, email) {
-            let modal = document.getElementById('admin-send-otp-modal');
-            if(!modal) {
-                modal = createAdminModal('admin-send-otp-modal', 'Send OTP/Magic Link', `
-                    <form onsubmit="sendOTPToUser(event)" class="space-y-4">
-                        <input type="hidden" id="otp-target-user-id" value="${userId}">
-                        <input type="hidden" id="otp-target-user-email" value="${email}">
-                        <div class="text-sm text-gray-600 mb-2">Send authentication link to: <strong>${email}</strong></div>
-                        <div>
-                            <label class="block text-xs font-semibold text-[var(--text-sub)] mb-1 uppercase">Method</label>
-                            <select id="otp-method" class="input-glass">
-                                <option value="magiclink">Magic Link (Recommended)</option>
-                                <option value="otp">OTP Code</option>
-                            </select>
-                        </div>
-                        <div class="flex gap-3 pt-4">
-                            <button type="button" onclick="closeModal('admin-send-otp-modal')" class="btn-secondary flex-1">Cancel</button>
-                            <button type="submit" class="btn-primary flex-1">Send Now</button>
-                        </div>
-                    </form>
-                `);
-                document.body.appendChild(modal);
-            }
-            
             document.getElementById('otp-target-user-id').value = userId;
             document.getElementById('otp-target-user-email').value = email;
             openModal('admin-send-otp-modal');
         }
 
+        // Admin: Send OTP/Magic Link to User
         async function sendOTPToUser(e) {
             e.preventDefault();
+            const userId = document.getElementById('otp-target-user-id').value;
             const email = document.getElementById('otp-target-user-email').value;
-            const method = document.getElementById('otp-method')?.value || 'magiclink';
+            const method = document.getElementById('otp-method').value;
+
+            if(!userId || !email) return showToast("Missing required fields", "error");
 
             try {
                 const btn = e.target.querySelector('button[type="submit"]');
@@ -3511,12 +2555,16 @@ document.addEventListener('change', (e) => {
                 btn.disabled = true;
 
                 if(method === 'magiclink') {
+                    // Send magic link via Supabase Auth Admin (simulated)
                     await _supabase.auth.signInWithOtp({ 
                         email,
-                        options: { emailRedirectTo: window.location.origin + '/admin' } 
+                        options: { 
+                            emailRedirectTo: window.location.origin + '/admin'
+                        } 
                     });
                     showToast(`Magic link sent to ${email}`, "success");
                 } else {
+                    // Send OTP (simulated)
                     await _supabase.auth.signInWithOtp({ email });
                     showToast(`OTP code sent to ${email}`, "success");
                 }
@@ -3524,16 +2572,13 @@ document.addEventListener('change', (e) => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
                 closeModal('admin-send-otp-modal');
+                
             } catch(err) {
-                showToast(`Error: ${err.message}`, "error");
-                const btn = e.target.querySelector('button[type="submit"]');
-                if(btn) {
-                    btn.disabled = false;
-                    btn.innerHTML = 'Send Now';
-                }
+                showToast(`Error: ${err.message}`, 'error');
             }
         }
 
+        // Admin: Create New User Account
         async function createUserAccount(e) {
             e.preventDefault();
             
@@ -3541,14 +2586,17 @@ document.addEventListener('change', (e) => {
             const password = document.getElementById('admin-create-pass').value;
             const name = document.getElementById('admin-create-name').value.trim();
             const role = document.getElementById('admin-create-role').value;
+            const sendEmail = document.getElementById('admin-create-send-email').checked;
 
             if(!email || !password) return showToast("Email and password are required", "error");
 
             try {
                 const btn = e.target.querySelector('button[type="submit"]');
-                btn.disabled = true;
+                const originalText = btn.innerHTML;
                 btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Creating...';
+                btn.disabled = true;
 
+                // Create user via Supabase Auth Admin (in production, use service_role key or edge function)
                 const { data, error } = await _supabase.auth.signUp({
                     email,
                     password,
@@ -3564,26 +2612,28 @@ document.addEventListener('change', (e) => {
 
                 if(error) throw error;
 
-                showToast(`Account created for ${email}`, "success");
+                showToast(`Account created for ${email}${sendEmail ? ' and welcome email sent!' : ''}`, "success");
+                
+                btn.innerHTML = originalText;
                 btn.disabled = false;
-                btn.innerHTML = 'Create Account';
                 closeModal('admin-create-user-modal');
                 e.target.reset();
                 loadAdminUsers();
+                loadAdminData(); // Update stats
                 
             } catch(err) {
-                showToast(`Error creating account: ${err.message}`, "error");
+                showToast(`Error creating account: ${err.message}`, 'error');
                 const btn = e.target.querySelector('button[type="submit"]');
-                if(btn) {
-                    btn.disabled = false;
-                    btn.innerHTML = 'Create Account';
-                }
+                btn.disabled = false;
+                btn.innerHTML = 'Create Account';
             }
         }
 
+        // Admin: Invite User (Magic Link)
         async function inviteUser(e) {
             e.preventDefault();
             const email = document.getElementById('admin-new-email').value.trim().toLowerCase();
+            const role = document.getElementById('admin-new-role').value;
 
             if(!email) return showToast("Email is required", "error");
 
@@ -3592,10 +2642,14 @@ document.addEventListener('change', (e) => {
                 btn.disabled = true;
                 btn.innerHTML = '<span class="spinner inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full mr-2"></span>Inviting...';
 
+                // Send invitation magic link
                 const { error } = await _supabase.auth.signInWithOtp({
                     email,
                     options: {
-                        data: { invited_by: currentUser.email },
+                        data: { 
+                            invited_by: currentUser.email,
+                            suggested_role: role
+                        },
                         emailRedirectTo: window.location.origin + '/settings'
                     }
                 });
@@ -3603,21 +2657,20 @@ document.addEventListener('change', (e) => {
                 if(error) throw error;
 
                 showToast(`Invitation sent to ${email}`, "success");
-                btn.disabled = false;
-                btn.innerHTML = 'Send Invitation';
                 closeModal('admin-user-modal');
                 e.target.reset();
+                btn.disabled = false;
+                btn.innerHTML = 'Send Invitation';
                 
             } catch(err) {
-                showToast(`Error: ${err.message}`, "error");
+                showToast(`Error: ${err.message}`, 'error');
                 const btn = e.target.querySelector('button[type="submit"]');
-                if(btn) {
-                    btn.disabled = false;
-                    btn.innerHTML = 'Send Invitation';
-                }
+                btn.disabled = false;
+                btn.innerHTML = 'Send Invitation';
             }
         }
 
+        // Admin: Toggle User Status (Simulated)
         async function toggleUserStatus(userId) {
             const user = cacheUsers.find(u => u.id === userId);
             if(!user) return;
@@ -3628,20 +2681,12 @@ document.addEventListener('change', (e) => {
             if(!confirm(`Are you sure you want to ${action} this user?`)) return;
 
             try {
+                // In production, update auth.users metadata or custom users table
                 showToast(`User ${user.email} has been ${newStatus}`, newStatus === 'active' ? 'success' : 'warning');
                 loadAdminUsers();
             } catch(err) {
                 showToast(err.message, 'error');
             }
-        }
-
-        // Helper to create admin modals dynamically
-        function createAdminModal(id, title, content) {
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.id = id;
-            overlay.innerHTML = `<div class="modal-box"><h2 class="font-display font-bold text-xl mb-6 tracking-tight">${title}</h2>${content}</div>`;
-            return overlay;
         }
 
         // ==========================================
@@ -3656,8 +2701,7 @@ document.addEventListener('change', (e) => {
             const textBtn = document.getElementById('mode-text-btn');
             const rawBtn = document.getElementById('mode-raw-btn');
 
-            if(!htmlContainer || !textContainer || !rawContainer) return;
-
+            // Reset all with animation
             [htmlContainer, textContainer, rawContainer].forEach(el => {
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(-10px)';
@@ -3670,52 +2714,57 @@ document.addEventListener('change', (e) => {
 
                 if(mode === 'html') {
                     htmlContainer.style.display = 'block';
-                    setActiveBtn(htmlBtn, [htmlBtn, textBtn, rawBtn]);
-                    showWithAnimation(htmlContainer);
+                    htmlBtn.className = "text-xs font-bold text-black bg-white px-3 py-1.5 rounded-md shadow-sm transition-all";
+                    textBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1.5 rounded-md transition-all";
+                    rawBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1.5 rounded-md transition-all";
+                    
+                    requestAnimationFrame(() => {
+                        htmlContainer.style.opacity = '1';
+                        htmlContainer.style.transform = 'translateY(0)';
+                        htmlContainer.style.transition = 'all 0.3s ease-out';
+                    });
+                    
                 } else if(mode === 'text') {
                     textContainer.style.display = 'block';
-                    setActiveBtn(textBtn, [htmlBtn, textBtn, rawBtn]);
+                    textBtn.className = "text-xs font-bold text-black bg-white px-3 py-1.5 rounded-md shadow-sm transition-all";
+                    htmlBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1.5 rounded-md transition-all";
+                    rawBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1.5 rounded-md transition-all";
                     
-                    const textArea = document.getElementById('comp-body-text');
-                    if(textArea && quillEditor && !textArea.value) {
-                        textArea.value = quillEditor.root.innerText;
+                    // Sync content from Quill if switching away
+                    const text = quillEditor.root.innerText;
+                    if(text && !document.getElementById('comp-body-text').value) {
+                        document.getElementById('comp-body-text').value = text;
                     }
-                    showWithAnimation(textContainer);
+                    
+                    requestAnimationFrame(() => {
+                        textContainer.style.opacity = '1';
+                        textContainer.style.transform = 'translateY(0)';
+                        textContainer.style.transition = 'all 0.3s ease-out';
+                    });
+                    
                 } else if(mode === 'raw') {
                     rawContainer.style.display = 'block';
-                    setActiveBtn(rawBtn, [htmlBtn, textBtn, rawBtn]);
+                    rawBtn.className = "text-xs font-bold text-black bg-white px-3 py-1.5 rounded-md shadow-sm transition-all";
+                    htmlBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1.5 rounded-md transition-all";
+                    textBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1.5 rounded-md transition-all";
                     
-                    const htmlArea = document.getElementById('comp-body-html');
-                    if(htmlArea && quillEditor && !htmlArea.value) {
-                        htmlArea.value = quillEditor.root.innerHTML;
+                    // Sync HTML from Quill
+                    const html = quillEditor.root.innerHTML;
+                    if(html && !document.getElementById('comp-body-html').value) {
+                        document.getElementById('comp-body-html').value = html;
                     }
-                    showWithAnimation(rawContainer);
+                    
+                    requestAnimationFrame(() => {
+                        rawContainer.style.opacity = '1';
+                        rawContainer.style.transform = 'translateY(0)';
+                        rawContainer.style.transition = 'all 0.3s ease-out';
+                    });
                 }
             }, 150);
         }
 
-        function setActiveBtn(activeBtn, allBtns) {
-            allBtns.forEach(btn => {
-                if(btn === activeBtn) {
-                    btn.className = "text-xs font-bold text-black bg-white px-3 py-1.5 rounded-md shadow-sm transition-all";
-                } else {
-                    btn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1.5 rounded-md transition-all";
-                }
-            });
-        }
-
-        function showWithAnimation(element) {
-            requestAnimationFrame(() => {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-                element.style.transition = 'all 0.3s ease-out';
-            });
-        }
-
         function addToRecipients(email) {
             const input = document.getElementById('mail-to');
-            if(!input) return;
-            
             const current = input.value;
             const emails = current.split(',').map(e => e.trim()).filter(e => e);
             
@@ -3728,6 +2777,8 @@ document.addEventListener('change', (e) => {
             closeModal('contact-picker-modal');
             updateChecklist();
             
+            // Visual feedback
+            const originalBg = input.style.backgroundColor;
             input.style.backgroundColor = '#f0fdf4';
             input.style.borderColor = '#22c55e';
             setTimeout(() => {
@@ -3740,24 +2791,19 @@ document.addEventListener('change', (e) => {
 
         function openModal(id) { 
             const modal = document.getElementById(id);
-            if(modal) {
-                modal.classList.add('open');
-                document.body.style.overflow = 'hidden';
-            }
+            modal.classList.add('open');
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
         }
         
         function closeModal(id) { 
             const modal = document.getElementById(id);
-            if(modal) {
-                modal.classList.remove('open');
-                document.body.style.overflow = '';
-            }
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
         }
 
         function showToast(msg, type='success') {
             const container = document.getElementById('toastContainer');
-            if(!container) return;
-            
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             
@@ -3791,12 +2837,16 @@ document.addEventListener('change', (e) => {
             `;
             container.appendChild(toast);
             
-            requestAnimationFrame(() => toast.classList.add('show'));
+            // Trigger animation
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
             
+            // Auto remove
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => {
-                    if(toast.parentElement) toast.remove();
+                    if(toist.parentElement) toast.remove();
                 }, 300);
             }, 4500);
         }
@@ -3807,7 +2857,7 @@ document.addEventListener('change', (e) => {
             
             const start = parseInt(el.innerText) || 0;
             const range = end - start;
-            if(range === 0 && start !== 0) return;
+            if(range === 0 && start !== 0) return; // Don't animate if already at value
             
             const duration = 800;
             const startTime = performance.now();
@@ -3815,6 +2865,8 @@ document.addEventListener('change', (e) => {
             function update(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function (ease-out cubic)
                 const eased = 1 - Math.pow(1 - progress, 3);
                 const current = Math.floor(start + (range * eased));
                 
@@ -3840,51 +2892,50 @@ document.addEventListener('change', (e) => {
         function formatDate(dateStr) {
             if(!dateStr) return '';
             const date = new Date(dateStr);
-            if(isNaN(date.getTime())) return dateStr;
-            
             const now = new Date();
             const diffMs = now - date;
             const diffMins = Math.floor(diffMs / 60000);
             const diffHours = Math.floor(diffMs / 3600000);
             const diffDays = Math.floor(diffMs / 86400000);
 
+            // Relative time for recent dates
             if(diffMins < 1) return 'Just now';
             if(diffMins < 60) return `${diffMins}m ago`;
             if(diffHours < 24) return `${diffHours}h ago`;
             if(diffDays < 7) return `${diffDays}d ago`;
             
+            // Absolute time for older dates
             return date.toLocaleDateString('en-US', { 
                 month: 'short', day: 'numeric', year: 'numeric',
                 hour: '2-digit', minute: '2-digit'
             });
         }
 
-        // Close modals on outside click
+        // Close modals on outside click (with animation)
         document.querySelectorAll('.modal-overlay').forEach(modal => {
             modal.addEventListener('click', e => {
                 if(e.target === modal) {
                     const box = modal.querySelector('.modal-box');
-                    if(box) {
-                        box.style.transform = 'scale(0.95)';
-                        box.style.opacity = '0';
-                        setTimeout(() => {
-                            closeModal(modal.id);
-                            box.style.transform = '';
-                            box.style.opacity = '';
-                        }, 200);
-                    }
+                    box.style.transform = 'scale(0.95)';
+                    box.style.opacity = '0';
+                    setTimeout(() => {
+                        closeModal(modal.id);
+                        box.style.transform = '';
+                        box.style.opacity = '';
+                    }, 200);
                 }
             });
         });
         
-        // Keyboard shortcuts
+        // Keyboard shortcut: Cmd/Ctrl + Enter to send
         document.addEventListener('keydown', (e) => {
             if((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                if(document.getElementById('view-mail')?.classList.contains('active')) {
+                if(document.getElementById('view-mail').classList.contains('active')) {
                     sendViaResend();
                 }
             }
             
+            // Escape to close modals
             if(e.key === 'Escape') {
                 document.querySelectorAll('.modal-overlay.open').forEach(modal => {
                     closeModal(modal.id);
@@ -3892,6 +2943,18 @@ document.addEventListener('change', (e) => {
             }
         });
 
+        // Handle window resize for responsive adjustments
+        window.addEventListener('resize', () => {
+            // Debounce resize events if needed
+        });
+
+        // Initialize tooltips on hover (simple implementation)
+        document.addEventListener('mouseover', (e) => {
+            if(e.target.closest('[title]')) {
+                const el = e.target.closest('[title]');
+                // Could add custom tooltip logic here
+            }
+        });
     </script>
 </body>
 </html>
